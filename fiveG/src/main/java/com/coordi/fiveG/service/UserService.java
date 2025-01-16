@@ -11,7 +11,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public boolean login(String userid, String password) {
+        User user = userRepository.findByUserid(userid);  // 사용자 정보 조회
+        return user != null && password.equals(user.getPassword());  // 비밀번호 비교
     }
 }

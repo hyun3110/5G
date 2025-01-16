@@ -16,8 +16,8 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/login")
-    public boolean login(@RequestBody User user) {
-        User foundUser = userService.findByUsername(user.getUsername());
-        return foundUser != null && foundUser.getPassword().equals(user.getPassword());
+    public boolean login(@RequestBody LoginRequest loginRequest) {
+        System.out.println(loginRequest.getUserid() + loginRequest.getPassword());
+        return userService.login(loginRequest.getUserid(), loginRequest.getPassword());
     }
 }
