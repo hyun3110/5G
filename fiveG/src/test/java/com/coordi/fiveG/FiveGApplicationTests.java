@@ -1,0 +1,13 @@
+package com.coordi.fiveG;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class FiveGApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
