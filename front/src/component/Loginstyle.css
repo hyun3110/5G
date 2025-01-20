@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    display: flex;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 800px;
+  }
+  
+  .welcome-section {
+    background: linear-gradient(35deg, #9E1FFF, #B893FF, #635EFF, #B893FF);
+    color: white;
+    padding: 80px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+  }
+  
+  .welcome-section h1 {
+    font-size: 2.5rem;
+  }
+  
+  .login-section {
+    padding: 50px;
+    width: 400px;
+  }
+  
+  .login-section h2 {
+    color: #9f5fff;
+    margin-bottom: 30px;
+  }
+  
+  .login-section input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 2px solid #9f5fff;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .login-section input:focus {
+    border-bottom: 2px solid #635EFF;
+  }
+  
+  .login-section button {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(to right, #9f5fff, #5f75ff);
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-section button:hover {
+    background-color: #8565FF;
+  }
+  
+  .additional-links {
+    margin-top: 20px;
+  }
+  
+  .additional-links a {
+    display: block;
+    text-decoration: none;
+    color: #5f75ff;
+    margin-bottom: 5px;
+  }
+  
+  .additional-links a:hover {
+    text-decoration: underline;
+  }
+  

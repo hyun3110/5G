@@ -1,0 +1,132 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-container {
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 800px;
+}
+
+.form-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input, .form-group select {
+    width: 38%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #6a11cb;
+}
+
+.email-group {
+    display: flex;
+    gap: 10px;
+}
+
+.email-group input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 37px;
+    box-sizing: border-box;
+}
+
+.email-group select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 37px;
+    box-sizing: border-box;
+    width: 20px;
+}
+
+.email-group span {
+    font-size: 1.2em;
+    color: #333;
+    margin-top: 5px;
+}
+
+
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.btn-group {
+    display: flex;
+    margin-top: 20px;
+}
+
+.btn-group button {
+    width: 15%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.btn-submit {
+    background-color: #0066ff;
+    color: white;
+    margin-left: 30%;
+}
+
+.btn-cancel {
+    background-color: #ccc;
+    color: black;
+    margin-left: 10%;
+}
+
+.style-choice {
+    text-align: center;
+    color: #408cff;
+    font-weight: bold;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.verification-button {
+    padding: 10px;
+    border: none;
+    background-color: #96d1fc;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.verification-button:hover {
+    background-color: #0066ff;
+}

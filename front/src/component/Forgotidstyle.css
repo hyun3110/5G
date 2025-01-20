@@ -1,0 +1,101 @@
+/* 공통 스타일 */
+.forgot-id-container {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* 컨테이너 스타일 */
+.forgot-id-box {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+/* 제목 및 설명 */
+.forgot-id-box h1 {
+  color: #9f5fff;
+  margin-bottom: 20px;
+}
+
+.forgot-id-box p {
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 1em;
+}
+
+/* 입력 필드 */
+.forgot-id-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 2px solid #9f5fff;
+  outline: none;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+}
+
+.forgot-id-box input:focus {
+  border-bottom: 2px solid #635EFF;
+}
+
+/* 버튼 스타일 */
+.forgot-id-box button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(to right, #9f5fff, #5f75ff);
+  border: none;
+  color: white;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.forgot-id-box button:hover {
+  background-color: #8565FF;
+}
+
+.forgot-id-box button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* 링크 스타일 */
+.forgot-id-box a {
+  display: block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: #5f75ff;
+  font-size: 0.9em;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.forgot-id-box a:hover {
+  text-decoration: underline;
+}
+
+/* 메시지 스타일 */
+.forgot-id-box .message {
+  margin-top: 20px;
+  font-size: 0.9em;
+}
+
+.message.success {
+  color: green;
+}
+
+.message.error {
+  color: red;
+}
+

@@ -1,0 +1,22 @@
+# Spring Boot 관련
+/target/
+*.log
+*.class
+*.jar
+*.war
+*.ear
+
+# Gradle 캐시
+.gradle/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse 설정
+.project
+.classpath
+.settings/
+
+# VS Code 설정
+.vscode/
