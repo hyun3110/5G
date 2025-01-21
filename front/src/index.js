@@ -1,6 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom/client"; // 'react-dom/client'에서 가져와야 함
-import App from "./App";
+import React from 'react';
+import ReactDOM from 'react-dom/client'; // React 18+ 전용
+import App from './App';
+import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />); // React 18 방식
+// React 18+에서 createRoot 사용
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

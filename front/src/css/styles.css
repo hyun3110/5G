@@ -316,3 +316,10 @@ button:hover {
 .header, .event-section, .calendar {
   margin-bottom: 20px; /* 컴포넌트 간의 간격 */
 }
+/* 버튼 컨테이너 중앙 정렬 */
+.button-container {
+  display: flex; /* 플렉스 박스 사용 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  gap: 10px; /* 버튼 간격 */
+  margin-top: 20px; /* 버튼과 위 요소 간격 */
+}
