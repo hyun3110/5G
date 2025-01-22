@@ -7,4 +7,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     Users findByUserId(String userId);
 
+    // 아이디 중복 확인
+    boolean existsByUserId(String userId);
+
 }

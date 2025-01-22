@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -36,6 +37,7 @@ public class Users {
     private String email;
 
     @Column(name = "JOINED_AT")
+    @CreationTimestamp
     private LocalDateTime joinedAt;
 
     @Column(name = "PREFERRED_STYLE")
