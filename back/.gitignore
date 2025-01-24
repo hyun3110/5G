@@ -1,0 +1,23 @@
+# Gradle 관련 캐시 및 설정
+.gradle/
+build/
+*.log
+
+# IntelliJ IDEA 관련 폴더
+.idea/
+
+# Eclipse 관련 폴더
+.project
+.classpath
+.settings/
+
+# 임시 파일
+.tmp/
+caches/
+daemon/
+native/
+wrapper/
+
+# OS 관련 임시 파일
+.DS_Store
+Thumbs.db

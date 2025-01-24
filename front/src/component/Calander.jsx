@@ -1,25 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import Modal from 'react-modal';
+import axios from 'axios';
 
 // 모달 스타일 설정 (root div 설정)
 Modal.setAppElement('#root');
 
 export default function Buttonclick() {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [user, setUser] = useState(null); // 유저 정보
+  const [modalIsOpen, setModalIsOpen] = useState(false); // 모달 상태
+  const [events, setEvents] = useState([]); // 일정을 저장하는 상태
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
   const [eventDetails, setEventDetails] = useState({
-    id: null,
+    id: '',
     title: '',
     startDate: '',
     endDate: '',
     description: '',
     image: null,
   });
-  const [events, setEvents] = useState([]);
 
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
+  useEffect(() => { // 세션에서 유저정보 가져오기
+
+    axios.get('http://localhost:8081/api/auth/userinfo', { withCredentials: true })
+      .then(response => {
+        setUser(response.data);  // 서버에서 반환한 유저 정보
+      })
+      .catch(error => {
+        console.error('서버에서 회원정보 가져오기 실패', error);
+      });
+  }, []);
+
+  useEffect(() => { // 유저 정보로 일정 정보 가져오기
+
+    if (user) {
+      axios.get(`http://localhost:8081/api/schedules/${user.id}`, { withCredentials: true })
+        .then(response => {
+          console.log(response.data);  // 응답 데이터 확인
+
+          // 서버에서 반환된 데이터가 배열인지 확인하고 처리
+          if (Array.isArray(response.data)) {
+            const calendarEvents = response.data.map(event => ({
+              id: event.scheId,                // 일정 ID
+              title: event.scheTitle,          // 일정 제목
+              start: event.startDate,      // 시작 날짜
+              end: event.endDate,          // 종료 날짜
+              description: event.scheContent || '',  // 설명 (옵션)
+            }));
+            setEvents(calendarEvents); // 여러 일정이 배열로 반환된 경우
+          } else {
+            // 하나의 일정만 반환된 경우, 배열로 감싸서 처리
+            const singleEvent = [{
+              id: response.data.scheId,
+              title: response.data.scheTitle,
+              start: response.data.startDate,
+              end: response.data.endDate,
+              description: response.data.scheContent || '',
+            }];
+            setEvents(singleEvent);
+          }
+        })
+        .catch(error => {
+          console.error('일정 정보를 가져오는 데 실패했습니다.', error);
+        });
+    }
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -64,26 +112,24 @@ export default function Buttonclick() {
     const adjustedEndDate = new Date(eventDetails.endDate);
     adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
 
-    if (eventDetails.id) {
-      setEvents(events.map((event) =>
-        event.id === eventDetails.id
-          ? { ...event, ...eventDetails, end: adjustedEndDate.toISOString().slice(0, 10) }
-          : event
-      ));
-    } else {
-      setEvents([
-        ...events,
-        {
-          id: Date.now(),
-          title: eventDetails.title,
-          start: eventDetails.startDate,
-          end: adjustedEndDate.toISOString().slice(0, 10),
-          description: eventDetails.description,
-          extendedProps: { image: eventDetails.image },
-        },
-      ]);
-    }
-    closeModal();
+    // 서버로 일정 추가 요청 보내기
+    const newEvent = {
+      scheTitle: eventDetails.title,
+      startDate: eventDetails.startDate,
+      endDate: adjustedEndDate.toISOString().slice(0, 10),
+      scheContent: eventDetails.description,
+    };
+
+    axios.post('http://localhost:8081/api/schedules/add', newEvent, { withCredentials: true })
+    .then(response => {
+      if (response.status === 200) {
+        setEvents(prevEvents => [...prevEvents, response.data]); // 캘린더에 추가된 일정 반영
+        closeModal();
+      }
+    })
+    .catch(error => {
+      console.error('일정 추가 실패:', error);
+    });
   };
 
   const handleEventClick = (info) => {

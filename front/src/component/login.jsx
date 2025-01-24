@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
 
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const login = async (e) => {
     e.preventDefault();
@@ -19,12 +21,12 @@ function Login() {
     try {
       // 로그인 요청
       const response = await axios.post('http://localhost:8081/api/auth/login', {
-        userid:userId,
-        password:password
-      });
+        userId:userId,
+        pw:password
+      }, { withCredentials: true });
 
-      if (response.data) {
-        alert('로그인 성공');
+      if (response.status === 200) {
+        navigate('/');
       } else {
         setError('로그인 실패!');
       }
