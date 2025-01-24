@@ -1,6 +1,6 @@
 import React from "react";
 import '../css/styles.css';
-import Calendar from "./Calander";
+import Calendar from "./Calender";
 const Header = () => {
   return (
     <header>

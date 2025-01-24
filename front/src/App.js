@@ -1,14 +1,10 @@
 import React from "react";
 import "./css/styles.css";
+
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Main from "./component/Main";
 import Signup from  "./component/Signup";
 import Login from "./component/Login";
-
-
-
-
-
 
 
 

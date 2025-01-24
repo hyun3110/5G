@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./Header";
 import Slider from "./Slider";
 import EventSection from "./EventSection";
-import Calendar from "./Calander";
+import Calendar from "./Calender";
 import '../css/styles.css';
 
 
