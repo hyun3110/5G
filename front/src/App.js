@@ -1,26 +1,20 @@
 import React from "react";
 import "./css/styles.css";
-
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Main from "./component/Main";
-import Signup from  "./component/Signup";
-import Login from "./component/Login";
-
-
-
+import Calendar from "./component/Calander";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from "./component/login";
+import Signup from "./component/Signup";
+import Main from "./component/main";
 
 const App = () => {
   return (
-    <div>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/signup" element={<Signup/>} />
-          <Route path="/Login" element={<Login/>} />
-          
-        </Routes>
-      </Router>
-    </div>
+    <Router>
+    <Routes>
+      <Route path="/Signup" element={<Signup />} />
+      <Route path="/Login" element={<Login />} />
+      <Route path="/" element={<Main />} />
+    </Routes>
+    </Router>
   );
 };
 
