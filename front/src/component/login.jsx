@@ -19,8 +19,8 @@ function Login() {
     try {
       // 로그인 요청
       const response = await axios.post('http://localhost:8081/api/auth/login', {
-        userid:userId,
-        password:password
+        userId:userId,
+        pw:password
       });
 
       if (response.data) {

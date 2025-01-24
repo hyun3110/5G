@@ -8,9 +8,16 @@ import main from "./component/Main";
 
 const App = () => {
   return (
-    <Main/>
-
-    
+    <div className="app-container">
+      <div className="left-side">
+        <Slider />
+      </div>
+      <div className="right-side">
+        <Header />
+        <EventSection />
+        <Calendar />
+      </div>
+    </div>
   );
 };
 
