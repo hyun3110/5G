@@ -78,6 +78,12 @@ const Signup = () => {
   const signup = async (e) => {
     e.preventDefault();
 
+    // 아이디 중복 체크
+    if (!isUsernameValid) {
+      alert('아이디 중복 체크를 먼저 해주세요.');
+      return;
+    }
+
     try {
       // 회원가입 요청
       const response = await axios.post('http://localhost:8081/api/auth/signup', {
@@ -88,8 +94,10 @@ const Signup = () => {
         email:email+'@'+emailDomain,
         preferredStyle:preferredStyle
       });
+      
       if(response.status){
         alert('회원가입 성공')
+        navigate('/login');
       }else{
         alert('실패')
       }

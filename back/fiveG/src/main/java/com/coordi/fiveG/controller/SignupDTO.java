@@ -1,11 +1,15 @@
 package com.coordi.fiveG.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class SignupDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class SignupDTO {
 
     private String userId;
     private String pw;
