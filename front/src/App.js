@@ -1,22 +1,29 @@
 import React from "react";
-import Header from "./component/Header";
-import Slider from "./component/Slider";
-import EventSection from "./component/EventSection";
 import "./css/styles.css";
-import Calendar from "./component/Calander";
-import main from "./component/Main";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Main from "./component/Main";
+import Signup from  "./component/Signup";
+import Login from "./component/Login";
+
+
+
+
+
+
+
+
 
 const App = () => {
   return (
-    <div className="app-container">
-      <div className="left-side">
-        <Slider />
-      </div>
-      <div className="right-side">
-        <Header />
-        <EventSection />
-        <Calendar />
-      </div>
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/signup" element={<Signup/>} />
+          <Route path="/Login" element={<Login/>} />
+          
+        </Routes>
+      </Router>
     </div>
   );
 };
