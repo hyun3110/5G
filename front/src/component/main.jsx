@@ -8,15 +8,16 @@ import '../css/styles.css';
 
 const App = () => {
   return (
-    <div>
-
-      <div> <Slider />  </div>
-
-      <div> <Header /></div>
-
-      <div><EventSection /></div>
-      <div> <Calendar /></div>
+    <div className="app-container">
+    <div className="left-side">
+      <Slider />
     </div>
+    <div className="right-side">
+      <Header />
+      <EventSection />
+      <Calendar />
+    </div>
+  </div>
   );
 };
 
