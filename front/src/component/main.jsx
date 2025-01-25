@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./Header";
 import Slider from "./Slider";
 import EventSection from "./EventSection";
-import Calendar from "./Calender";
+import Calandar from "./Calander";
 import '../css/styles.css';
 
 
@@ -15,7 +15,7 @@ const App = () => {
     <div className="right-side">
       <Header />
       <EventSection />
-      <Calendar />
+      <Calandar />
     </div>
   </div>
   );
