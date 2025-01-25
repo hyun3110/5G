@@ -5,6 +5,7 @@ import com.coordi.fiveG.model.Users;
 import com.coordi.fiveG.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -31,6 +32,7 @@ public class UsersService {
     }
 
 
+    @Transactional
     // 회원가입
     public Users signup(SignupDTO sDto){
         Users user = new Users();
