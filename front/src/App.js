@@ -1,9 +1,6 @@
 import React from "react";
-import Header from "./component/Header";
-import Slider from "./component/Slider";
-import EventSection from "./component/EventSection";
 import "./css/styles.css";
-import Calendar from "./component/Calander";
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from "./component/login";
 import Signup from "./component/Signup";
