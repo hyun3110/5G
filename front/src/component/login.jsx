@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../css/Loginstyle.css';
 
 function Login() {
 
@@ -11,9 +12,9 @@ function Login() {
 
   const login = async (e) => {
     e.preventDefault();
-    
+
     // 입력값 체크
-    if(!userId || !password){
+    if (!userId || !password) {
       setError('아이디 비밀번호를 입력해주세요')
       return;
     }
@@ -21,8 +22,8 @@ function Login() {
     try {
       // 로그인 요청
       const response = await axios.post('http://localhost:8081/api/auth/login', {
-        userId:userId,
-        pw:password
+        userId: userId,
+        pw: password
       }, { withCredentials: true });
 
       if (response.status === 200) {
@@ -35,31 +36,38 @@ function Login() {
     }
   };
 
-    return (
-        <div>
-            <h2>로그인</h2>
-            <form onSubmit={login}>
-                <div>
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        value={userId}
-                        onChange={(e) => setUserId(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <button type="submit">로그인</button>
-            </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+  return (
+    <div className="login-container">
+      <div className="container">
+        <div className="welcome-section">
+          <h1>Welcome!</h1>
         </div>
-    );
+
+        <div className="login-section" onSubmit={login}>
+          <h2>로그인</h2>
+          <input
+            type="text"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">로그인</button>
+
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div className="additional-links">
+            <a href="/signup" className="top-link">회원가입</a>
+            <a href="/forgotid">아이디 찾기</a>
+            <a href="/forgotpw">비밀번호 찾기</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
 }
 
 export default Login;
