@@ -32,4 +32,5 @@ public class ScheduleController {
             return ResponseEntity.status(500).body("일정 추가 실패: " + e.getMessage());  // 에러 메시지 반환
         }
     }
+
 }
