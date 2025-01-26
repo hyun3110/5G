@@ -1,9 +1,6 @@
 package com.coordi.fiveG.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -11,11 +8,15 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ScheduleDTO {
 
+    private Integer scheId;
     private String scheTitle;
+    private String scheType;
     private LocalDate startDate;
     private LocalDate endDate;
     private String scheContent;
+    private String color;
 
 }
