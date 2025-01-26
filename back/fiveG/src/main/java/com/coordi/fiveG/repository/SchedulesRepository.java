@@ -10,5 +10,5 @@ import java.util.List;
 public interface SchedulesRepository extends JpaRepository<Schedules, Integer> {
 
     // 회원 id번호로 일정 가져오기
-    List<Schedules> findById(Long id);
+    List<Schedules> findByUserId(Long id);
 }

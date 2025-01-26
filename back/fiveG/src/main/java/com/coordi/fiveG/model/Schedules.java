@@ -20,7 +20,7 @@ public class Schedules {
     private Integer scheIdx;
 
     @Column(name = "ID")
-    private Long id;
+    private Long userId;
 
     @Column(name = "SCHE_TITLE")
     private String scheTitle;
@@ -39,5 +39,8 @@ public class Schedules {
 
     @Column(name = "WEATHER")
     private String weather;
+
+    @Column(name = "COLOR")
+    private String color;
 
 }
