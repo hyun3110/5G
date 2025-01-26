@@ -42,7 +42,7 @@ function Login() {
         <div className="welcome-section">
           <h1>Welcome!</h1>
         </div>
-
+        <form onSubmit={login}>
         <div className="login-section" onSubmit={login}>
           <h2>로그인</h2>
           <input
@@ -64,7 +64,7 @@ function Login() {
             <a href="/forgotpw">비밀번호 찾기</a>
           </div>
         </div>
-
+        </form>
       </div>
     </div>
   );
