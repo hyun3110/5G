@@ -2,7 +2,7 @@ import React from "react";
 import "./css/styles.css";
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from "./component/Login";
+import Login from "./component/login";
 import Signup from "./component/Signup";
 import Main from "./component/main";
 import Forgotid from "./component/Forgotid";
