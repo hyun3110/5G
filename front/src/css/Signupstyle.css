@@ -1,4 +1,4 @@
-body {
+.signup-container {
     font-family: Arial, sans-serif;
     background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF);
     margin: 0;
@@ -31,19 +31,21 @@ body {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: #9f5fff;
 }
 
 .form-group input, .form-group select {
     width: 38%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid #9f5fff;
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
 .form-group input:focus {
-    outline: none;
-    border-color: #6a11cb;
+    border-bottom: 2px solid #635EFF;
+
 }
 
 .email-group {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Forgotidstyle.css';
+import '../css/Forgotidstyle.css';
 
 const ForgotId = () => {
   const [email, setEmail] = useState('');
