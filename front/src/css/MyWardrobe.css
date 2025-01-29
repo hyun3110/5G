@@ -1,0 +1,167 @@
+/* 전체 컨테이너 스타일 */
+.wardrobe-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+  height: 100vh; /* 화면 전체 높이 */
+  overflow-y: auto; /* 스크롤 가능하게 설정 */
+  box-sizing: border-box; /* 패딩 포함한 전체 영역 계산 */
+}
+
+
+/* 네비게이션 바 수정 */
+.navigation-bar {
+  display: flex; /* Flexbox를 사용하여 좌우 배치 */
+  justify-content: space-between; /* 왼쪽, 오른쪽 끝 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  width: 100%; /* 전체 너비 */
+  padding: 10px 20px;
+  background-color: white;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
+  box-sizing: border-box; /* 패딩 포함 크기 계산 */
+}
+
+/* 왼쪽 텍스트 스타일 */
+.navigation-bar .left-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0; /* 기본 마진 제거 */
+}
+
+/* 오른쪽 텍스트 스타일 */
+.navigation-bar .right-text {
+  font-size: 14px;
+  text-align: right;
+  color: #333;
+}
+
+.navigation-bar .breadcrumb {
+  text-decoration: none;
+  color: black;
+}
+
+.navigation-bar .breadcrumb:hover {
+  text-decoration: underline;
+}
+
+.navigation-bar .current {
+  font-weight: bold;
+  margin-left: 5px; /* My Page와 내 옷장 간 간격 */
+}
+
+
+
+
+/* 사이드바 스타일 */
+.sidebar {
+  flex: 1;
+  background-color: #f3e9ff; /* 연한 보라색 배경 */
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky; /* 고정 위치 */
+  top: 0; /* 상단 여백 */
+  padding: 10px;
+  height: fit-content; /* 내용에 따라 높이 조정 */
+  align-self: flex-start; /* 위쪽에 정렬 */
+}
+
+.sidebar-inner {
+  background-color: #ffffff; /* 흰색 내부 배경 */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  color: #6b21a8; /* 보라색 텍스트 */
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #6b21a8;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  text-decoration: underline;
+}
+
+/* 메인 콘텐츠 스타일 */
+.main-content {
+  width: 85%;
+  padding-top: 10px; /* 네비게이션 바와 간격 */
+}
+
+.main-content h1 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.category-title {
+  font-size: 22px;
+  color: #6b21a8; /* 보라색 */
+  margin-bottom: 10px;
+}
+
+/* 아이템 그리드 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4x3 배치 */
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.grid-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.grid-item img {
+  width: 100%; /* 이미지가 카드에 맞게 조정 */
+  border-radius: 5px;
+}
+
+/* 더 보기 버튼 */
+.load-more {
+  display: inline-block;
+  margin: 4px auto;
+  padding: 10px 20px;
+  font-size: 12px;
+  background-color: #f0f0f0;
+  color: gray;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+}
+
+.load-more:hover {
+  color: white;
+  background-color: #5a189a; /* 더 어두운 보라색 */
+}
+
+/* 구분선 */
+.section-divider {
+  height: 2px;
+  background-color: #e0e0e0;
+  margin: 20px 0;
+}

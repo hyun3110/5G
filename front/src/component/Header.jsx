@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "../css/styles.css";
-import Calendar from "./Calender";
 import axios from "axios";
 
 const Header = () => {
@@ -33,7 +32,6 @@ const Header = () => {
   };
 
   useEffect(() => {
-    // 사용자 위치 가져오기
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -42,14 +40,12 @@ const Header = () => {
           fetchLocationName(latitude, longitude);
         },
         () => {
-          // 위치 권한 거부 시 서울로 기본 설정
-          fetchWeatherData(37.5665, 126.9780);
+          fetchWeatherData(37.5665, 126.9780); // 서울 좌표
           setLocation("서울");
         }
       );
     } else {
-      // 브라우저에서 위치 정보를 지원하지 않는 경우
-      fetchWeatherData(37.5665, 126.9780);
+      fetchWeatherData(37.5665, 126.9780); // 서울 좌표
       setLocation("서울");
     }
   }, []);
@@ -80,7 +76,7 @@ const Header = () => {
         }
       );
       const address = response.data.documents[0]?.address;
-      const formattedLocation = `${address?.region_1depth_name} ${address?.region_2depth_name}` || "서울"; // 시, 구만 표시
+      const formattedLocation = `${address?.region_1depth_name} ${address?.region_2depth_name}` || "서울";
       setLocation(formattedLocation);
     } catch (error) {
       console.error("위치 정보를 가져오는 데 실패했습니다.", error);
@@ -89,13 +85,42 @@ const Header = () => {
 
   return (
     <header>
-      <div className="nav">
-        <a href="#">Calendar</a>
-        <a href="#">My Profile</a>
-        <span>{location}</span> {/* 현재 위치 */}
-      </div>
-      <div className="weather">
-        날씨: {weatherData.description || "정보 없음"} 온도: {weatherData.temp || "N/A"} 체감 온도: {weatherData.feelsLike || "N/A"}
+      <div className="header-container">
+        {/* 로고 */}
+        <div className="header-logo">
+          <img src="/img/logo.png" alt="DLC Logo" />
+        </div>
+
+        {/* 내비게이션 */}
+        <nav className="header-nav">
+          <img src="/img/event.png" alt="Event" />
+          <a href="#">Events</a>
+          <img src="/img/calendar.png" alt="Calendar" />
+          <a href="#">Calendars</a>
+          <img src="/img/location.png" alt="Location" />
+          <span>{location}</span>
+          <div className="weather-info">
+          <div className="weather-detail">
+            <span className="label">날씨:</span>
+            <span className="value">{weatherData.description || "정보 없음"}</span>
+          </div>
+          <div className="weather-detail">
+            <span className="label">온도:</span>
+            <span className="value">{weatherData.temp || "N/A"}</span>
+          </div>
+          <div className="weather-detail">
+            <span className="label">체감 온도:</span>
+            <span className="value">{weatherData.feelsLike || "N/A"}</span>
+          </div>
+        </div>
+
+        </nav>
+
+        {/* 알림 및 프로필 */}
+        <div className="header-icons">
+          <img src="/img/bell.png" alt="Notification" />
+          <img src="/img/profile-icon.png" alt="Profile" />
+        </div>
       </div>
     </header>
   );
