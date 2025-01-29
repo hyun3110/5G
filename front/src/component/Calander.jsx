@@ -8,11 +8,9 @@ import "../css/styles.css";
 // 모달 스타일 설정
 Modal.setAppElement("#root");
 
-export default function Buttonclick() {
-  const [user, setUser] = useState(null); // 유저 정보
+export default function Buttonclick({ user, events, setEvents}) {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false); // 일정 추가 모달 상태
   const [editModalIsOpen, setEditModalIsOpen] = useState(false); // 일정 수정 모달 상태
-  const [events, setEvents] = useState([]); // 일정 상태
   const [eventDetails, setEventDetails] = useState({
     id: null,
     title: "",
@@ -28,56 +26,20 @@ export default function Buttonclick() {
   // 일정 유형 옵션
   const eventTypes = ["결혼식", "출퇴근", "데이트"];
 
-  // 유저 정보 가져오기
+  // 새로고침 시 로컬 스토리지에서 일정 불러오기
   useEffect(() => {
-    axios
-      .get("/api/auth/userinfo", { withCredentials: true })
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.error("서버에서 회원정보 가져오기 실패", error);
-      });
+    const storedEvents = localStorage.getItem("events");
+    if (storedEvents) {
+      setEvents(JSON.parse(storedEvents));  // 로컬 스토리지에서 일정을 불러와 상태에 설정
+    }
   }, []);
 
-  // 일정 데이터 가져오기
   useEffect(() => {
-    if (user) {
-      axios
-        .get(`/api/schedules/${user.id}`, {
-          withCredentials: true,
-        })
-        .then((response) => {
-          if (Array.isArray(response.data)) {
-            const calendarEvents = response.data.map((event) => {
-              let endDate = new Date(event.endDate);
-              const startDate = new Date(event.startDate);
-
-              // 시작일과 종료일이 다르면 종료일에 하루를 추가
-              if (startDate.getTime() !== endDate.getTime()) {
-                endDate.setDate(endDate.getDate() + 1); // 종료일 하루 추가
-              }
-
-              return {
-                id: event.scheIdx,
-                title: event.scheTitle,
-                type: event.scheType,
-                start: event.startDate,
-                end: endDate.toISOString().split("T")[0], // 종료일을 ISO 형식으로 설정 (하루 더한 날짜)
-                originalEndDate: event.endDate, // 원본 종료일 추가
-                color: event.color || "#ADD8E6",
-                description: event.scheContent || "",
-                cordiimg: event.cordiimg || null, // 코디 이미지
-              };
-            });
-            setEvents(calendarEvents); // 수정된 events로 상태 업데이트
-          }
-        })
-        .catch((error) => {
-          console.error("일정 정보를 가져오는 데 실패했습니다.", error);
-        });
+    // events 상태가 바뀔 때마다 로컬스토리지에 저장
+    if (events.length > 0) {
+      localStorage.setItem("events", JSON.stringify(events));
     }
-  }, [user]);
+  }, [events]); // events 상태가 변할 때마다 실행
 
   // 필수 입력값 체크 함수
   const validateForm = () => {
@@ -118,20 +80,25 @@ export default function Buttonclick() {
           adjustedEndDate = endDate.toISOString().split("T")[0]; // ISO 형식으로 다시 변환
         }
 
-        // 새로운 일정을 상태에 추가
-        setEvents((prevEvents) => [
-          ...prevEvents,
-          {
-            id: newEvent.scheIdx,
-            title: newEvent.scheTitle,
-            type: newEvent.scheType,
-            start: newEvent.startDate,
-            end: adjustedEndDate, // 수정된 종료일
-            color: newEvent.color || "#ADD8E6",
-            description: newEvent.scheContent || "",
-            originalEndDate: newEvent.endDate, // 원본 종료일 저장
-          },
-        ]);
+        setEvents((prevEvents) => {
+          const updatedEvents = [
+            ...prevEvents,
+            {
+              id: newEvent.scheIdx,
+              title: newEvent.scheTitle,
+              type: newEvent.scheType,
+              start: newEvent.startDate,
+              end: adjustedEndDate,
+              color: newEvent.color || "#ADD8E6",
+              description: newEvent.scheContent || "",
+              originalEndDate: newEvent.endDate,
+            },
+          ];
+  
+          // 상태가 업데이트된 후 로컬스토리지에 저장
+          localStorage.setItem("events", JSON.stringify(updatedEvents));
+          return updatedEvents;
+        });
         closeAddModal(); // 추가 모달 닫기
       })
       .catch((error) => {
@@ -191,6 +158,7 @@ export default function Buttonclick() {
           ...prev,
           endDate: adjustedEndDate, // 수정된 종료일을 저장
         }));
+        localStorage.setItem("events", JSON.stringify(events)); // 로컬스토리지에 수정된 데이터 저장
         closeEditModal(); // 수정 모달 닫기
       })
       .catch((error) => {
@@ -209,6 +177,7 @@ export default function Buttonclick() {
           setEvents((prevEvents) =>
             prevEvents.filter((event) => event.id !== eventDetails.id)
           );
+          localStorage.setItem("events", JSON.stringify(events)); // 로컬스토리지에 수정된 데이터 저장
           closeEditModal(); // 수정 모달 닫기
         })
         .catch((error) => {
