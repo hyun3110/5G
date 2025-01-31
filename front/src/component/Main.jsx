@@ -61,7 +61,10 @@ const Main = ({ user }) => {
   return (
     <div className="app-container">
     <div className="left-side">
-      <Slider />
+      <div className="slider-container">
+        <h1 className="daily-look-title">Daily Look</h1>
+        <Slider />
+      </div>  
     </div>
     <div className="right-side">
       <Header />
