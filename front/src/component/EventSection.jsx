@@ -39,29 +39,6 @@ const EventSection = ({ events, setEvents }) => {
       }));
   };
 
-  // 새로운 일정 추가 요청 함수
-  const handleAddEvent = (eventDetails) => {
-    const newEvent = {
-      scheTitle: eventDetails.title, // 일정 제목
-      startDate: eventDetails.start, // 시작 날짜
-      endDate: new Date(eventDetails.end).toISOString().slice(0, 10), // 종료 날짜
-      scheContent: eventDetails.extendedProps?.description || "", // 일정 내용
-      color: eventDetails.backgroundColor || "#ADD8E6", // 일정 색상
-      cordiimg: eventDetails.extendedProps?.cordiimg || null, // 코디 이미지
-    };
-
-    // 서버로 데이터 전송
-    axios.post("/api/schedules/add", newEvent, { withCredentials: true })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("일정 추가 성공:", response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("일정 추가 실패:", error);
-      });
-  };
-
   return (
     <section className="event-section">
       <div className="event-header">Upcoming Events</div>

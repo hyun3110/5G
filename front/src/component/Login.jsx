@@ -3,10 +3,18 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../css/Loginstyle.css";
 
+<<<<<<< HEAD
 function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+=======
+function Login({setUser}) {
+
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+>>>>>>> a17b15e (commit)
   const navigate = useNavigate();
 
   const login = async (e) => {
@@ -25,7 +33,17 @@ function Login() {
       );
 
       if (response.status === 200) {
+<<<<<<< HEAD
         navigate("/");
+=======
+        // 로그인 성공 시 유저 정보 업데이트
+        axios.get('http://localhost:8081/api/auth/userinfo', { withCredentials: true })
+          .then((response) => {
+            setUser(response.data);  // 유저 정보를 상태에 저장
+            sessionStorage.setItem('user', JSON.stringify(response.data));  // 세션에 저장
+            navigate('/');  // 메인 화면으로 리디렉션
+          });
+>>>>>>> a17b15e (commit)
       } else {
         setError("로그인 실패!");
       }
@@ -41,6 +59,7 @@ function Login() {
         <div className="welcome-section">
           <h1>Welcome!</h1>
         </div>
+<<<<<<< HEAD
 
         {/* Login Section */}
         <form onSubmit={login}>
@@ -68,6 +87,28 @@ function Login() {
                 <a href="/forgotid">아이디 찾기</a>
                 <a href="/forgotpw">비밀번호 찾기</a>
               </div>
+=======
+        <form onSubmit={login}>
+          <div className="login-section" onSubmit={login}>
+            <h2>로그인</h2>
+            <input
+              type="text"
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit">로그인</button>
+
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <div className="additional-links">
+              <a href="/signup" className="top-link">회원가입</a>
+              <a href="/forgotid">아이디 찾기</a>
+              <a href="/forgotpw">비밀번호 찾기</a>
+>>>>>>> a17b15e (commit)
             </div>
           </div>
         </form>

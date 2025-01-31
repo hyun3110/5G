@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios"; // axios 추가
 import "../css/MyWardrobe.css";
+import axios from "axios";
 
-const MyWardrobe = () => {
+const MyWardrobe = ({user}) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleCounts, setVisibleCounts] = useState({
@@ -23,6 +24,32 @@ const MyWardrobe = () => {
   });
 
   const currentPage = "내 옷장"; // 현재 페이지 이름
+
+  // 옷장 정보 가져오기
+  useEffect(() => {
+    if (!user) return; // 유저 정보가 없으면 API 호출 안함
+
+    // 서버에서 옷장 데이터 가져오기
+    axios.get(`/api/clothings/${user.id}`, { withCredentials: true })
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setItems(response.data);
+        }else {
+          setItems([response.data]);
+        }
+        
+      })
+      .catch((error) => {
+        if (error.response) {
+          // 서버에서 반환한 응답 메시지를 출력
+          console.error("서버 응답 오류:", error.response.data);
+          console.error("응답 상태 코드:", error.response.status);
+          console.log(user.id);
+        } else {
+          console.error("옷장 정보를 가져오는 데 실패했습니다.", error);
+        }
+      });
+  }, [user]);
 
   useEffect(() => {
     const fetchItems = async () => {
