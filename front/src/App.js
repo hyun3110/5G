@@ -37,11 +37,11 @@ const App = () => {
         {/* Routes는 페이지마다 다른 콘텐츠를 렌더링 */}
         <Routes>
           <Route path="/" element={<Main user={user}/>} />
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Forgotid" element={<Forgotid />} />
-          <Route path="/Forgotpw" element={<Forgotpw />} />
-          <Route path="/MyWardrobe" element={<MyWardrobe />} /> {/* MyWardrobe 경로 추가 */}
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login setUser={setUser}/>} />
+          <Route path="/forgotid" element={<Forgotid />} />
+          <Route path="/forgotpw" element={<Forgotpw />} />
+          <Route path="/mywardrobe" element={<MyWardrobe user={user}/>} /> {/* MyWardrobe 경로 추가 */}
         </Routes>
       </div>
     </Router>
