@@ -6,68 +6,84 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh; /* 화면 전체를 채우기 */
+  width: 100%;
+  padding: 20px; /* 모바일 환경에서도 여유 공간 확보 */
+  box-sizing: border-box;
 }
 
 /* 컨테이너 스타일 */
 .forgot-id-box {
   background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 50px 40px; /* 위아래 50px, 좌우 40px */
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* 더 부드러운 그림자 */
   text-align: center;
-  max-width: 400px;
-  width: 90%;
+  max-width: 420px; /* 고정된 최대 너비 */
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.forgot-id-box:hover {
+  transform: translateY(-5px); /* 가벼운 위로 이동 효과 */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* 더 깊은 그림자 */
 }
 
 /* 제목 및 설명 */
 .forgot-id-box h1 {
-  color: #9f5fff;
+  color: #9f5fff; /* 더 부드러운 보라색 */
+  font-size: 1.8em; /* 약간 더 큰 글씨 */
   margin-bottom: 20px;
 }
 
 .forgot-id-box p {
-  color: #333;
+  color: #555; /* 부드러운 회색 톤 */
   margin-bottom: 30px;
   font-size: 1em;
+  line-height: 1.5; /* 가독성을 위한 줄 간격 */
 }
 
 /* 입력 필드 */
 .forgot-id-box input {
   width: 100%;
-  padding: 10px;
+  padding: 12px; /* 약간 더 여유로운 패딩 */
   margin-bottom: 20px;
   border: none;
   border-bottom: 2px solid #9f5fff;
   outline: none;
   font-size: 1em;
-  transition: border-color 0.3s ease;
+  border-radius: 4px 4px 0 0; /* 상단 모서리만 둥글게 */
+  transition: all 0.3s ease;
 }
 
 .forgot-id-box input:focus {
   border-bottom: 2px solid #635EFF;
+  background-color: #f9f9ff; /* 입력 중 가벼운 배경색 변경 */
 }
 
 /* 버튼 스타일 */
 .forgot-id-box button {
-  width: 100%;
-  padding: 10px;
+  width: 100%; /* 버튼의 너비를 적절히 조정 */
+  padding: 12px;
+  margin: 20px auto 0 auto; /* 상단 여백 20px, 좌우 중앙 정렬 */
   background: linear-gradient(to right, #9f5fff, #5f75ff);
   border: none;
   color: white;
-  font-size: 1em;
-  border-radius: 5px;
+  font-size: 1.1em;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  display: block; /* 중앙 정렬을 위한 block 설정 */
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .forgot-id-box button:hover {
   background-color: #8565FF;
+  transform: scale(1.03); /* 약간 확대 효과 */
 }
 
 .forgot-id-box button:focus {
   outline: none;
-  box-shadow: none;
+  box-shadow: 0 0 8px rgba(99, 94, 255, 0.5); /* 포커스 시 강조 */
 }
 
 /* 링크 스타일 */
@@ -82,13 +98,18 @@
 }
 
 .forgot-id-box a:hover {
+  color: #7e57c2;
   text-decoration: underline;
 }
 
 /* 메시지 스타일 */
 .forgot-id-box .message {
-  margin-top: 20px;
   font-size: 0.9em;
+  text-align: left; /* 메시지를 입력 필드 아래 정렬 */
+  color: red; /* 에러 메시지 기본 색상 */
+  margin-top: -10px; /* 입력 필드와 메시지 간격 */
+  position: static; /* 기본 위치로 설정 */
+  font-size: 13px;
 }
 
 .message.success {
@@ -98,4 +119,3 @@
 .message.error {
   color: red;
 }
-

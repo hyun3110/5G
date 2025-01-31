@@ -88,17 +88,22 @@ const Header = () => {
       <div className="header-container">
         {/* 로고 */}
         <div className="header-logo">
-          <img src="/img/logo.png" alt="DLC Logo" />
+          <a href="#">
+            <img src="/img/logo.png" alt="DLC Logo" />
+          </a>
         </div>
 
         {/* 내비게이션 */}
-        <nav className="header-nav">
-          <img src="/img/event.png" alt="Event" />
-          <a href="#">Events</a>
-          <img src="/img/calendar.png" alt="Calendar" />
-          <a href="#">Calendars</a>
-          <img src="/img/location.png" alt="Location" />
-          <span>{location}</span>
+        <nav className="header-nav">          
+          <a href="#">
+            <img src="/img/calendar.png" alt="Calendar" />
+            Calendars
+          </a>
+          
+          <span>
+            <img src="/img/location.png" alt="Location" />
+            {location}
+          </span>
           <div className="weather-info">
           <div className="weather-detail">
             <span className="label">날씨:</span>

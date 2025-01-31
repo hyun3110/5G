@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import '../css/styles.css';
-
+import "../css/styles.css";
 
 const Slider = () => {
   const largeImages = [
@@ -12,13 +11,34 @@ const Slider = () => {
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleRange, setVisibleRange] = useState([0, 3]); // 화면에 보여질 이미지 범위
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % largeImages.length);
+      goToNextSlide();
     }, 3000);
+
     return () => clearInterval(interval);
-  }, [largeImages.length]);
+  }, [currentIndex]);
+
+  const goToNextSlide = () => {
+    const nextIndex = (currentIndex + 1) % largeImages.length;
+    setCurrentIndex(nextIndex);
+    adjustVisibleRange(nextIndex);
+  };
+
+  const goToPrevSlide = () => {
+    const prevIndex =
+      (currentIndex - 1 + largeImages.length) % largeImages.length;
+    setCurrentIndex(prevIndex);
+    adjustVisibleRange(prevIndex);
+  };
+
+  const adjustVisibleRange = (index) => {
+    const itemsPerPage = 3; // 한번에 보여질 아이템 개수
+    const start = Math.floor(index / itemsPerPage) * itemsPerPage;
+    setVisibleRange([start, start + itemsPerPage]);
+  };
 
   return (
     <div className="slider-container">
@@ -41,7 +61,13 @@ const Slider = () => {
 
       {/* Small Slider */}
       <div className="small-slider-frame">
-        <div className="small-slider">
+        <div
+          className="small-slider"
+          style={{
+            transform: `translateX(-${visibleRange[0] * 90}px)`,
+            transition: "transform 0.5s ease-in-out",
+          }}
+        >
           {largeImages.map((src, index) => (
             <div
               className={`small-slider-item ${

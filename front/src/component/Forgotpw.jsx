@@ -34,6 +34,12 @@ const ForgotPassword = () => {
     setEmail(''); // 입력 필드 초기화
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleResetLink();
+    }
+  };
+
   return (
     <div className="forgot-password-container">
       <div className="forgot-password-box">
@@ -45,14 +51,16 @@ const ForgotPassword = () => {
           placeholder="이메일 입력"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={handleKeyDown} // Enter 키 이벤트 추가
         />
-        <button onClick={handleResetLink}>재설정 링크 보내기</button>
+        {/* 메시지를 버튼 위로 이동 */}
         {message.text && (
           <div className={`message ${message.type}`}>
             {message.text}
           </div>
         )}
-        <a onClick={() => navigate('/')}>로그인</a>
+        <button onClick={handleResetLink}>재설정 링크 보내기</button>
+        <a onClick={() => navigate('/Login')}>로그인</a>
       </div>
     </div>
   );

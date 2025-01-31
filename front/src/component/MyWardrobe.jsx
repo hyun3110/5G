@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios"; // axios 추가
 import "../css/MyWardrobe.css";
 
 const MyWardrobe = () => {
@@ -24,16 +25,18 @@ const MyWardrobe = () => {
   const currentPage = "내 옷장"; // 현재 페이지 이름
 
   useEffect(() => {
-    const fetchData = () => {
-      const data = Array.from({ length: 100 }, (_, i) => ({
-        id: i + 1,
-        category: i % 4 === 0 ? "상의" : i % 4 === 1 ? "하의" : i % 4 === 2 ? "외투" : "신발",
-        image: `https://via.placeholder.com/200x200?text=Item+${i + 1}`,
-      }));
-      setItems(data);
-      setLoading(false);
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get("백엔드_데이터_불러오는_경로"); // 백엔드 API 경로 입력
+        setItems(response.data); // 백엔드에서 받아온 데이터를 상태로 저장
+        setLoading(false);
+      } catch (error) {
+        console.error("데이터를 불러오는 중 오류 발생:", error);
+        setLoading(false);
+      }
     };
-    fetchData();
+
+    fetchItems();
   }, []);
 
   const loadMoreItems = (category) => {
@@ -114,7 +117,7 @@ const MyWardrobe = () => {
         <div className="section-divider"></div>
 
         {/* 전체, 외투, 상의, 하의, 신발 섹션 */}
-        {["외투", "상의", "하의", "신발"].map((category) => (
+        {["전체", "외투", "상의", "하의", "신발"].map((category) => (
           <section key={category} ref={(el) => (sectionsRef.current[category] = el)}>
             <h2 className="category-title">{category}</h2>
             {renderItems(category)}

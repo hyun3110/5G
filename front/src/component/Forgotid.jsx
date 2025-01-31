@@ -34,6 +34,12 @@ const ForgotId = () => {
     setEmail(''); // 입력 필드 초기화
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleRetrieveId();
+    }
+  };
+
   return (
     <div className="forgot-id-container">
       <div className="forgot-id-box">
@@ -44,14 +50,15 @@ const ForgotId = () => {
           placeholder="이메일 입력"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={handleKeyDown} // Enter 키 이벤트 핸들러 추가
         />
-        <button onClick={handleRetrieveId}>ID 전송</button>
         {message.text && (
           <div className={`message ${message.type}`}>
             {message.text}
           </div>
         )}
-        <a onClick={() => navigate('/')}>로그인</a>
+        <button onClick={handleRetrieveId}>ID 전송</button>
+        <a onClick={() => navigate('/Login')}>로그인</a>
       </div>
     </div>
   );

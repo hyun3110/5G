@@ -26,23 +26,31 @@ body {
 }
 
 .app-container {
-  padding-top: 60px; /* Header의 높이만큼 여백 추가 */
+  display: flex; /* flex 레이아웃 */
+  flex-direction: row; /* 좌우 배치 */
+  height: 100%; /* 화면 전체 높이 */
+  overflow: hidden; /* 스크롤바 표시 */
 }
 
+
+
+/* 헤더 스타일 */
 header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
+  margin: 0;
+  padding: 0;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .header-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-between; /* 좌/우 요소 간 간격 */
+  align-items: center; /* 수직 중앙 정렬 */
   padding: 10px 30px;
 }
 
@@ -50,33 +58,42 @@ header {
   height: 40px;
 }
 
-.header-nav img {
-  width: 20px;
-  height: 20px;
-}
-
 .header-nav {
   display: flex;
-  align-items: center;
-  padding-right: 40%;
-  gap: 20px; /* 요소 간격 추가 */
+  align-items: center; /* 수직 정렬 */
+  gap: 15px; /* 요소 간 간격 */
   font-size: 14px;
   color: #6b21a8; /* 보라색 텍스트 */
+  margin-right: 40%;
 }
 
 .header-nav a {
   text-decoration: none;
   color: #6b21a8;
   font-weight: bold;
+  display: flex;
+  align-items: center; /* 텍스트와 아이콘 중앙 정렬 */
+  gap: 5px; /* 아이콘과 텍스트 간 간격 */
 }
 
+.header-nav img {
+  width: 20px; /* 원하는 너비 */
+  height: 20px; /* 원하는 높이 */
+  object-fit: contain; /* 비율 유지하면서 크기 조정 */
+}
+
+
 .header-nav span {
+  display: flex;
+  align-items: center; /* 텍스트와 아이콘 중앙 정렬 */
   font-size: 12px;
-  gap: 20px;
+  gap: 5px; /* 아이콘과 텍스트 간 간격 */
 }
 
 .header-icons {
   display: flex;
+  align-items: center; /* 아이콘 수직 정렬 */
+  justify-content: center; /* 중앙 정렬 */
   gap: 15px;
 }
 
@@ -87,9 +104,34 @@ header {
 }
 
 
+
 .app-container {
-  padding-top: 80px; /* Header 높이만큼 여백 추가 */
+  padding-top: 2%; /* Header 높이만큼 여백 추가 */
 }
+
+/* Daily Look 텍스트 스타일 */
+.slider-container {
+  display: flex; /* 플렉스 박스 사용 */
+  flex-direction: column; /* 수직 방향 정렬 */
+  justify-content: center; /* 슬라이더를 세로로 중앙 정렬 */
+  align-items: center; /* 슬라이더를 가로로 중앙 정렬 */
+  width: 100%; /* 슬라이더 컨테이너 너비 */
+  height: 100%; /* 슬라이더 컨테이너 높이 */
+  position: relative; /* 내부 요소의 위치 조정을 위한 설정 */
+}
+
+.daily-look-title {
+  position: absolute; /* 슬라이더 상단 중앙에 배치 */
+  top: 5px; /* 상단에서의 간격을 줄임 */
+  left: 50%; /* 가로 중앙 정렬 */
+  transform: translateX(-50%); /* 중앙 정렬 보정 */
+  font-size: 30px; /* 글씨 크기 */
+  font-weight: bold;
+  z-index: 10; /* 슬라이더 위로 표시 */
+  margin-bottom: 20px; /* 아래 이미지와의 간격 유지 */
+}
+
+
 
 
 .nav {
@@ -109,6 +151,7 @@ header {
   color: #6b21a8; /* 보라색 */
   align-items: center; /* 수직 가운데 정렬 */
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  margin-left: 30px;
 }
 
 .weather-detail {
@@ -216,6 +259,7 @@ header {
 .slider-frame {
   width: 100%; /* 프레임 전체 너비 */
   max-width: 900px;
+  height: 100%;
   overflow: hidden;
   margin: 0 auto;
   display: flex;
@@ -223,20 +267,24 @@ header {
   align-items: center;
 }
 
+/* 슬라이더 */
 .slider {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.5s ease-in-out;
+  width: 100%; /* 슬라이더 너비를 부모에 맞춤 */
+  height: 100%; /* 슬라이더 높이를 부모에 맞춤 */
+  display: flex; /* 이미지들을 정렬 */
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center; /* 수직 정렬 */
+  transition: transform 0.5s ease-in-out; /* 부드러운 이동 효과 */
 }
 
+
+/* 슬라이더 아이템 */
 .slider-item {
-  flex: 0 0 80%; /* 기본 크기 */
-  margin: 0 10px; /* 간격 */
-  text-align: center;
-  transform: scale(0.8); /* 기본 크기 축소 */
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-  opacity: 0.6; /* 선택되지 않은 슬라이드 투명도 */
+  width: 100%; /* 슬라이더 아이템이 부모의 너비를 가득 채우도록 설정 */
+  height: 100%; /* 슬라이더 아이템이 부모의 높이를 가득 채우도록 설정 */
+  display: flex; /* 이미지 중앙 정렬 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
 }
 
 .slider-item.active {
@@ -265,7 +313,6 @@ figcaption {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff; /* 배경색 */
   border-radius: 10px;
   position: relative;
 }
@@ -291,14 +338,14 @@ figcaption {
   display: block;
 }
 
-/* 작은 슬라이드 공간 */
 .small-slider-frame {
-  width: 80%; /* 작은 슬라이드 프레임 너비 */
-  height: 100px; /* 작은 슬라이드 프레임 높이 */
-  overflow: hidden; /* 넘치는 부분 숨김 */
+  width: 300px; /* 작은 슬라이더 프레임 너비 */
+  height: 100px; /* 작은 슬라이더 프레임 높이 */
+  overflow: hidden; /* 양옆 잘리기 */
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 
 .small-slider {
@@ -307,15 +354,15 @@ figcaption {
 }
 
 .small-slider-item {
-  flex: 0 0 80px; /* 각 작은 슬라이드 너비 */
+  flex: 0 0 80px; /* 각 작은 슬라이더 아이템 너비 */
   margin: 0 10px;
   cursor: pointer;
 }
 
 .small-pic {
-  width: 100%; /* 작은 슬라이드 이미지 너비 */
-  height: 80px; /* 작은 슬라이드 이미지 높이 */
-  object-fit: contain; /* 비율 유지 및 짤리지 않도록 설정 */
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
   border-radius: 5px;
   opacity: 0.6;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -323,9 +370,12 @@ figcaption {
 
 .small-slider-item.active .small-pic {
   opacity: 1;
-  transform: scale(1.1); /* 선택된 슬라이드 강조 */
+  transform: scale(1.1);
   border: 2px solid #ff9800;
 }
+
+
+
 /* 전역 스타일 */
 .App {
   font-family: Arial, sans-serif;
@@ -343,6 +393,21 @@ figcaption {
 .fc-daygrid-day-number {
   font-weight: bold;
 }
+
+.fc-view-harness {
+
+  max-height: 100%; /* 최대 높이를 부모 요소에 맞춤 */
+  overflow: auto; /* 넘치는 경우 스크롤 추가 */
+}
+
+.fc-scrollgrid {
+  width: 100%; /* 부모 요소의 너비를 따라가도록 설정 */
+  max-width: 100%; /* 최대 너비를 부모 요소에 제한 */
+  overflow-x: auto; /* 가로 스크롤 추가 */
+}
+
+
+
 
 /* 모달 배경 색상 */
 .ReactModal__Overlay {
@@ -370,7 +435,7 @@ input, textarea {
   width: 100%;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  
   box-sizing: border-box;  /* padding을 포함한 전체 너비 계산 */
 }
 
@@ -394,19 +459,37 @@ button:hover {
   height: 100vh; /* 화면 전체 높이 */
 }
 
+
 /* 왼쪽 영역 (슬라이더) */
 .left-side {
-  flex: 1; /* 1:1 비율로 할당 */
-  background-color: #f4f4f4; /* 배경 색상 예시 */
-  padding: 10px; /* 여백 */
+  flex: 2; /* left-side의 비율 유지 */
+  display: flex; /* 플렉스 박스 사용 */
+  flex-direction: column; /* 수직 방향 정렬 */
+  justify-content: center; /* 세로 중앙 정렬 */
+  align-items: center; /* 가로 중앙 정렬 */
+  background-color: #f9f9f9; /* 배경색 유지 */
+  border-right: 1px solid #ddd; /* 경계선 유지 */
+  height: calc(100vh - 80px); /* 화면 높이에서 헤더 제외 */
+  box-sizing: border-box; /* 패딩 포함 크기 계산 */
 }
+
+/* 이미지 스타일 */
+.left-side img {
+  width: 100%; /* left-side의 너비를 가득 채움 */
+  height: 100%; /* left-side의 높이를 가득 채움 */
+  object-fit: cover; /* 이미지 비율 유지하면서 영역 채움 */
+  border-radius: 8px; /* 모서리 둥글게 설정 (선택 사항) */
+}
+
 
 /* 오른쪽 영역 (헤더, 이벤트 섹션, 캘린더) */
 .right-side {
-  flex: 3; /* 왼쪽에 비해 더 넓은 영역 */
+  flex: 5; /* 왼쪽에 비해 더 넓은 영역 */
   background-color: #fff; /* 배경 색상 */
   padding: 20px; /* 여백 */
   overflow-y: auto; /* 세로 스크롤 추가 */
+  height: calc(100vh - 80px); /* 화면 높이에서 헤더 높이를 제외 */
+  box-sizing: border-box; /* 패딩 포함 크기 계산 */
 }
 
 /* 각 컴포넌트 스타일 (헤더, 캘린더 등) */
