@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios"; // axios 추가
 import "../css/MyWardrobe.css";
 import axios from "axios";
 
@@ -26,6 +25,7 @@ const MyWardrobe = ({user}) => {
   const currentPage = "내 옷장"; // 현재 페이지 이름
 
   // 옷장 정보 가져오기
+  // 옷장 정보 가져오기
   useEffect(() => {
     if (!user) return; // 유저 정보가 없으면 API 호출 안함
 
@@ -37,7 +37,7 @@ const MyWardrobe = ({user}) => {
         }else {
           setItems([response.data]);
         }
-        
+
       })
       .catch((error) => {
         if (error.response) {
@@ -52,18 +52,16 @@ const MyWardrobe = ({user}) => {
   }, [user]);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const response = await axios.get("백엔드_데이터_불러오는_경로"); // 백엔드 API 경로 입력
-        setItems(response.data); // 백엔드에서 받아온 데이터를 상태로 저장
-        setLoading(false);
-      } catch (error) {
-        console.error("데이터를 불러오는 중 오류 발생:", error);
-        setLoading(false);
-      }
+    const fetchData = () => {
+      const data = Array.from({ length: 100 }, (_, i) => ({
+        id: i + 1,
+        category: i % 4 === 0 ? "상의" : i % 4 === 1 ? "하의" : i % 4 === 2 ? "외투" : "신발",
+        image: `https://via.placeholder.com/200x200?text=Item+${i + 1}`,
+      }));
+      setItems(data);
+      setLoading(false);
     };
-
-    fetchItems();
+    fetchData();
   }, []);
 
   const loadMoreItems = (category) => {
