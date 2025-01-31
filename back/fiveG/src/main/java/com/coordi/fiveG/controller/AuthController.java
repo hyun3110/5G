@@ -53,4 +53,14 @@ public class AuthController {
         }
     }
 
+    // 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        // 세션에서 유저 정보 삭제
+        session.invalidate();  // 세션을 종료하고 모든 속성 삭제
+
+        // 성공적인 로그아웃 응답
+        return ResponseEntity.ok("로그아웃 성공");
+    }
+
 }

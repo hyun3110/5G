@@ -33,7 +33,7 @@ const App = () => {
     <Router>
       <div className="app-container">
         {/* 모든 페이지에서 공통으로 사용하는 Header */}
-        <Header />
+        <Header user={user} />
         {/* Routes는 페이지마다 다른 콘텐츠를 렌더링 */}
         <Routes>
           <Route path="/" element={<Main user={user}/>} />

@@ -67,7 +67,6 @@ const Main = ({ user }) => {
       </div>  
     </div>
     <div className="right-side">
-      <Header />
       <EventSection user={user} events={events} setEvents={setEvents}/>
       <Calandar user={user} events={events} setEvents={setEvents}/>
     </div>

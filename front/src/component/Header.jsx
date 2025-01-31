@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "../css/styles.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ user }) => {
   const [location, setLocation] = useState("서울"); // 기본 위치: 서울
+  const navigate = useNavigate();
   const [weatherData, setWeatherData] = useState({
     description: "", // 날씨 설명
     temp: "", // 실제 온도
     feelsLike: "", // 체감 온도
   });
+
 
   const translateDescription = (description) => {
     const translations = {
@@ -82,6 +85,20 @@ const Header = () => {
       console.error("위치 정보를 가져오는 데 실패했습니다.", error);
     }
   };
+  const logout = async () => {
+    try {
+      // 로그아웃 API 호출 (세션 무효화)
+      const response = await axios.post("http://localhost:8081/api/auth/logout", {}, { withCredentials: true });
+
+      if (response.status === 200) {
+        // 로그아웃 성공 후 클라이언트에서 세션 데이터 제거
+        sessionStorage.removeItem("user"); // sessionStorage에서 유저 정보 삭제
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("로그아웃 실패", error);
+    }
+  }
 
   return (
     <header>
@@ -94,30 +111,31 @@ const Header = () => {
         </div>
 
         {/* 내비게이션 */}
-        <nav className="header-nav">          
+        <nav className="header-nav">
           <a href="#">
             <img src="/img/calendar.png" alt="Calendar" />
             Calendars
           </a>
-          
+
           <span>
             <img src="/img/location.png" alt="Location" />
             {location}
           </span>
           <div className="weather-info">
-          <div className="weather-detail">
-            <span className="label">날씨:</span>
-            <span className="value">{weatherData.description || "정보 없음"}</span>
+            <div className="weather-detail">
+              <span className="label">날씨:</span>
+              <span className="value">{weatherData.description || "정보 없음"}</span>
+            </div>
+            <div className="weather-detail">
+              <span className="label">온도:</span>
+              <span className="value">{weatherData.temp || "N/A"}</span>
+            </div>
+            <div className="weather-detail">
+              <span className="label">체감 온도:</span>
+              <span className="value">{weatherData.feelsLike || "N/A"}</span>
+            </div>
           </div>
-          <div className="weather-detail">
-            <span className="label">온도:</span>
-            <span className="value">{weatherData.temp || "N/A"}</span>
-          </div>
-          <div className="weather-detail">
-            <span className="label">체감 온도:</span>
-            <span className="value">{weatherData.feelsLike || "N/A"}</span>
-          </div>
-        </div>
+
 
         </nav>
 
@@ -125,6 +143,9 @@ const Header = () => {
         <div className="header-icons">
           <img src="/img/bell.png" alt="Notification" />
           <img src="/img/profile-icon.png" alt="Profile" />
+        </div>
+        <div>
+          <button onClick={logout}>로그아웃</button>
         </div>
       </div>
     </header>
