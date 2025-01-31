@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Slider from "./Slider";
 import EventSection from "./EventSection";
-import Calander from "./Calander";
-import axios from 'axios';
+import Calandar from "./Calander";
 import '../css/styles.css';
+import axios from 'axios';
 
 const Main = ({ user }) => {
   const [events, setEvents] = useState([]); // 일정 정보

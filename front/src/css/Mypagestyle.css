@@ -1,0 +1,167 @@
+/* 전체 컨테이너 스타일 */
+.mypage-container {
+    font-family: Arial, sans-serif;
+    background-color: white; /* 배경을 흰색으로 변경 */
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 메인 컨텐츠 스타일 */
+  .mypage-main {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  /* 프로필 섹션 */
+  .profile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-basis: 30%;
+  }
+  
+  .profile-card {
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 50px;
+    margin-top: 70px;
+    overflow: hidden; /* 이미지 넘침 방지 */
+  }
+  
+  .profile-image {
+    width: 150px; /* 이미지 크기 */
+    height: 150px; /* 이미지 크기 */
+    border-radius: 50%; /* 둥근 모서리 */
+    object-fit: cover; /* 비율 유지 */
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+
+  .profile-card h2 {
+    text-align: left;
+    width: 100%; /* 텍스트 정렬을 위한 너비 설정 */
+    margin-left: 15px; /* 추가로 여백 조정 */
+  }
+  
+  
+/* 공통 버튼 스타일 */
+.btn-container {
+    display: flex; /* 가로 정렬 */
+    justify-content: center; /* 가운데 정렬 */
+    gap: 20px; /* 버튼 간 간격 */
+    margin-top: 10px; /* 컨테이너 상단 여백 */
+  }
+  
+  .profile-card .btn {
+    width: 230px; /* 버튼 너비 */
+    height: 40px; /* 버튼 높이 */
+    line-height: 40px; /* 세로 중앙 정렬 */
+    text-align: center; /* 가로 중앙 정렬 */
+    border-radius: 8px; /* 둥근 모서리 */
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* 회원정보 수정 버튼 */
+  .profile-card .btn:first-of-type {
+    background-color: #d8d8d8; /* 버튼 색상 */
+    color: black;
+  }
+  
+  /* 코디 추천 버튼 */
+  .profile-card .btn:last-of-type {
+    background-color: #48c78e; /* 버튼 색상 */
+    color: white;
+  }
+  
+  /* 버튼 호버 효과 */
+  .profile-card .btn:hover {
+    opacity: 0.9;
+  }
+  
+  
+  
+  .activity-card {
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+    padding: 20px;
+    text-align: left; /* 텍스트를 왼쪽으로 정렬 */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-left: 50px;
+  }
+  
+  .activity-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+    border-bottom: 2px solid #dddddd; /* 제목 아래 구분선 */
+    padding-bottom: 10px;
+  }
+  
+  .activity-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .activity-card li {
+    font-size: 1rem;
+    color: #333;
+    padding: 10px 0; /* 항목 상하 여백 */
+    cursor: pointer; /* 클릭 가능 */
+    border-bottom: 1px solid #dddddd; /* 각 항목 구분선 */
+    transition: color 0.3s ease;
+  }
+  
+  .activity-card li:hover {
+    color: #48c78e; /* 호버 시 색상 변경 */
+  }
+  
+  
+  /* 즐겨찾기 섹션 */
+  .favorites-section {
+    flex-basis: 65%;
+  }
+  
+  .favorites-section h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .favorites-list {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .favorite-item {
+    width: 150px;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .favorite-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
