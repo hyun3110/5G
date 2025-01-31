@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Mypagestyle.css';
-import MyPageHeader from './Mypageheader';
+import '../css/Mypagestyle.css';
 import RecommendedStyles from './Recommended';
 import Favorites from './Favorites';
 import KakaoMap from './Kakaomap'; // KakaoMap 컴포넌트 import
@@ -108,7 +107,6 @@ const MyPage = () => {
 
   return (
     <div className="mypage-container">
-      <MyPageHeader />
 
       <main className="mypage-main">
         <section className="profile-section">
