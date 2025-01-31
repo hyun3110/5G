@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Slider from "./Slider";
 import EventSection from "./EventSection";
-import Calandar from "./Calander";
+import Calander from "./Calander";
 import '../css/styles.css';
 import axios from 'axios';
 
@@ -68,7 +68,7 @@ const Main = ({ user }) => {
     </div>
     <div className="right-side">
       <EventSection user={user} events={events} setEvents={setEvents}/>
-      <Calandar user={user} events={events} setEvents={setEvents}/>
+      <Calander user={user} events={events} setEvents={setEvents}/>
     </div>
   </div>
   );
