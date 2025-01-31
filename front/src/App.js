@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./css/styles.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./component/Header"; // Header 추가
 import Login from "./component/Login";
@@ -7,6 +6,8 @@ import Signup from "./component/Signup";
 import Main from "./component/Main";
 import Forgotid from "./component/Forgotid";
 import Forgotpw from "./component/Forgotpw";
+import Mypage from "./component/Mypage";
+import Look from "./component/Look";
 import MyWardrobe from "./component/MyWardrobe"; // MyWardrobe 추가
 import axios from 'axios';
 
@@ -41,6 +42,8 @@ const App = () => {
           <Route path="/login" element={<Login setUser={setUser}/>} />
           <Route path="/forgotid" element={<Forgotid />} />
           <Route path="/forgotpw" element={<Forgotpw />} />
+          <Route path="/Mypage" element={<Mypage />} />
+          <Route path="/Look" element={<Look />} />
           <Route path="/mywardrobe" element={<MyWardrobe user={user}/>} /> {/* MyWardrobe 경로 추가 */}
         </Routes>
       </div>

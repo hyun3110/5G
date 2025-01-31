@@ -1,0 +1,79 @@
+  .look-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .content-box {
+    background: black;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  
+  .grid-item {
+    padding: 5px;
+    border: 2px solid gray;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .grid-item.selected {
+    border-color: blue;
+  }
+  
+  .outfit-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+  }
+  
+  .confirm-button {
+    background: #0066ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .confirm-button:hover {
+    background: #408cff;
+  }
+  
+  .back-button {
+    background: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-left: 10px;
+  }
+  
+  .back-button:hover {
+    background: darkred;
+  }
+  
