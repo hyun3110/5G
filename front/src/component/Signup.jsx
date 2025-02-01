@@ -19,6 +19,10 @@ const Signup = () => {
 
   const navigate = useNavigate(); // useNavigate 훅 사용
 
+  const handleStyleSelection = () => {
+    navigate('/Look');
+  };
+
   // 아이디 중복 체크
   const handleUserIdCheck = async () => {
     if (userId === '') {
@@ -209,7 +213,11 @@ const Signup = () => {
             <input type="text" id="verification-code" />
           </div>
 
-          <div className="style-choice">선호하는 스타일 선택</div>
+          <div className="form-group">
+            <button type="button" className="style-button" onClick={handleStyleSelection}>
+              선호하는 스타일 선택
+            </button>
+          </div>
 
           <div className="btn-group">
             <button type="submit" className="btn-submit" disabled={!isUsernameValid}>가입하기</button>

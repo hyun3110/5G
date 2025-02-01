@@ -26,6 +26,7 @@ const FashionRecommendation = () => {
   const handleConfirm = () => {
     console.log("선택된 코디:", selectedOutfits);
     alert("선택한 스타일이 저장되었습니다!");
+    navigate("/signup", { state: { preferredStyle: selectedOutfits } });
   };
 
   return (
