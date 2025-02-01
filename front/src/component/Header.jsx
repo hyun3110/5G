@@ -105,14 +105,14 @@ const Header = ({ user }) => {
       <div className="header-container">
         {/* 로고 */}
         <div className="header-logo">
-          <a href="#">
+          <a href="/">
             <img src="/img/logo.png" alt="DLC Logo" />
           </a>
         </div>
 
         {/* 내비게이션 */}
         <nav className="header-nav">
-          <a href="#">
+          <a href="/">
             <img src="/img/calendar.png" alt="Calendar" />
             Calendars
           </a>
@@ -140,8 +140,7 @@ const Header = ({ user }) => {
         </nav>
 
         {/* 알림 및 프로필 */}
-        <div className="header-icons">
-          <img src="/img/bell.png" alt="Notification" />
+        <div className="header-icons" onClick={() => navigate("/Mypage")} style={{ cursor: "pointer" }}>
           <img src="/img/profile-icon.png" alt="Profile" />
         </div>
         <div>

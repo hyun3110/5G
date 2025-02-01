@@ -86,7 +86,7 @@ header {
 .header-nav span {
   display: flex;
   align-items: center; /* 텍스트와 아이콘 중앙 정렬 */
-  font-size: 12px;
+  font-size: 14px;
   gap: 5px; /* 아이콘과 텍스트 간 간격 */
 }
 

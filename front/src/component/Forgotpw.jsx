@@ -59,8 +59,8 @@ const ForgotPassword = () => {
             {message.text}
           </div>
         )}
-        <button onClick={handleResetLink}>재설정 링크 보내기</button>
-        <a onClick={() => navigate('/Login')}>로그인</a>
+        <button className="re-link" onClick={handleResetLink}>재설정 링크 보내기</button>
+        <a className="other-button" onClick={() => navigate('/Login')}>로그인</a>
       </div>
     </div>
   );
