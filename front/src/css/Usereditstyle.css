@@ -1,0 +1,77 @@
+.member-edit-container {
+    width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #ffffff, #e0d4fc);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .member-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-weight: bold;
+    margin: 10px 0 5px;
+  }
+  
+  input,
+  select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  input:disabled {
+    background-color: #eee;
+  }
+  
+  .email-input {
+    display: flex;
+    align-items: center;
+  }
+  
+  .email-input span {
+    margin: 0 5px;
+  }
+  
+  .email-input select,
+  .email-input input {
+    flex: 1;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .update-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1;
+    margin-right: 5px;
+  }
+  
+  .cancel-btn {
+    background-color: gray;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1;
+  }
+  

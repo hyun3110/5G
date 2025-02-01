@@ -8,6 +8,8 @@ import Forgotid from "./component/Forgotid";
 import Forgotpw from "./component/Forgotpw";
 import Mypage from "./component/Mypage";
 import Look from "./component/Look";
+import Pwconfirm from "./component/Pwconfirm";
+import Useredit from "./component/Useredit";
 import MyWardrobe from "./component/MyWardrobe"; // MyWardrobe 추가
 import axios from 'axios';
 
@@ -44,6 +46,8 @@ const App = () => {
           <Route path="/forgotpw" element={<Forgotpw />} />
           <Route path="/Mypage" element={<Mypage />} />
           <Route path="/Look" element={<Look />} />
+          <Route path="/Pwconfirm" element={<Pwconfirm />} />
+          <Route path="/Useredit" element={<Useredit />} />
           <Route path="/mywardrobe" element={<MyWardrobe user={user}/>} /> {/* MyWardrobe 경로 추가 */}
         </Routes>
       </div>

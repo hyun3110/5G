@@ -46,6 +46,11 @@ const MyPage = () => {
     fetchUserData(); // 사용자 데이터 가져오기 호출
   }, []);
 
+  // 회원정보 수정 버튼 클릭 시 비밀번호 확인 페이지로 이동
+  const handleEditProfile = () => {
+    navigate("/Pwconfirm"); // 비밀번호 확인 페이지로 이동
+  };
+
   // 즐겨찾기 상태 업데이트 함수
   const handleFavoriteToggle = (style) => {
     setFavorites((prevFavorites) => {
@@ -118,7 +123,7 @@ const MyPage = () => {
             />
             <h2>{username}</h2>
             <div className="btn-container">
-              <button className="btn">회원정보 수정</button> {/* 회원정보 수정 버튼 */}
+              <button className="btn" onClick={handleEditProfile}>회원정보 수정</button> {/* 회원정보 수정 버튼 */}
               <button className="btn" onClick={handleModalToggle}>코디 추천</button> {/* 모달 열기 버튼 */}
             </div>
           </div>
