@@ -3,31 +3,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 Hook
 import "../css/Usereditstyle.css";
 
-const API_BASE_URL = "http://localhost:8081/api/users"; // 백엔드 API 주소
+const API_BASE_URL = "http://localhost:8081/api/auth"; // 백엔드 API 주소
 
-const Useredit = () => {
-  const username = "abc123"; // 로그인한 사용자의 아이디 (예제)
+const Useredit = ({user, setUser}) => {
   const navigate = useNavigate(); // 페이지 이동 함수
   
   // 사용자 정보 상태값 (초기값 null)
-  const [user, setUser] = useState(null);
   const [password, setPassword] = useState(""); // 비밀번호 입력 필드
-  const [phone, setPhone] = useState(""); // 전화번호 입력 필드
-  const [email, setEmail] = useState(""); // 이메일 입력 필드
-
-  // 마운트 시(컴포넌트 로드 시) 사용자 정보 불러오기
-  useEffect(() => {
-    axios
-      .get(`${API_BASE_URL}/${username}`) // 백엔드 API 호출
-      .then((response) => {
-        setUser(response.data); // 응답 데이터를 user 상태에 저장
-        setPhone(response.data.phone); // 전화번호 필드 초기값 설정
-        setEmail(response.data.email); // 이메일 필드 초기값 설정
-      })
-      .catch((error) => {
-        console.error("사용자 정보 불러오기 실패:", error);
-      });
-  }, [username]); // username이 변경될 때마다 실행
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
   // 회원 정보 수정 요청 함수
   const handleSubmit = async (e) => {
@@ -57,7 +41,7 @@ const Useredit = () => {
       {user ? ( // user 정보가 있으면 폼을 표시
         <form className="member-form" onSubmit={handleSubmit}>
           <label>아이디</label>
-          <input type="text" value={user.username} disabled /> {/* 아이디는 수정 불가 */}
+          <input type="text" value={user.userId} disabled /> {/* 아이디는 수정 불가 */}
 
           <label>신규 비밀번호</label>
           <input

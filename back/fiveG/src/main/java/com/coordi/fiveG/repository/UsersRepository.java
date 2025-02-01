@@ -12,4 +12,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     // 아이디 중복 확인
     boolean existsByUserId(String userId);
 
+    // 비밀번호 확인
+    boolean existsByUserIdAndPw(String userId, String pw);
+
 }

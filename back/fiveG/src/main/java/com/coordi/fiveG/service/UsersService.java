@@ -51,4 +51,10 @@ public class UsersService {
         return usersRepository.existsByUserId(userId);
     }
 
+    // 비밀번호 확인
+    public boolean verifyPassword(String userId, String pw){
+        System.out.println(userId + pw);
+        return usersRepository.existsByUserIdAndPw(userId, pw);
+    }
+
 }

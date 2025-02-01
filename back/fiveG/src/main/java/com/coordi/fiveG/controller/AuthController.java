@@ -63,4 +63,11 @@ public class AuthController {
         return ResponseEntity.ok("로그아웃 성공");
     }
 
+    // 비밀번호 확인
+    @PostMapping("/verifypassword")
+    public boolean verifyPassword(@RequestBody LoginRequest loginRequest){
+        System.out.println(loginRequest.getUserId()+ loginRequest.getPw());
+        return usersService.verifyPassword(loginRequest.getUserId(), loginRequest.getPw());
+    }
+
 }
