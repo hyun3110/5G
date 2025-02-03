@@ -11,12 +11,14 @@ import java.time.LocalDate;
 @ToString
 public class ScheduleDTO {
 
-    private Integer scheId;
+    private Integer scheIdx;
+    private Long userId;
     private String scheTitle;
-    private String scheType;
+    private String scheContent;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String scheContent;
+    private String scheType;
+    private String weather;
     private String color;
 
 }

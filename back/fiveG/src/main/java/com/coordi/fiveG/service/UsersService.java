@@ -1,6 +1,6 @@
 package com.coordi.fiveG.service;
 
-import com.coordi.fiveG.controller.SignupDTO;
+import com.coordi.fiveG.controller.UserDTO;
 import com.coordi.fiveG.model.Users;
 import com.coordi.fiveG.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class UsersService {
 
     @Transactional
     // 회원가입
-    public Users signup(SignupDTO sDto){
+    public Users signup(UserDTO sDto){
         Users user = new Users();
         user.setUserId(sDto.getUserId());
         user.setPw(sDto.getPw());
@@ -49,6 +49,26 @@ public class UsersService {
     // 아이디 중복 체크
     public boolean userIdCheck(String userId){
         return usersRepository.existsByUserId(userId);
+    }
+
+    // 비밀번호 확인
+    public boolean verifyPassword(UserDTO dto){
+        return usersRepository.existsByUserIdAndPw(dto.getUserId(), dto.getPw());
+    }
+
+    // 회원정보 수정
+    public Users updateUser(UserDTO userDTO){
+        Users user = new Users();
+        user.setId(userDTO.getId());
+        user.setUserId(userDTO.getUserId());
+        user.setPw(userDTO.getPw());
+        user.setName(userDTO.getName());
+        user.setPhone(userDTO.getPhone());
+        user.setEmail(userDTO.getEmail());
+        user.setJoinedAt(userDTO.getJoinedAt());
+        user.setPreferredStyle(userDTO.getPreferredStyle());
+
+        return usersRepository.save(user);
     }
 
 }

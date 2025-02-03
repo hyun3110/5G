@@ -40,15 +40,15 @@ const App = () => {
         <Header user={user} setUser={setUser}/>
         {/* Routes는 페이지마다 다른 콘텐츠를 렌더링 */}
         <Routes>
-          <Route path="/" element={<Main user={user}/>} />
+          <Route path="/" element={<Main user={user} setUser={setUser}/>} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login setUser={setUser}/>} />
           <Route path="/forgotid" element={<Forgotid />} />
           <Route path="/forgotpw" element={<Forgotpw />} />
           <Route path="/Mypage" element={<Mypage />} />
           <Route path="/Look" element={<Look />} />
-          <Route path="/Pwconfirm" element={<Pwconfirm />} />
-          <Route path="/Useredit" element={<Useredit />} />
+          <Route path="/Pwconfirm" element={<Pwconfirm user={user}/>} />
+          <Route path="/Useredit" element={<Useredit user={user} setUser={setUser}/>} />
           <Route path="/Weekcalander" element={<Weekcalander />} />
           <Route path="/mywardrobe" element={<MyWardrobe user={user}/>} /> {/* MyWardrobe 경로 추가 */}
         </Routes>

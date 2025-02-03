@@ -3,7 +3,7 @@ import "../css/styles.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Header = ({ user }) => {
+const Header = ({ user, setUser }) => {
   const [location, setLocation] = useState("서울"); // 기본 위치: 서울
   const navigate = useNavigate();
   const [weatherData, setWeatherData] = useState({
@@ -93,6 +93,7 @@ const Header = ({ user }) => {
       if (response.status === 200) {
         // 로그아웃 성공 후 클라이언트에서 세션 데이터 제거
         sessionStorage.removeItem("user"); // sessionStorage에서 유저 정보 삭제
+        localStorage.removeItem("events");
         navigate("/login");
       }
     } catch (error) {
