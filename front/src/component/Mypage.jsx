@@ -65,7 +65,7 @@ const MyPage = () => {
   // Activity 카드 항목 클릭 시 처리
   const handleItemClick = (item) => {
     if (item === '옷 장') {
-      navigate('/closet'); // "옷 장" 선택 시 해당 페이지로 이동
+      navigate('/mywardrobe'); // "옷 장" 선택 시 해당 페이지로 이동
     } else {
       setActiveContent(item); // 추천 받은 스타일 또는 즐겨찾기로 콘텐츠 변경
     }
