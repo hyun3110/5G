@@ -8,7 +8,7 @@ import "../css/styles.css";
 // 모달 스타일 설정
 Modal.setAppElement("#root");
 
-export default function Buttonclick({ user, events, setEvents}) {
+export default function Buttonclick({ user, events, setEvents }) {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false); // 일정 추가 모달 상태
   const [editModalIsOpen, setEditModalIsOpen] = useState(false); // 일정 수정 모달 상태
   const [eventDetails, setEventDetails] = useState({
@@ -21,7 +21,15 @@ export default function Buttonclick({ user, events, setEvents}) {
     color: "#ADD8E6", // 기본 색상 (연한 파란색)
   });
   const [error, setError] = useState(""); // 에러 메시지 상태
-  const colors = ["#FFB6C1", "#FFD700", "#90EE90", "#87CEFA", "#FFA07A", "#9370DB", "#FF6347"];
+  const colors = [
+    "#FFB6C1",
+    "#FFD700",
+    "#90EE90",
+    "#87CEFA",
+    "#FFA07A",
+    "#9370DB",
+    "#FF6347",
+  ];
 
   // 일정 유형 옵션
   const eventTypes = ["결혼식", "출퇴근", "데이트"];
@@ -30,7 +38,7 @@ export default function Buttonclick({ user, events, setEvents}) {
   useEffect(() => {
     const storedEvents = localStorage.getItem("events");
     if (storedEvents) {
-      setEvents(JSON.parse(storedEvents));  // 로컬 스토리지에서 일정을 불러와 상태에 설정
+      setEvents(JSON.parse(storedEvents)); // 로컬 스토리지에서 일정을 불러와 상태에 설정
     }
   }, []);
 
@@ -43,7 +51,12 @@ export default function Buttonclick({ user, events, setEvents}) {
 
   // 필수 입력값 체크 함수
   const validateForm = () => {
-    if (!eventDetails.title || !eventDetails.type || !eventDetails.startDate || !eventDetails.endDate) {
+    if (
+      !eventDetails.title ||
+      !eventDetails.type ||
+      !eventDetails.startDate ||
+      !eventDetails.endDate
+    ) {
       setError("모든 내용을 입력해주세요.");
       return false;
     }
@@ -94,7 +107,7 @@ export default function Buttonclick({ user, events, setEvents}) {
               originalEndDate: newEvent.endDate,
             },
           ];
-  
+
           // 상태가 업데이트된 후 로컬스토리지에 저장
           localStorage.setItem("events", JSON.stringify(updatedEvents));
           return updatedEvents;
@@ -131,10 +144,12 @@ export default function Buttonclick({ user, events, setEvents}) {
 
         // 종료일에 하루 더해주기
         let adjustedEndDate = updatedEventFromServer.endDate;
-        if (updatedEventFromServer.startDate !== updatedEventFromServer.endDate) {
+        if (
+          updatedEventFromServer.startDate !== updatedEventFromServer.endDate
+        ) {
           const endDate = new Date(updatedEventFromServer.endDate);
           endDate.setDate(endDate.getDate() + 1); // 종료일에 하루 더하기
-          adjustedEndDate = endDate.toISOString().split('T')[0]; // ISO 형식으로 다시 변환
+          adjustedEndDate = endDate.toISOString().split("T")[0]; // ISO 형식으로 다시 변환
         }
 
         // 상태 업데이트 (수정된 일정 반영)
@@ -142,15 +157,15 @@ export default function Buttonclick({ user, events, setEvents}) {
           prevEvents.map((event) =>
             event.id === updatedEventFromServer.scheIdx
               ? {
-                ...event,
-                title: updatedEventFromServer.scheTitle,
-                type: updatedEventFromServer.scheType,
-                start: updatedEventFromServer.startDate,
-                end: adjustedEndDate, // 수정된 종료일 반영
-                color: updatedEventFromServer.color || "#ADD8E6",
-                description: updatedEventFromServer.scheContent || "",
-                originalEndDate: updatedEventFromServer.endDate, // 원본 종료일도 업데이트
-              }
+                  ...event,
+                  title: updatedEventFromServer.scheTitle,
+                  type: updatedEventFromServer.scheType,
+                  start: updatedEventFromServer.startDate,
+                  end: adjustedEndDate, // 수정된 종료일 반영
+                  color: updatedEventFromServer.color || "#ADD8E6",
+                  description: updatedEventFromServer.scheContent || "",
+                  originalEndDate: updatedEventFromServer.endDate, // 원본 종료일도 업데이트
+                }
               : event
           )
         );
@@ -206,7 +221,9 @@ export default function Buttonclick({ user, events, setEvents}) {
   // 일정 수정 모달 열기
   const openEditModal = (info) => {
     const eventId = info.event.id;
-    const eventToEdit = events.find((event) => String(event.id) === String(eventId)); // ID를 String으로 변환하여 비교
+    const eventToEdit = events.find(
+      (event) => String(event.id) === String(eventId)
+    ); // ID를 String으로 변환하여 비교
 
     if (eventToEdit) {
       setEventDetails({
@@ -242,14 +259,69 @@ export default function Buttonclick({ user, events, setEvents}) {
 
   return (
     <div>
-      <button onClick={openAddModal}>일정 추가</button>
-
-      {/* 캘린더 */}
       <FullCalendar
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
         events={events}
         eventClick={openEditModal} // 일정 클릭 시 수정 모달 열기
+        locale="ko"
+        dayMaxEventRows={7} // 한 칸에 최대 7개의 이벤트 표시
+        dayMaxEvents={true} // true로 설정하면 "더보기" 링크 활성화
+        customButtons={{
+          addEventButton: {
+            text: "일정 추가",
+            click: () => openAddModal(), // 일정 추가 버튼 클릭 시 실행될 함수
+          },
+        }}
+        headerToolbar={{
+          left: "title", // 버튼 배치 순서 정의
+          center: "",
+          right: "addEventButton today prev,next", // 버튼 그룹을 오른쪽 끝에 배치
+        }}
+        dayCellContent={(arg) => {
+          const currentDate = arg.date.toISOString().split("T")[0]; // 현재 셀의 날짜
+        
+          // 해당 날짜에 포함되는 이벤트 필터링
+          const eventsForDate = events.filter((event) => {
+            const eventStartDate = new Date(event.start).toISOString().split("T")[0];
+            const eventEndDate = new Date(event.originalEndDate || event.end).toISOString().split("T")[0];
+        
+            // 종료일(end)은 포함하지 않도록 수정
+            return currentDate >= eventStartDate && currentDate <= eventEndDate;
+          });
+        
+          const eventCount = eventsForDate.length; // 해당 날짜의 이벤트 수 계산
+        
+          return (
+            <div style={{ position: "relative", padding: "5px" }}>
+              {/* 날짜 */}
+              <div style={{ fontSize: "14px", fontWeight: "bold" }}>
+                {arg.date.getDate()}
+              </div>
+              {/* 일정 수 표시 */}
+              {eventCount > 0 && (
+                <div
+                  className="event-count-badge"
+                  style={{
+                    position: "absolute",
+                    top: "2px",
+                    right: "2px",
+                    backgroundColor: "#ff5722",
+                    color: "white",
+                    fontSize: "10px",
+                    borderRadius: "50%",
+                    padding: "2px 6px",
+                    fontWeight: "bold",
+                    zIndex: 10,
+                  }}
+                >
+                  일정 수: {eventCount}
+                </div>
+              )}
+            </div>
+          );
+        }}
+        
       />
 
       {/* 일정 추가 모달 */}
@@ -259,45 +331,50 @@ export default function Buttonclick({ user, events, setEvents}) {
         <input
           type="text"
           value={eventDetails.title}
-          onChange={(e) => setEventDetails({ ...eventDetails, title: e.target.value })}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, title: e.target.value })
+          }
         />
         <br />
-        <label>일정 유형</label>
-        <div>
+        <label>일정 유형: </label>
+        <select
+          value={eventDetails.type}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, type: e.target.value })
+          }
+        >
+          <option value="">선택</option>
           {eventTypes.map((type) => (
-            <label key={type}>
-              <input
-                type="radio"
-                name="type"
-                value={type}
-                checked={eventDetails.type === type}
-                onChange={(e) =>
-                  setEventDetails((prev) => ({ ...prev, type: e.target.value }))
-                }
-              />
+            <option key={type} value={type}>
               {type}
-            </label>
+            </option>
           ))}
-        </div>
+        </select>
         <br />
         <label>시작일</label>
         <input
           type="date"
           value={eventDetails.startDate}
-          onChange={(e) => setEventDetails({ ...eventDetails, startDate: e.target.value })}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, startDate: e.target.value })
+          }
         />
         <br />
         <label>종료일</label>
         <input
           type="date"
           value={eventDetails.endDate}
-          onChange={(e) => setEventDetails({ ...eventDetails, endDate: e.target.value })}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, endDate: e.target.value })
+          }
         />
         <br />
         <label>설명</label>
         <textarea
           value={eventDetails.description}
-          onChange={(e) => setEventDetails({ ...eventDetails, description: e.target.value })}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, description: e.target.value })
+          }
         />
         <br />
         <label>색상 선택:</label>
@@ -333,73 +410,93 @@ export default function Buttonclick({ user, events, setEvents}) {
         <input
           type="text"
           value={eventDetails.title}
-          onChange={(e) => setEventDetails({ ...eventDetails, title: e.target.value })}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, title: e.target.value })
+          }
         />
         <br />
-        <div>
+        <label>일정 유형: </label>
+        <select
+          value={eventDetails.type}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, type: e.target.value })
+          }
+        >
+          <option value="">선택</option>
           {eventTypes.map((type) => (
-            <label key={type}>
-              <input
-                type="radio"
-                name="type"
-                value={type}
-                checked={eventDetails.type === type}
-                onChange={(e) =>
-                  setEventDetails((prev) => ({ ...prev, type: e.target.value }))
-                }
-              />
+            <option key={type} value={type}>
               {type}
-            </label>
+            </option>
           ))}
-        </div>
+        </select>
+        <br />
         <br />
         <label>시작일</label>
         <input
           type="date"
           value={eventDetails.startDate}
-          onChange={(e) => setEventDetails({ ...eventDetails, startDate: e.target.value })}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, startDate: e.target.value })
+          }
         />
         <br />
         <label>종료일</label>
         <input
           type="date"
           value={eventDetails.endDate}
-          onChange={(e) => setEventDetails({ ...eventDetails, endDate: e.target.value })}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, endDate: e.target.value })
+          }
         />
         <br />
-        <label>설명</label>
+        <label>내용</label>
         <textarea
           value={eventDetails.description}
-          onChange={(e) => setEventDetails({ ...eventDetails, description: e.target.value })}
+          onChange={(e) =>
+            setEventDetails({ ...eventDetails, description: e.target.value })
+          }
         />
         <br />
         <label>색상 선택:</label>
-        <div>
+        <div className="color-buttons-container">
           {colors.map((color) => (
             <button
               key={color}
               type="button"
-              style={{
-                backgroundColor: color,
-                border: "none",
-                margin: "0 5px",
-                cursor: "pointer",
-              }}
+              className={`color-button ${
+                color === eventDetails.color ? "selected" : ""
+              }`}
+              style={{ backgroundColor: color }}
               onClick={() =>
                 setEventDetails((prev) => ({ ...prev, color: color }))
               }
             >
-              {color === eventDetails.color ? "✔" : " "}
+              <span className="check-mark">
+                {color === eventDetails.color ? "✔" : ""}
+              </span>
             </button>
           ))}
         </div>
         <br />
         {error && <p className="error">{error}</p>}
-        <button onClick={handleSaveChanges}>저장</button>
-        <button type="button" onClick={handleDeleteEvent} style={{ color: "red" }}>
-          삭제
-        </button>
-        <button onClick={closeEditModal}>취소</button>
+        <div className="button-container">
+          <div className="top-buttons">
+            <button className="edit-button" onClick={handleSaveChanges}>
+              수정
+            </button>
+            <button
+              className="delete-button"
+              type="button"
+              onClick={handleDeleteEvent}
+              backgroundColor={{ color: "red" }}
+            >
+              삭제
+            </button>
+          </div>
+          <button className="cancel-button" onClick={closeEditModal}>
+            취소
+          </button>
+        </div>
       </Modal>
     </div>
   );

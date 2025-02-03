@@ -22,7 +22,6 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient, #a18cd1, #fbc2eb;
 }
 
 .app-container {
@@ -30,6 +29,7 @@ body {
   flex-direction: row; /* 좌우 배치 */
   height: 100%; /* 화면 전체 높이 */
   overflow: hidden; /* 스크롤바 표시 */
+  padding-top: 1.8%; /* Header 높이만큼 여백 추가 */
 }
 
 
@@ -104,10 +104,6 @@ header {
 }
 
 
-
-.app-container {
-  padding-top: 2%; /* Header 높이만큼 여백 추가 */
-}
 
 /* Daily Look 텍스트 스타일 */
 .slider-container {
@@ -197,6 +193,10 @@ header {
   border-radius: 10px;
 }
 
+.category-title {
+  font-weight: bold;
+}
+
 .category-bar {
   display: flex;
   justify-content: center;
@@ -213,44 +213,225 @@ header {
   color: #555;
 }
 
+
+
+
+
+/* Event Section 스타일 */
 .event-section {
-  margin: 20px;
+  display: flex;
+  flex-direction: column; /* 세로로 배치 */
+  width: 45%;
+  gap: 20px;
   padding: 20px;
-  background: white;
+  border: 1px solid #ddd;
   border-radius: 10px;
+  background-color: #f9f9f9;
 }
 
 .event-header {
-  font-size: 18px;
-  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .event-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  cursor: pointer; /* 마우스를 올리면 클릭 가능한 커서로 변경 */
 }
 
-.event-time {
+.event-item:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 마우스 올림 시 그림자 강화 */
+  transform: translateY(-2px); /* 살짝 위로 이동 */
+}
+
+.event-dday {
   font-size: 16px;
   font-weight: bold;
-  margin-right: 20px;
-}
-
-.event-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.event-title {
-  font-size: 16px;
+  color: #4caf50;
   margin-bottom: 5px;
 }
 
-.event-location {
+.event-title {
   font-size: 14px;
-  color: #777;
+  font-weight: bold;
+  color: #333;
 }
+
+.event-description {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 카테고리 내 텍스트 박스 스타일 */
+.text-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px; /* 고정 높이 설정 */
+  border: 1px solid #e0e0e0; /* 연한 회색 테두리 */
+  background-color: #f9f9f9; /* 연한 회색 배경 */
+  border-radius: 8px; /* 둥근 모서리 */
+  margin: 10px 0; /* 위아래 간격 */
+  text-align: center;
+}
+
+.no-events-message {
+  font-size: 1rem; /* 글씨 크기 */
+  color: #999; /* 옅은 회색 텍스트 색상 */
+  font-weight: 400; /* 일반 굵기 */
+}
+
+
+.show-more-button {
+  align-self: center;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.show-more-button:hover {
+  background-color: #45a049;
+}
+
+.event-divider {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+
+
+/* 버튼 스타일 추가 */
+.layout-toggle {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.layout-toggle button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.layout-toggle button:hover {
+  background-color: #45a049;
+}
+
+
+
+
+/* 이벤트 섹션 모달 스타일 */
+/* 모달 스타일 */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out; /* 부드러운 전환 효과 추가 */
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%; /* 화면이 작은 경우에도 대응 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease; /* 등장 애니메이션 */
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.modal-content p {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #333; /* 텍스트 색상 명시 */
+}
+
+/* 닫기 버튼 */
+.close-modal-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease; /* 부드러운 전환 효과 */
+}
+
+.close-modal-button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px); /* 버튼을 살짝 위로 이동 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자 강조 */
+}
+
+/* 마우스 커서를 올렸을 때 모달 컨텐츠 부각 */
+.modal-content:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 더 부각된 그림자 */
+  transform: scale(1.02); /* 살짝 확대 */
+  transition: all 0.3s ease-in-out; /* 부드러운 확대 효과 */
+}
+
+/* 스크롤바 스타일 */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+/* 등장 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 
 
@@ -390,9 +571,76 @@ figcaption {
   padding: 10px;
 }
 
+.fc-daygrid-day-top{
+  width: 100%;
+}
+
+/* 날짜를 상단 고정 */
 .fc-daygrid-day-number {
+  position: absolute !important;
+  top: 5px; /* 상단에서의 위치 */
+  left: 5px; /* 좌측에서의 위치 */
+  font-size: 14px; /* 날짜 폰트 크기 */
+  font-weight: bold; /* 날짜 강조 */
+  z-index: 10; /* 날짜를 최상단에 표시 */
+  width: 90%;
+}
+
+/* 날짜 아래로 일정 배치 */
+.fc-daygrid-day-events {
+  margin-top: 40px !important; /* 날짜 아래로 일정 배치 */
+}
+
+/* 일정 간 간격 줄이기 */
+.fc-daygrid-event {
+  margin: 2px 0 !important; /* 일정 간 간격 조정 */
+}
+
+/* 하루 칸의 최소 높이 설정 */
+.fc-daygrid-day {
+  min-height: 120px !important; /* 하루 칸의 최소 높이 */
+  position: relative; /* 날짜 고정을 위해 상대 위치 */
+}
+
+.fc-daygrid-day .event-count {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  font-size: 10px;
+  color: #ff5722;
   font-weight: bold;
 }
+
+
+
+
+/* 날짜를 좌측 상단에 정렬 */
+.fc-daygrid-day-top {
+  display: flex !important; /* flex 레이아웃 강제 적용 */
+  justify-content: flex-start !important; /* 수평 정렬: 좌측 */
+  align-items: flex-start !important; /* 수직 정렬: 상단 */
+  padding: 2px !important; /* 날짜 텍스트에 적당한 여백 추가 */
+  font-size: 12px !important; /* 날짜 텍스트 크기 */
+  position: absolute !important; /* 고정 위치로 상단 배치 */
+  top: 2px; /* 상단 여백 */
+  left: 2px; /* 좌측 여백 */
+}
+
+/* 일정 제목을 중앙에 정렬 */
+.fc-event-title-container {
+  display: flex !important;
+  justify-content: center !important; /* 수평 중앙 정렬 */
+  align-items: center !important; /* 수직 중앙 정렬 */
+  white-space: nowrap !important; /* 제목이 줄바꿈되지 않도록 설정 */
+  overflow: hidden !important; /* 내용 초과 부분 숨기기 */
+  text-overflow: ellipsis !important; /* 말줄임표 추가 */
+  height: 100%; /* 부모 높이에 맞춤 */
+  font-size: 14px; /* 제목 크기 */
+}
+
+
+
+
 
 .fc-view-harness {
 
@@ -406,6 +654,25 @@ figcaption {
   overflow-x: auto; /* 가로 스크롤 추가 */
 }
 
+/* 모달의 최대 높이와 스크롤 설정 */
+.ReactModal__Content {
+  height: 80%; /* 화면 높이의 90% */
+  overflow-y: auto; /* 내용이 많으면 스크롤 추가 */
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* FullCalendar 이벤트 스타일 */
+.fc-event {
+  cursor: pointer; /* 커서를 클릭 가능한 형태로 변경 */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fc-event:hover {
+  transform: scale(1.05); /* 마우스를 올리면 약간 확대 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 마우스를 올리면 그림자 추가 */
+  z-index: 10; /* 이벤트가 다른 요소 위에 표시되도록 설정 */
+}
 
 
 
@@ -418,7 +685,7 @@ figcaption {
 /* 모달 내용 스타일 */
 .ReactModal__Content {
   width: 500px;
-  margin: 100px auto;
+  margin: 15px 500px;
   padding: 20px;
   background-color: skyblue !important;  /* 모달 배경색 skyblue */
   border-radius: 10px;
@@ -439,16 +706,123 @@ input, textarea {
   box-sizing: border-box;  /* padding을 포함한 전체 너비 계산 */
 }
 
+.color-buttons-container {
+  display: flex; /* 가로 배열 */
+  gap: 10px; /* 버튼 간 간격 */
+  margin-top: 10px; /* 위쪽 여백 */
+}
+
+.color-button {
+  width: 40px; /* 고정된 너비 */
+  height: 20px; /* 고정된 높이 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  margin: 5px; /* 버튼 간격 */
+  cursor: pointer; /* 포인터 표시 */
+  border: 2px solid transparent; /* 기본 테두리 투명 */
+  display: flex;
+  justify-content: space-between; /* 좌우 정렬 */
+  align-items: center;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.color-button:hover {
+  transform: scale(1.1); /* 호버 시 확대 효과 */
+}
+
+.color-button.selected {
+  border: 2px solid black; /* 선택된 경우 테두리 강조 */
+  box-sizing: border-box; /* 테두리 포함 크기 계산 */
+}
+
+.color-button .checkmark {
+  font-size: 20px; /* 체크 표시 크기 */
+  color: white; /* 체크 표시 색상 */
+  visibility: hidden; /* 기본적으로 숨김 */
+}
+
+.color-button.selected .checkmark {
+  visibility: visible; /* 선택된 경우 체크 표시 표시 */
+}
+
+
 /* 버튼 스타일 */
 button {
   padding: 10px 20px;
-  margin: 10px;
   cursor: pointer;
   background-color: #4CAF50;
   color: white;
   border: none;
   border-radius: 5px;
 }
+
+/* 수정 및 삭제 버튼을 가로로 정렬 */
+.top-buttons {
+  display: flex;
+  justify-content: space-between; /* 좌우 정렬 */
+  gap: 5px; /* 버튼 사이 간격 */
+  width: 100%; /* 전체 너비 */
+  
+}
+
+/* 수정 버튼 */
+button.edit-button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 1; /* 버튼 폭을 동일하게 */
+  transition: background-color 0.3s ease;
+}
+
+button.edit-button:hover {
+  background-color: darkgreen;
+}
+
+/* 삭제 버튼 */
+button.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 1; /* 버튼 폭을 동일하게 */
+  transition: background-color 0.3s ease;
+}
+
+button.delete-button:hover {
+  background-color: darkred;
+}
+
+/* 취소 버튼 */
+button.cancel-button {
+  background-color: gray;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%; /* 취소 버튼 너비를 최대화 */
+  margin-top: 5px; /* 위쪽 간격 */
+  transition: background-color 0.3s ease;
+}
+
+button.cancel-button:hover {
+  background-color: darkgray;
+}
+
+/* 버튼 컨테이너 하단 중앙 정렬 */
+.button-container {
+  display: flex; /* 플렉스 박스 */
+  flex-direction: column; /* 세로 방향 배치 */
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center; /* 중앙 정렬 */
+  margin-top: 20px; /* 위쪽 여백 */
+  width: 100%; /* 버튼 컨테이너 너비 */
+}
+
 
 button:hover {
   background-color: #45a049;  /* 버튼 hover 상태 색상 */
@@ -501,5 +875,4 @@ button:hover {
   display: flex; /* 플렉스 박스 사용 */
   justify-content: center; /* 가로 중앙 정렬 */
   gap: 10px; /* 버튼 간격 */
-  margin-top: 20px; /* 버튼과 위 요소 간격 */
 } 

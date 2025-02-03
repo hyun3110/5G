@@ -144,7 +144,11 @@ const Header = ({ user }) => {
           <img src="/img/profile-icon.png" alt="Profile" />
         </div>
         <div>
-          <button onClick={logout}>로그아웃</button>
+        {user ? (
+            <button onClick={logout}>로그아웃</button>
+          ) : (
+            <button onClick={() => navigate("/login")}>로그인</button>
+          )}
         </div>
       </div>
     </header>

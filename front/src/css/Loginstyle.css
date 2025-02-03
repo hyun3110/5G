@@ -75,20 +75,27 @@ body, html {
   border-bottom: 2px solid #635EFF;
 }
 
-.login-section .message {
-  font-size: 0.9em;
-  color: red; /* 에러 메시지 기본 색상 */
+.login-section input::placeholder {
+  color: #c0c0c0; /* 기본 placeholder 색상 */
+  opacity: 0.8;
+}
+
+.login-error-message {
+  font-size: 13px; /* 텍스트 크기 */
+  color: red; /* 텍스트 색상 */
+  margin: 0;
   margin-top: -10px;
   text-align: left; /* 왼쪽 정렬 */
-  position: static; /* 기본 위치 */
-  font-size: 13px;
+  padding: 5px 10px; /* 상하 5px, 좌우 10px 여백 */
+  border-radius: 4px; /* 모서리 둥글게 (선택 사항) */
 }
+
 
 
 .login-section button {
   width: 100%; /* 버튼의 너비를 적절히 조정 */
   padding: 12px;
-  margin: 10px auto 0 auto; /* 상단 여백 20px, 좌우 중앙 정렬 */
+  margin: 5px 0 auto; /* 상단 여백 20px, 좌우 중앙 정렬 */
   background: linear-gradient(to right, #9f5fff, #5f75ff);
   border: none;
   color: white;
@@ -104,29 +111,34 @@ body, html {
 }
 
 .additional-links {
-  display: flex; /* Flexbox 사용 */
+  display: flex;
   justify-content: space-between; /* 좌우 정렬 */
   align-items: center; /* 수직 가운데 정렬 */
-  margin-top: 5px; /* 위 요소와 간격 */
+  margin-top: 10px; /* 위 요소와의 간격 */
 }
 
-.additional-links .left-link {
-  margin-right: auto; /* 왼쪽 정렬 */
-  text-decoration: none; /* 밑줄 제거 */
+.additional-links .top-link {
+  text-decoration: none;
   color: #5f75ff;
-  font-size: 11px;
+  font-size: 10px;
   transition: color 0.3s ease;
+}
+
+.additional-links .top-link:hover {
+  color: #8565FF;
+  text-decoration: underline;
 }
 
 .additional-links .right-links {
   display: flex;
-  gap: 5px; /* 아이디 찾기와 비밀번호 찾기 사이 간격 */
+  gap: 5px; /* 아이디 찾기와 비밀번호 찾기 간격 */
+  margin-left: auto; /* 오른쪽 정렬 */
 }
 
 .additional-links .right-links a {
   text-decoration: none;
   color: #5f75ff;
-  font-size: 11px;
+  font-size: 10px;
   transition: color 0.3s ease;
 }
 
@@ -134,4 +146,5 @@ body, html {
   color: #8565FF;
   text-decoration: underline;
 }
+
 
