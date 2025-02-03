@@ -6,7 +6,7 @@ import Favorites from './Favorites';
 import KakaoMap from './Kakaomap'; // KakaoMap 컴포넌트 import
 import "../css/modal.css";
 
-const MyPage = () => {
+const MyPage = ({user}) => {
   const [username, setUsername] = useState('사용자 이름'); // 사용자 이름 상태
   const [profileImage, setProfileImage] = useState('/path/to/default-profile.png'); // 프로필 이미지 상태
   const [activeContent, setActiveContent] = useState('추천 받은 스타일'); // 현재 활성화된 콘텐츠 상태
@@ -28,22 +28,6 @@ const MyPage = () => {
     return () => {
       document.body.style.backgroundColor = ''; // 컴포넌트 언마운트 시 배경색 초기화
     };
-  }, []);
-
-  // 사용자 데이터를 가져오는 함수
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/user'); // 사용자 데이터 API 요청
-        const data = await response.json();
-        setUsername(data.username); // 사용자 이름 업데이트
-        setProfileImage(data.profileImage); // 프로필 이미지 업데이트
-      } catch (error) {
-        console.error('Failed to fetch user data:', error); // 에러 발생 시 로그 출력
-      }
-    };
-
-    fetchUserData(); // 사용자 데이터 가져오기 호출
   }, []);
 
   // 회원정보 수정 버튼 클릭 시 비밀번호 확인 페이지로 이동
@@ -121,7 +105,7 @@ const MyPage = () => {
               alt="User Profile"
               className="profile-image"
             />
-            <h2>{username}</h2>
+            <h2>{user.name}</h2>
             <div className="btn-container">
               <button className="btn" onClick={handleEditProfile}>회원정보 수정</button> {/* 회원정보 수정 버튼 */}
               <button className="btn" onClick={handleModalToggle}>코디 추천</button> {/* 모달 열기 버튼 */}

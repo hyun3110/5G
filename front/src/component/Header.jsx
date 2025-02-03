@@ -141,7 +141,7 @@ const Header = ({ user, setUser }) => {
         </nav>
 
         {/* 알림 및 프로필 */}
-        <div className="header-icons" onClick={() => navigate("/Mypage")} style={{ cursor: "pointer" }}>
+        <div className="header-icons" onClick={() => navigate("/mypage")} style={{ cursor: "pointer" }}>
           <img src="/img/profile-icon.png" alt="Profile" />
         </div>
         <div>
