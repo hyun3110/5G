@@ -16,7 +16,7 @@ const Pwconfirm = ({user}) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/verifypassword`, {
         userId:user.userId,
-        pw:password
+        pw:password,
       }, { withCredentials: true });
 
       if (response.data) {

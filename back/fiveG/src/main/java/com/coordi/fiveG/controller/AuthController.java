@@ -17,8 +17,8 @@ public class AuthController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session){
-        Users user = usersService.login(loginRequest.getUserId(),loginRequest.getPw());
+    public ResponseEntity<String> login(@RequestBody UserDTO userDTO, HttpSession session){
+        Users user = usersService.login(userDTO.getUserId(),userDTO.getPw());
 
         if (user != null){
             session.setAttribute("user", user);
@@ -30,7 +30,7 @@ public class AuthController {
 
     // 회원가입
     @PostMapping("/signup")
-    public Users signup(@RequestBody SignupDTO user){
+    public Users signup(@RequestBody UserDTO user){
         return usersService.signup(user);
     }
 
@@ -65,9 +65,20 @@ public class AuthController {
 
     // 비밀번호 확인
     @PostMapping("/verifypassword")
-    public boolean verifyPassword(@RequestBody LoginRequest loginRequest){
-        System.out.println(loginRequest.getUserId()+ loginRequest.getPw());
-        return usersService.verifyPassword(loginRequest.getUserId(), loginRequest.getPw());
+    public boolean verifyPassword(@RequestBody UserDTO userDTO){
+        return usersService.verifyPassword(userDTO);
+    }
+
+    // 회원정보 변경
+    @PutMapping("/useredit")
+    public ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO, HttpSession session){
+        Users user = usersService.updateUser(userDTO);
+        if (user != null){
+            session.invalidate();
+            return ResponseEntity.ok("회원정보 수정 성공");
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("실패");
+        }
     }
 
 }

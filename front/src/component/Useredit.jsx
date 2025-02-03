@@ -20,16 +20,15 @@ const Useredit = ({user, setUser}) => {
 
     const updatedUser = {
       ...user, // 기존 사용자 정보 유지
-      password: password || user.password, // 비밀번호 입력이 없으면 기존 값 유지
-      phone, // 입력된 전화번호 값
-      email, // 입력된 이메일 값
+      pw: password || user.pw, // 비밀번호 입력이 없으면 기존 값 유지
+      phone : phone || user.phone, // 입력된 전화번호 값
+      email : email || user.email, // 입력된 이메일 값
     };
 
     try {
-      const response = await axios.put(`${API_BASE_URL}/${user.id}`, updatedUser);
+      const response = await axios.put(`${API_BASE_URL}/useredit`, updatedUser,{ withCredentials: true });
       alert("회원 정보가 수정되었습니다."); // 성공 메시지
-      setUser(response.data); // 수정된 사용자 정보 업데이트
-      navigate("/mypage"); // 수정 완료 후 마이페이지로 이동
+      navigate("/login"); // 수정 완료 후 마이페이지로 이동
     } catch (error) {
       alert("수정 실패: " + error.message);
     }
