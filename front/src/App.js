@@ -45,7 +45,7 @@ const App = () => {
           <Route path="/login" element={<Login setUser={setUser}/>} />
           <Route path="/forgotid" element={<Forgotid />} />
           <Route path="/forgotpw" element={<Forgotpw />} />
-          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/mypage" element={<Mypage user={user} />} />
           <Route path="/look" element={<Look />} />
           <Route path="/pwconfirm" element={<Pwconfirm user={user}/>} />
           <Route path="/useredit" element={<Useredit user={user} setUser={setUser}/>} />
