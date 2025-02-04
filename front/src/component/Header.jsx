@@ -54,8 +54,11 @@ const Header = ({ user, setUser }) => {
 
   const fetchWeatherData = async (latitude, longitude) => {
     try {
+
+      const API_KEY = process.env.REACT_APP_OPENWEATHER_KEY; // 환경 변수에서 API 키 불러오기
+
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=7f73dbaec9d25feec1469628225d26eb&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
       );
       const { description } = response.data.weather[0];
       const { temp, feels_like } = response.data.main;
