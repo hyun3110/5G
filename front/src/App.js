@@ -35,7 +35,7 @@ const App = () => {
 
   return (
     <Router>
-      <div className="app-container">
+      <div>
         {/* 모든 페이지에서 공통으로 사용하는 Header */}
         <Header user={user} setUser={setUser}/>
         {/* Routes는 페이지마다 다른 콘텐츠를 렌더링 */}

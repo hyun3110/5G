@@ -253,21 +253,18 @@ const Signup = () => {
                 placeholder="아이디 입력"
               />
               <span>@</span>
-              <input
-                type="text"
-                id="email-domain"
-                value={emailDomain}
-                onChange={(e) => setEmailDomain(e.target.value)}
-                placeholder="직접 입력"
-                list="email-options"
-              />
-              <datalist id="email-options">
-                <option value="naver.com" />
-                <option value="kakao.com" />
-                <option value="gmail.com" />
-                <option value="daum.net" />
-                <option value="hanmail.net" />
-              </datalist>
+              <select
+              id="email-domain"
+              value={emailDomain}
+              onChange={(e) => setEmailDomain(e.target.value)}
+              required
+            >
+              <option value="naver.com">naver.com</option>
+              <option value="gmail.com">gmail.com</option>
+              <option value="kakao.com">kakao.com</option>
+              <option value="daum.net">daum.net</option>
+              <option value="hanmail.net">hanmail.net</option>
+            </select>
             </div>
           </div>
           <div className="form-group">

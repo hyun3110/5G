@@ -1,6 +1,6 @@
 .signup-container {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF);
+    background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF)!important;
     margin: 0;
     padding: 0;
     display: flex;
@@ -25,6 +25,7 @@
 
 .form-group {
     margin-bottom: 15px;
+    display: flex;
 }
 
 .form-group label {
