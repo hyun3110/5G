@@ -50,7 +50,7 @@ const MyWardrobe = ({ user }) => {
   const getRecentItems = () => {
     const today = new Date();
     return items.filter((item) => {
-      const uploadDate = new Date(item.uploadDate);
+      const uploadDate = new Date(item.uploadedAt);
       const diffDays = (today - uploadDate) / (1000 * 60 * 60 * 24);
       return diffDays <= 7;
     });

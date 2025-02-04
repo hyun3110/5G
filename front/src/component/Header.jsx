@@ -92,7 +92,7 @@ const Header = ({ user, setUser }) => {
   // 프로필 아이콘 클릭 시 동작
   const handleProfileClick = () => {
     if (user) {
-      navigate("/Mypage"); // 로그인 상태라면 마이페이지로 이동
+      navigate("/mypage"); // 로그인 상태라면 마이페이지로 이동
     } else {
       navigate("/login"); // 로그인 상태가 아니라면 로그인 페이지로 이동
     }
