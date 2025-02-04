@@ -20,8 +20,10 @@ const KakaoMap = ({ onSelectLocation }) => {
           return;
         }
 
+        const API_KEY = process.env.REACT_APP_KAKAO_API_KEY; // 환경 변수에서 API 키 불러오기
+
         const script = document.createElement('script');
-        script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_API_KEY}&autoload=false&libraries=services`;
+        script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${API_KEY}&autoload=false&libraries=services`;
         script.async = true;
         script.onload = () => {
           console.log('✅ 카카오맵 SDK 로드 완료');
