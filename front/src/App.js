@@ -45,11 +45,11 @@ const App = () => {
           <Route path="/login" element={<Login setUser={setUser}/>} />
           <Route path="/forgotid" element={<Forgotid />} />
           <Route path="/forgotpw" element={<Forgotpw />} />
-          <Route path="/Mypage" element={<Mypage />} />
-          <Route path="/Look" element={<Look />} />
-          <Route path="/Pwconfirm" element={<Pwconfirm user={user}/>} />
-          <Route path="/Useredit" element={<Useredit user={user} setUser={setUser}/>} />
-          <Route path="/Weekcalander" element={<Weekcalander />} />
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/look" element={<Look />} />
+          <Route path="/pwconfirm" element={<Pwconfirm user={user}/>} />
+          <Route path="/useredit" element={<Useredit user={user} setUser={setUser}/>} />
+          <Route path="/weekcalander" element={<Weekcalander />} />
           <Route path="/mywardrobe" element={<MyWardrobe user={user}/>} /> {/* MyWardrobe 경로 추가 */}
         </Routes>
       </div>

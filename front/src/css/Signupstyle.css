@@ -54,21 +54,23 @@
 }
 
 .email-group input {
-    flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
     height: 37px;
     box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid #9f5fff;
+    margin-top: 0; /* 위쪽 여백 제거 */
 }
 
 .email-group select {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
     height: 37px;
     box-sizing: border-box;
-    width: 20px;
+    width: 300px;
+    border: none;
+    border-bottom: 2px solid #9f5fff;
 }
 
 .email-group span {

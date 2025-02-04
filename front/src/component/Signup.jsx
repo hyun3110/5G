@@ -7,6 +7,7 @@ const Signup = () => {
   const [userId, setUserId] = useState(''); // 아아디
   const [pw, setPw] = useState(''); // 비밀번호
   const [name, setName] = useState(''); // 이름
+  const [residentRegNum, setResidentRegNum] = useState(''); // 주민등록번호
   const [phone, setPhone] = useState(''); // 전화번호
   const [email, setEmail] = useState(''); // e메일
   const [preferredStyle, setPreferredStyle] = useState('') // 선호 스타일
@@ -14,14 +15,12 @@ const Signup = () => {
   const [userIdError, setUserIdError] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [rrnError, setRrnError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [emailDomain, setEmailDomain] = useState('');
   const [isCustomDomain, setIsCustomDomain] = useState(true);
 
   const navigate = useNavigate(); // useNavigate 훅 사용
-
-  const handleStyleSelection = () => {
-    navigate('/Look');
-  };
 
   // 아이디 중복 체크
   const handleUserIdCheck = async () => {
@@ -64,6 +63,48 @@ const Signup = () => {
     }
   };
 
+  // 주민등록번호 입력 핸들러 (자동 하이픈 추가)
+  const handleRrnChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 입력 가능하도록
+    if (value.length > 6) {
+      value = value.slice(0, 6) + '-' + value.slice(6, 13);
+    }
+    setResidentRegNum(value);
+  };
+
+  // 주민등록번호 유효성 검사
+  const validateRrn = () => {
+    const rrnPattern = /^\d{6}-\d{7}$/; // 형식: 000000-0000000
+    if (!rrnPattern.test(residentRegNum)) {
+      setRrnError('유효한 주민등록번호를 입력하세요.');
+      return false;
+    }
+    setRrnError('');
+    return true;
+  };
+
+  // 전화번호 자동 하이픈 추가 기능
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 입력 가능하도록
+    if (value.length >= 3 && value.length <= 6) {
+      value = value.replace(/(\d{3})(\d+)/, '$1-$2');
+    } else if (value.length > 6) {
+      value = value.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3');
+    }
+    setPhone(value);
+  };
+
+  // 전화번호 유효성 검사
+  const validatePhone = () => {
+    const phonePattern = /^01[0-9]-\d{3,4}-\d{4}$/; // 010-1234-5678 형식
+    if (!phonePattern.test(phone)) {
+      setPhoneError('유효한 전화번호를 입력하세요.');
+      return false;
+    }
+    setPhoneError('');
+    return true;
+  };
+
   const handleEmailDomainChange = (event) => {
     const value = event.target.value;
     if (value === 'type') {
@@ -77,6 +118,10 @@ const Signup = () => {
 
   const handleCancel = () => {
     navigate('/'); // 로그인 화면으로 이동
+  };
+
+  const handleStyleSelection = () => {
+    navigate('/look');
   };
 
   const signup = async (e) => {
@@ -96,7 +141,8 @@ const Signup = () => {
         name: name,
         phone: phone,
         email: email + '@' + emailDomain,
-        preferredStyle: preferredStyle
+        preferredStyle: preferredStyle,
+        residentRegNum
       });
 
       if (response.status) {
@@ -167,14 +213,33 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
+            <label htmlFor="residentRegNum">주민등록번호</label>
+            <input
+              type="text"
+              id="residentRegNum"
+              value={residentRegNum}
+              onChange={handleRrnChange}
+              onBlur={validateRrn}
+              placeholder="000000-0000000"
+              maxLength="14"
+              required
+            />
+            {rrnError && <p className="error-message">{rrnError}</p>}
+          </div>
+
+          <div className="form-group">
             <label htmlFor="phone">전화번호</label>
             <input
               type="tel"
               id="phone"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={handlePhoneChange}
+              onBlur={validatePhone}
+              placeholder="010-1234-5678"
+              maxLength="13"
               required
             />
+            {phoneError && <p className="error-message">{phoneError}</p>}
           </div>
 
           <div className="form-group">
@@ -185,34 +250,26 @@ const Signup = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
+                placeholder="아이디 입력"
               />
               <span>@</span>
               <input
                 type="text"
-                id="email-domain-input"
+                id="email-domain"
                 value={emailDomain}
-                disabled={!isCustomDomain}
                 onChange={(e) => setEmailDomain(e.target.value)}
-                required
+                placeholder="직접 입력"
+                list="email-options"
               />
-              <select id="email-domain" onChange={handleEmailDomainChange}>
-                <option value="type">직접 입력</option>
-                <option value="naver.com">naver.com</option>
-                <option value="kakao.com">kakao.com</option>
-                <option value="gmail.com">gmail.com</option>
-                <option value="daum.net">daum.net</option>
-                <option value="hanmail.net">hanmail.net</option>
-              </select>
-              <button type="button" className="verification-button">인증코드 전송</button>
+              <datalist id="email-options">
+                <option value="naver.com" />
+                <option value="kakao.com" />
+                <option value="gmail.com" />
+                <option value="daum.net" />
+                <option value="hanmail.net" />
+              </datalist>
             </div>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="verification-code">인증코드</label>
-            <input type="text" id="verification-code" />
-          </div>
-
           <div className="form-group">
             <button type="button" className="style-button" onClick={handleStyleSelection}>
               선호하는 스타일 선택
