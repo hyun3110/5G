@@ -1,6 +1,6 @@
 .signup-container {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF)!important;
+    background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF) !important;
     margin: 0;
     padding: 0;
     display: flex;
@@ -24,19 +24,23 @@
 }
 
 .form-group {
-    margin-bottom: 15px;
     display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    margin-bottom: 15px;
+    width: 100%;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 5px;
+    width: 150px; /* 라벨을 일정한 너비로 고정 */
+    text-align: left; /* 왼쪽 정렬 */
     font-weight: bold;
     color: #9f5fff;
 }
 
-.form-group input, .form-group select {
-    width: 38%;
+.form-group input,
+.form-group select {
+    max-width: 300px; /* 입력 필드의 최대 너비 설정 */
     padding: 10px;
     border: none;
     border-bottom: 2px solid #9f5fff;
@@ -44,55 +48,64 @@
     transition: border-color 0.3s ease;
 }
 
-.form-group input:focus {
-    border-bottom: 2px solid #635EFF;
-
-}
-
-.email-group {
+/* 주민등록번호 입력 필드 스타일 */
+.rrn-group {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 
-.email-group input {
+.rrn-group input {
+    width: 120px;
+    text-align: center;
+}
+
+/* 이메일 입력 부분 */
+.email-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+/* 이메일 입력 부분 */
+.email-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+/* 아이디 입력 필드 (이메일 @ 앞부분) */
+.email-group .email-id {
+    width: 250px; /* 아이디 입력 필드 크기 */
     padding: 10px;
-    border: 1px solid #ccc;
-    height: 37px;
-    box-sizing: border-box;
     border: none;
     border-bottom: 2px solid #9f5fff;
-    margin-top: 0; /* 위쪽 여백 제거 */
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
-.email-group select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    height: 37px;
-    box-sizing: border-box;
-    width: 300px;
+/* 도메인 선택 필드 */
+.email-group .email-domain {
+    width: 180px; /* 도메인 선택 필드 크기 */
+    padding: 15px;
     border: none;
     border-bottom: 2px solid #9f5fff;
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
-.email-group span {
-    font-size: 1.2em;
-    color: #333;
-    margin-top: 5px;
-}
 
-.error-message {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 5px;
-}
-
+/* 버튼 정렬 */
 .btn-group {
     display: flex;
+    justify-content: center;
     margin-top: 20px;
 }
 
 .btn-group button {
-    width: 15%;
+    width: 20%;
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -103,34 +116,25 @@
 .btn-submit {
     background-color: #0066ff;
     color: white;
-    margin-left: 30%;
 }
 
 .btn-cancel {
     background-color: #ccc;
     color: black;
-    margin-left: 10%;
+    margin-left: 10px;
 }
 
-.style-choice {
-    text-align: center;
-    color: #408cff;
-    font-weight: bold;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-.verification-button {
-    padding: 10px;
-    border: none;
-    background-color: #96d1fc;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
+/* 기존 error-message 스타일 유지하면서 강조 */
+.error-message {
+    color: red;
     font-size: 0.9em;
-    margin-left: 8px;
+    font-weight: bold;
+    margin-top: 5px;
+    display: block; /* 오류 메시지가 입력 필드 아래에 표시되도록 설정 */
 }
 
-.verification-button:hover {
-    background-color: #0066ff;
+/* 오류가 있을 때 input 테두리 강조 */
+.form-group input.error {
+    border-bottom: 2px solid red !important;
+    color: red;
 }
