@@ -297,17 +297,14 @@ export default function Buttonclick({ user, events, setEvents }) {
           right: "addEventButton today prev,next", // 버튼 그룹을 오른쪽 끝에 배치
         }}
         dayCellContent={(arg) => {
-          const currentDate = new Date(arg.date).setHours(0, 0, 0, 0); // 현재 셀의 날짜 (시간 제거)
+          const currentDate = arg.date.toISOString().split("T")[0]; // 현재 셀의 날짜
 
           // 해당 날짜에 포함되는 이벤트 필터링
           const eventsForDate = events.filter((event) => {
-            const eventStartDate = new Date(event.start).setHours(0, 0, 0, 0);
-            const eventEndDate = new Date(
-              event.originalEndDate || event.end
-            ).setHours(0, 0, 0, 0);
+            const eventStartDate = new Date(event.start).toISOString().split("T")[0];
+            const eventEndDate = new Date(event.originalEndDate || event.end).toISOString().split("T")[0];
 
-            // 종료일도 포함하여 비교
-
+            // 종료일(end)은 포함하지 않도록 수정
             return currentDate >= eventStartDate && currentDate <= eventEndDate;
           });
 
@@ -342,13 +339,11 @@ export default function Buttonclick({ user, events, setEvents }) {
             </div>
           );
         }}
+
       />
 
       {/* 일정 추가 모달 */}
       <Modal isOpen={addModalIsOpen} onRequestClose={closeAddModal}>
-        <button class="calander-xclose-button" onclick="closeModal()">
-          X
-        </button>
         <h2>일정 추가</h2>
         <label>제목</label>
         <input
@@ -420,21 +415,12 @@ export default function Buttonclick({ user, events, setEvents }) {
         </div>
         <br />
         {error && <p className="error">{error}</p>}
-        <div class="button-wrapper">
-          <button class="add-save-button">
-            저장
-          </button>
-          <button class="add-cancel-button">
-            취소
-          </button>
-        </div>
+        <button onClick={handleSaveAddEvent}>저장</button>
+        <button onClick={closeAddModal}>취소</button>
       </Modal>
 
       {/* 일정 수정 모달 */}
       <Modal isOpen={editModalIsOpen} onRequestClose={closeEditModal}>
-        <button class="calander-xclose-button" onclick="closeModal()">
-          X
-        </button>
         <h2>일정 수정</h2>
         <label>제목</label>
         <input
