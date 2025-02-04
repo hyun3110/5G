@@ -95,7 +95,7 @@ const Header = ({ user, setUser }) => {
   // 프로필 아이콘 클릭 시 동작
   const handleProfileClick = () => {
     if (user) {
-      navigate("/Mypage"); // 로그인 상태라면 마이페이지로 이동
+      navigate("/mypage"); // 로그인 상태라면 마이페이지로 이동
     } else {
       navigate("/login"); // 로그인 상태가 아니라면 로그인 페이지로 이동
     }
@@ -163,11 +163,11 @@ const Header = ({ user, setUser }) => {
 
         {/* 알림 및 프로필 */}
         <div
-          className="header-icons"
+          className="header-mypage"
           onClick={handleProfileClick} // 로그인 상태에 따라 페이지 이동
           style={{ cursor: "pointer" }}
         >
-          <img src="/img/profile-icon.png" alt="프로필 아이콘" />
+          마이페이지
         </div>
         <div>
           {user ? (

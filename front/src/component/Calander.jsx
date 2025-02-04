@@ -404,10 +404,10 @@ export default function Buttonclick({ user, events, setEvents }) {
         <br />
         {error && <p className="error">{error}</p>}
         <div class="button-wrapper">
-          <button class="add-save-button" onclick="handleSaveAddEvent()">
+          <button class="add-save-button">
             저장
           </button>
-          <button class="add-cancel-button" onclick="closeAddModal()">
+          <button class="add-cancel-button">
             취소
           </button>
         </div>
