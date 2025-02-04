@@ -7,20 +7,46 @@ const Signup = () => {
   const [userId, setUserId] = useState(''); // 아아디
   const [pw, setPw] = useState(''); // 비밀번호
   const [name, setName] = useState(''); // 이름
-  const [residentRegNum, setResidentRegNum] = useState(''); // 주민등록번호
+  // 주민등록번호 입력 핸들러 (앞자리, 뒷자리 분리)
+  const [rrnFirst, setRrnFirst] = useState('');
+  const [rrnSecond, setRrnSecond] = useState('');
   const [phone, setPhone] = useState(''); // 전화번호
   const [email, setEmail] = useState(''); // e메일
   const [preferredStyle, setPreferredStyle] = useState('') // 선호 스타일
   const [isUsernameValid, setIsUsernameValid] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [userIdError, setUserIdError] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [rrnError, setRrnError] = useState('');
   const [phoneError, setPhoneError] = useState('');
-  const [emailDomain, setEmailDomain] = useState('');
-  const [isCustomDomain, setIsCustomDomain] = useState(true);
+  const [emailDomain, setEmailDomain] = useState('naver.com');
 
   const navigate = useNavigate(); // useNavigate 훅 사용
+
+  // 아이디 유효성 검사
+  const validateUserId = (id) => {
+    const userIdPattern = /^[a-z0-9]{6,20}$/;
+    if (!userIdPattern.test(id)) {
+      setUserIdError('유효하지 않은 아이디입니다.');
+      setIsUsernameValid(false);
+    } else {
+      setUserIdError('');
+      setIsUsernameValid(true);
+    }
+  };
+
+   // 비밀번호 유효성 검사
+   const validatePassword = (password) => {
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordPattern.test(password)) {
+      setPasswordError('유효하지 않은 비밀번호입니다.');
+      setIsPasswordValid(false);
+    } else {
+      setPasswordError('');
+      setIsPasswordValid(true);
+    }
+  };
 
   // 아이디 중복 체크
   const handleUserIdCheck = async () => {
@@ -63,22 +89,38 @@ const Signup = () => {
     }
   };
 
-  // 주민등록번호 입력 핸들러 (자동 하이픈 추가)
-  const handleRrnChange = (e) => {
-    let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 입력 가능하도록
-    if (value.length > 6) {
-      value = value.slice(0, 6) + '-' + value.slice(6, 13);
-    }
-    setResidentRegNum(value);
+  // 주민등록번호 입력 핸들러
+  const handleRrnFirstChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 입력 가능
+    if (value.length > 6) value = value.slice(0, 6); // 6자리까지만 허용
+    setRrnFirst(value);
+  };
+
+  const handleRrnSecondChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 입력 가능
+    if (value.length > 7) value = value.slice(0, 7); // 7자리까지만 허용
+    setRrnSecond(value);
   };
 
   // 주민등록번호 유효성 검사
   const validateRrn = () => {
-    const rrnPattern = /^\d{6}-\d{7}$/; // 형식: 000000-0000000
-    if (!rrnPattern.test(residentRegNum)) {
+    const rrnPattern = /^\d{6}-\d{7}$/; // 000000-0000000 형식
+    const fullRrn = `${rrnFirst}-${rrnSecond}`;
+
+    if (!rrnPattern.test(fullRrn)) {
       setRrnError('유효한 주민등록번호를 입력하세요.');
       return false;
     }
+
+    // 생년월일 유효성 검사 (앞 6자리)
+    const birthMonth = parseInt(rrnFirst.substring(2, 4), 10);
+    const birthDay = parseInt(rrnFirst.substring(4, 6), 10);
+
+    if (birthMonth < 1 || birthMonth > 12 || birthDay < 1 || birthDay > 31) {
+      setRrnError('유효한 생년월일을 입력하세요.');
+      return false;
+    }
+
     setRrnError('');
     return true;
   };
@@ -105,17 +147,6 @@ const Signup = () => {
     return true;
   };
 
-  const handleEmailDomainChange = (event) => {
-    const value = event.target.value;
-    if (value === 'type') {
-      setEmailDomain('');
-      setIsCustomDomain(true);
-    } else {
-      setEmailDomain(value);
-      setIsCustomDomain(false);
-    }
-  };
-
   const handleCancel = () => {
     navigate('/'); // 로그인 화면으로 이동
   };
@@ -133,6 +164,12 @@ const Signup = () => {
       return;
     }
 
+    // 주민등록번호 검사 추가
+    if (!validateRrn()) {
+      alert('유효한 주민등록번호를 입력하세요.');
+      return;
+    }
+
     try {
       // 회원가입 요청
       const response = await axios.post('http://localhost:8081/api/auth/signup', {
@@ -142,7 +179,7 @@ const Signup = () => {
         phone: phone,
         email: email + '@' + emailDomain,
         preferredStyle: preferredStyle,
-        residentRegNum
+        residentRegNum: `${rrnFirst}-${rrnSecond}`
       });
 
       if (response.status) {
@@ -153,7 +190,8 @@ const Signup = () => {
       }
 
     } catch (err) {
-
+      console.error('회원가입 오류:', err);
+      alert('서버 오류 발생');
     }
 
   }
@@ -171,10 +209,11 @@ const Signup = () => {
               placeholder="아이디 입력(6~20자)"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
+              onBlur={validateUserId}
               required
             />
             <button type="button" className="verification-button" onClick={handleUserIdCheck}>중복 확인</button>
-            <p style={{ color: isUsernameValid ? 'green' : 'red' }}>{userIdError}</p>
+            {userIdError && <div className="error-message">{userIdError}</div>}
           </div>
 
           <div className="form-group">
@@ -185,8 +224,10 @@ const Signup = () => {
               placeholder="대소문자, 특수기호, 숫자 포함"
               value={pw}
               onChange={(e) => setPw(e.target.value)}
+              onBlur={validatePassword}
               required
             />
+            {passwordError && <div className="error-message">{passwordError}</div>}
           </div>
 
           <div className="form-group">
@@ -194,11 +235,11 @@ const Signup = () => {
             <input
               type="password"
               id="pw-confirm"
+              placeholder="비밀번호 확인"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-            {passwordError && <div className="error-message">{passwordError}</div>}
           </div>
 
           <div className="form-group">
@@ -206,6 +247,7 @@ const Signup = () => {
             <input
               type="text"
               id="name"
+              placeholder="이름"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -214,16 +256,29 @@ const Signup = () => {
 
           <div className="form-group">
             <label htmlFor="residentRegNum">주민등록번호</label>
-            <input
-              type="text"
-              id="residentRegNum"
-              value={residentRegNum}
-              onChange={handleRrnChange}
-              onBlur={validateRrn}
-              placeholder="000000-0000000"
-              maxLength="14"
-              required
-            />
+            <div className="rrn-group">
+              <input
+                type="text"
+                id="rrn-first"
+                value={rrnFirst}
+                onChange={handleRrnFirstChange}
+                onBlur={validateRrn}
+                placeholder="앞 6자리"
+                maxLength="6"
+                required
+              />
+              <span>-</span>
+              <input
+                type="text"
+                id="rrn-second"
+                value={rrnSecond}
+                onChange={handleRrnSecondChange}
+                onBlur={validateRrn}
+                placeholder="뒤 7자리"
+                maxLength="7"
+                required
+              />
+            </div>
             {rrnError && <p className="error-message">{rrnError}</p>}
           </div>
 
@@ -249,22 +304,24 @@ const Signup = () => {
                 type="text"
                 id="email"
                 value={email}
+                className="email-id"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="아이디 입력"
               />
               <span>@</span>
               <select
-              id="email-domain"
-              value={emailDomain}
-              onChange={(e) => setEmailDomain(e.target.value)}
-              required
-            >
-              <option value="naver.com">naver.com</option>
-              <option value="gmail.com">gmail.com</option>
-              <option value="kakao.com">kakao.com</option>
-              <option value="daum.net">daum.net</option>
-              <option value="hanmail.net">hanmail.net</option>
-            </select>
+                id="email-domain"
+                value={emailDomain}
+                className="email-domain"
+                onChange={(e) => setEmailDomain(e.target.value)}
+                required
+              >
+                <option value="naver.com">naver.com</option>
+                <option value="gmail.com">gmail.com</option>
+                <option value="kakao.com">kakao.com</option>
+                <option value="daum.net">daum.net</option>
+                <option value="hanmail.net">hanmail.net</option>
+              </select>
             </div>
           </div>
           <div className="form-group">
