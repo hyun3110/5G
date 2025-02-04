@@ -6,8 +6,7 @@ import Favorites from './Favorites';
 import KakaoMap from './Kakaomap'; // KakaoMap 컴포넌트 import
 import "../css/modal.css";
 
-const MyPage = ({user}) => {
-  const [username, setUsername] = useState('사용자 이름'); // 사용자 이름 상태
+const MyPage = ({ user }) => {
   const [profileImage, setProfileImage] = useState('/path/to/default-profile.png'); // 프로필 이미지 상태
   const [activeContent, setActiveContent] = useState('추천 받은 스타일'); // 현재 활성화된 콘텐츠 상태
   const [favorites, setFavorites] = useState([]); // 즐겨찾기한 스타일 리스트 상태
@@ -94,6 +93,10 @@ const MyPage = ({user}) => {
     }
   };
 
+  if (!user) {
+    return <div>Loading...</div>;  // 유저 데이터가 로딩되지 않았을 때 "Loading..." 표시
+  }
+  
   return (
     <div className="mypage-container">
 

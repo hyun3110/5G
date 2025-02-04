@@ -8,6 +8,7 @@ const MyWardrobe = ({ user }) => {
   const [showModal, setShowModal] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("상의"); // 선택된 카테고리
   const [visibleCounts, setVisibleCounts] = useState({
     "전체": 12,
     "외투": 12,
@@ -30,7 +31,7 @@ const MyWardrobe = ({ user }) => {
     if (!user) return;
 
     axios
-      .get(`/api/clothings/${user.id}`, { withCredentials: true })
+      .get(`/api/closets/${user.id}`, { withCredentials: true })
       .then((response) => {
         const data = response.data;
         if (Array.isArray(data)) {
@@ -58,9 +59,21 @@ const MyWardrobe = ({ user }) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("이미지 파일만 업로드 가능합니다.");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert("파일 크기는 5MB 이하이어야 합니다.");
+        return;
+      }
       setUploadedImage(file);
       setPreviewImage(URL.createObjectURL(file));
     }
+  };
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
   };
 
   const handleDragOver = (event) => {
@@ -86,21 +99,25 @@ const MyWardrobe = ({ user }) => {
     }
 
     const formData = new FormData();
-    formData.append("image", uploadedImage);
+    formData.append("file", uploadedImage);
     formData.append("userId", user.id);
+    formData.append("category", selectedCategory);
 
     try {
-      const response = await axios.post("/api/upload-image", formData, {
+      const response = await axios.post("/api/closets/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         alert("이미지가 성공적으로 업로드되었습니다!");
-        setShowModal(false);
-        setUploadedImage(null);
-        setPreviewImage(null);
+        setShowModal(false); // 모달 닫기
+        setUploadedImage(null); // 이미지 초기화
+        setPreviewImage(null); // 미리보기 초기화
+        setSelectedCategory("상의"); // 카테고리 초기화
+        // 새로 업로드된 아이템을 서버에서 받아와서 추가할 수 있습니다.
+        setItems((prevItems) => [...prevItems, response.data]);
       }
     } catch (error) {
       console.error("이미지 업로드 중 오류 발생:", error);
@@ -121,8 +138,9 @@ const MyWardrobe = ({ user }) => {
     return (
       <div className="grid">
         {visibleItems.map((item) => (
-          <div key={item.id} className="grid-item">
-            <img src={item.image} alt={`Item ${item.id}`} />
+          <div key={item.closetIdx} className="grid-item">
+            {/* 서버에서 반환한 이미지 URL을 사용하여 이미지 표시 */}
+            <img src={`/api/closets/download/${item.file}`} alt={`Item ${item.closetIdx}`} />
             <p>{item.name}</p>
           </div>
         ))}
@@ -185,42 +203,53 @@ const MyWardrobe = ({ user }) => {
       </div>
 
       {showModal && (
-  <div className="modal-backdrop">
-    <div className="modal">
-      <h2>이미지 업로드</h2>
-      <div className="image-preview-container">
-        {previewImage ? (
-          <img src={previewImage} alt="Preview" className="image-preview" />
-        ) : (
-          <div className="empty-preview">이미지 미리보기가 여기에 표시됩니다.</div>
-        )}
-      </div>
-      <div
-        className="drop-zone"
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        onClick={() => fileInputRef.current.click()}
-      >
-        <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
-        {uploadedImage && <p>업로드된 파일: {uploadedImage.name}</p>}
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
-      </div>
-      <button className="upload-button" onClick={handleUpload}>
-        업로드
-      </button>
-      <button className="cancel-button" onClick={() => setShowModal(false)}>
-        취소
-      </button>
-    </div>
-  </div>
-)}
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h2>이미지 업로드</h2>
+            <div className="image-preview-container">
+              {previewImage ? (
+                <img src={previewImage} alt="Preview" className="image-preview" />
+              ) : (
+                <div className="empty-preview">이미지 미리보기가 여기에 표시됩니다.</div>
+              )}
+            </div>
+            <div
+              className="drop-zone"
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current.click()}
+            >
+              <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
+              {uploadedImage && <p>업로드된 파일: {uploadedImage.name}</p>}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+            </div>
 
+            <select
+              id="category"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+            >
+              <option value="상의">상의</option>
+              <option value="하의">하의</option>
+              <option value="외투">외투</option>
+              <option value="신발">신발</option>
+            </select>
+
+            <button className="upload-button" onClick={handleUpload}>
+              업로드
+            </button>
+            <button className="cancel-button" onClick={() => setShowModal(false)}>
+              취소
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
