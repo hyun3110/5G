@@ -34,6 +34,9 @@ export default function Buttonclick({ user, events, setEvents }) {
   // 일정 유형 옵션
   const eventTypes = ["결혼식", "출퇴근", "데이트"];
 
+  // 오늘 날짜 구하기
+  const today = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD" 형식
+
   // 새로고침 시 로컬 스토리지에서 일정 불러오기
   useEffect(() => {
     const storedEvents = localStorage.getItem("events");
@@ -62,6 +65,21 @@ export default function Buttonclick({ user, events, setEvents }) {
     }
     setError(""); // 에러 메시지 초기화
     return true;
+  };
+
+    // 시작 날짜 변경 시
+  const handleStartDateChange = (e) => {
+    setEventDetails({ ...eventDetails, startDate: e.target.value });
+  };
+
+  // 종료 날짜 변경 시
+  const handleEndDateChange = (e) => {
+    if (new Date(e.target.value) < new Date(eventDetails.startDate)) {
+      setError("종료 날짜는 시작 날짜 이후여야 합니다.");
+      return;
+    }
+    setEventDetails({ ...eventDetails, endDate: e.target.value });
+    setError(""); // 종료일이 유효하면 에러 메시지 초기화
   };
 
   // 일정 추가
@@ -157,15 +175,15 @@ export default function Buttonclick({ user, events, setEvents }) {
           prevEvents.map((event) =>
             event.id === updatedEventFromServer.scheIdx
               ? {
-                  ...event,
-                  title: updatedEventFromServer.scheTitle,
-                  type: updatedEventFromServer.scheType,
-                  start: updatedEventFromServer.startDate,
-                  end: adjustedEndDate, // 수정된 종료일 반영
-                  color: updatedEventFromServer.color || "#ADD8E6",
-                  description: updatedEventFromServer.scheContent || "",
-                  originalEndDate: updatedEventFromServer.endDate, // 원본 종료일도 업데이트
-                }
+                ...event,
+                title: updatedEventFromServer.scheTitle,
+                type: updatedEventFromServer.scheType,
+                start: updatedEventFromServer.startDate,
+                end: adjustedEndDate, // 수정된 종료일 반영
+                color: updatedEventFromServer.color || "#ADD8E6",
+                description: updatedEventFromServer.scheContent || "",
+                originalEndDate: updatedEventFromServer.endDate, // 원본 종료일도 업데이트
+              }
               : event
           )
         );
@@ -291,9 +309,9 @@ export default function Buttonclick({ user, events, setEvents }) {
             // 종료일도 포함하여 비교
             return currentDate >= eventStartDate && currentDate <= eventEndDate;
           });
-
+        
           const eventCount = eventsForDate.length; // 해당 날짜의 이벤트 수 계산
-
+        
           return (
             <div style={{ position: "relative", padding: "5px" }}>
               {/* 날짜 */}
@@ -323,6 +341,7 @@ export default function Buttonclick({ user, events, setEvents }) {
             </div>
           );
         }}
+        
       />
 
       {/* 일정 추가 모달 */}
@@ -359,18 +378,16 @@ export default function Buttonclick({ user, events, setEvents }) {
         <input
           type="date"
           value={eventDetails.startDate}
-          onChange={(e) =>
-            setEventDetails({ ...eventDetails, startDate: e.target.value })
-          }
+          onChange={handleStartDateChange}
+          min={today} // 시작 날짜는 오늘 이후로 설정
         />
         <br />
         <label>종료일</label>
         <input
           type="date"
           value={eventDetails.endDate}
-          onChange={(e) =>
-            setEventDetails({ ...eventDetails, endDate: e.target.value })
-          }
+          onChange={handleEndDateChange}
+          min={eventDetails.startDate} // 종료 날짜는 시작 날짜 이후로 설정
         />
         <br />
         <label>설명</label>
@@ -448,18 +465,16 @@ export default function Buttonclick({ user, events, setEvents }) {
         <input
           type="date"
           value={eventDetails.startDate}
-          onChange={(e) =>
-            setEventDetails({ ...eventDetails, startDate: e.target.value })
-          }
+          onChange={handleStartDateChange}
+          min={today} // 시작 날짜는 오늘 이후로 설정
         />
         <br />
         <label>종료일</label>
         <input
           type="date"
           value={eventDetails.endDate}
-          onChange={(e) =>
-            setEventDetails({ ...eventDetails, endDate: e.target.value })
-          }
+          onChange={handleEndDateChange}
+          min={eventDetails.startDate} // 종료 날짜는 시작 날짜 이후로 설정
         />
         <br />
         <label>내용</label>
