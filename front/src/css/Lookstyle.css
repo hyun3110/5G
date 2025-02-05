@@ -1,80 +1,92 @@
-  .look-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .content-box {
-    background: black;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    margin-left: 50%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-  
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-  }
-  
-  .grid-item {
-    padding: 5px;
-    border: 2px solid gray;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .grid-item.selected {
-    border-color: blue;
-  }
-  
-  .outfit-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 6px;
-  }
-  
-  .button-container {
-    margin-top: 20px;
-  }
-  
-  .confirm-button {
-    background: #0066ff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .confirm-button:hover {
-    background: #408cff;
-  }
-  
-  .back-button {
-    background: red;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin-left: 10px;
-  }
-  
-  .back-button:hover {
-    background: darkred;
-  }
-  
+.look-container {
+  display: flex;
+  background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF);
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  /* 전체 너비 유지 */
+  margin: 0;
+  /* 여백 제거 */
+}
+
+.content-box {
+  background: black;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 800px;
+  height:700px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.look-container .grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.look-container .look-item {
+  border: 3px solid transparent; /* 초기에는 투명한 테두리 */
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  height: 250px;
+  box-sizing: border-box; /* 테두리 포함 크기 유지 */
+}
+
+.look-container .look-item.selected {
+  border: 3px solid blue;
+  /* 선택된 아이템 강조 */
+}
+
+.look-container .outfit-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 이미지가 컨테이너에 꽉 차도록 */
+}
+
+.button-container {
+  margin-top: 50px;
+}
+
+.confirm-button {
+  background: #0066ff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 115px;
+}
+
+.confirm-button:hover {
+  background: #408cff;
+}
+
+.back-button {
+  background: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-left: 10px;
+  width: 115px;
+}
+
+.back-button:hover {
+  background: darkred;
+}
