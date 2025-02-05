@@ -297,7 +297,6 @@ export default function Buttonclick({ user, events, setEvents }) {
           right: "addEventButton today prev,next", // 버튼 그룹을 오른쪽 끝에 배치
         }}
         dayCellContent={(arg) => {
-<<<<<<< HEAD
           const currentDate = new Date(arg.date).setHours(0, 0, 0, 0); // 현재 셀의 날짜 (시간 제거)
 
           // 해당 날짜에 포함되는 이벤트 필터링
@@ -308,16 +307,7 @@ export default function Buttonclick({ user, events, setEvents }) {
             ).setHours(0, 0, 0, 0);
 
             // 종료일도 포함하여 비교
-=======
-          const currentDate = arg.date.toISOString().split("T")[0]; // 현재 셀의 날짜
 
-          // 해당 날짜에 포함되는 이벤트 필터링
-          const eventsForDate = events.filter((event) => {
-            const eventStartDate = new Date(event.start).toISOString().split("T")[0];
-            const eventEndDate = new Date(event.originalEndDate || event.end).toISOString().split("T")[0];
-
-            // 종료일(end)은 포함하지 않도록 수정
->>>>>>> d60dbd3 (commit)
             return currentDate >= eventStartDate && currentDate <= eventEndDate;
           });
 
@@ -352,10 +342,6 @@ export default function Buttonclick({ user, events, setEvents }) {
             </div>
           );
         }}
-<<<<<<< HEAD
-=======
-
->>>>>>> d60dbd3 (commit)
       />
 
       {/* 일정 추가 모달 */}
