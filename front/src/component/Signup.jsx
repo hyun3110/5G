@@ -1,28 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅 임포트
+import { useNavigate, useLocation } from 'react-router-dom'; // useNavigate 훅 임포트
 import '../css/Signupstyle.css';
 import axios from 'axios';
 
 const Signup = () => {
-  const [userId, setUserId] = useState(''); // 아아디
-  const [pw, setPw] = useState(''); // 비밀번호
-  const [name, setName] = useState(''); // 이름
+
+  const navigate = useNavigate(); // useNavigate 훅 사용
+  const location = useLocation();
+
+  // 기존 입력 필드 유지
+  const [userId, setUserId] = useState(location.state?.userId || ''); // 아아디
+  const [pw, setPw] = useState(location.state?.pw || ''); // 비밀번호
+  const [name, setName] = useState(location.state?.name || ''); // 이름
+  const [confirmPassword, setConfirmPassword] = useState(location.state?.confirmPassword || '');
   // 주민등록번호 입력 핸들러 (앞자리, 뒷자리 분리)
-  const [rrnFirst, setRrnFirst] = useState('');
-  const [rrnSecond, setRrnSecond] = useState('');
-  const [phone, setPhone] = useState(''); // 전화번호
-  const [email, setEmail] = useState(''); // e메일
-  const [preferredStyle, setPreferredStyle] = useState('') // 선호 스타일
-  const [isUsernameValid, setIsUsernameValid] = useState(true);
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [rrnFirst, setRrnFirst] = useState(location.state?.rnnFirst || '');
+  const [rrnSecond, setRrnSecond] = useState(location.state?.rnnSecond || '');
+  const [phone, setPhone] = useState(location.state?.phone || ''); // 전화번호
+  const [email, setEmail] = useState(location.state?.email || ''); // e메일
+  const [emailDomain, setEmailDomain] = useState(location.state?.emailDomain || 'naver.com'); // e메일 도메인
+  const [preferredStyle, setPreferredStyle] = useState(location.state?.preferredStyle || []) // 선호 스타일
+
+  // 유효성 검사
   const [userIdError, setUserIdError] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [rrnError, setRrnError] = useState('');
   const [phoneError, setPhoneError] = useState('');
-  const [emailDomain, setEmailDomain] = useState('naver.com');
+  const [isUsernameValid, setIsUsernameValid] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
 
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  // Look 페이지에서 돌아왔을 때 `preferredStyle` 유지
+  useEffect(() => {
+    if (location.state?.preferredStyle) {
+      setPreferredStyle(location.state.preferredStyle);
+      setRrnFirst(location.state.rrnFirst || '');
+      setRrnSecond(location.state.rrnSecond || '');
+    }
+  }, [location.state?.preferredStyle]);
 
   // 아이디 유효성 검사
   const validateUserId = (id) => {
@@ -36,8 +50,8 @@ const Signup = () => {
     }
   };
 
-   // 비밀번호 유효성 검사
-   const validatePassword = (password) => {
+  // 비밀번호 유효성 검사
+  const validatePassword = (password) => {
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordPattern.test(password)) {
       setPasswordError('유효하지 않은 비밀번호입니다.');
@@ -151,8 +165,22 @@ const Signup = () => {
     navigate('/'); // 로그인 화면으로 이동
   };
 
+  // 선호 스타일 선택 페이지 이동 (현재 입력 데이터 유지)
   const handleStyleSelection = () => {
-    navigate('/look');
+    navigate('/look', {
+      state: {
+        userId,
+        pw,
+        confirmPassword,
+        name,
+        rrnFirst,
+        rrnSecond,
+        phone,
+        email,
+        emailDomain,
+        preferredStyle,
+      }
+    });
   };
 
   const signup = async (e) => {
@@ -177,9 +205,9 @@ const Signup = () => {
         pw: pw,
         name: name,
         phone: phone,
-        email: email + '@' + emailDomain,
-        preferredStyle: preferredStyle,
-        residentRegNum: `${rrnFirst}-${rrnSecond}`
+        email: `${email}'@'${emailDomain}`,
+        residentRegNum: `${rrnFirst}-${rrnSecond}`,
+        preferredStyle
       });
 
       if (response.status) {
