@@ -3,12 +3,12 @@ import "../css/MyWardrobe.css";
 import axios from "axios";
 
 const MyWardrobe = ({ user }) => {
-  const [items, setItems] = useState([]); // 아이템 목록
-  const [selectedItems, setSelectedItems] = useState([]); // 선택된 아이템 저장
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [showModal, setShowModal] = useState(false); // 모달 상태
-  const [uploadedImage, setUploadedImage] = useState(null); // 업로드 이미지
-  const [previewImage, setPreviewImage] = useState(null); // 이미지 미리보기
+  const [items, setItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("상의"); // 선택된 카테고리
   const [visibleCounts, setVisibleCounts] = useState({
     전체: 12,
@@ -16,42 +16,37 @@ const MyWardrobe = ({ user }) => {
     상의: 12,
     하의: 12,
     신발: 12,
-  }); // 각 카테고리별 보여질 항목 수
+  });
+  const fileInputRef = useRef();
+  const sectionsRef = useRef({
+    전체: null,
+    외투: null,
+    상의: null,
+    하의: null,
+    신발: null,
+  });
 
-  const fileInputRef = useRef(); // 파일 입력 Ref
-  const currentPage = "내 옷장"; // 이 변수는 상수로 사용 가능
+  const currentPage = "내 옷장";
 
   useEffect(() => {
-    if (!user) return; // user가 없으면 API 호출하지 않음
-    const fetchItems = async () => {
-      try {
-        const response = await axios.get(`/api/closets/${user.id}`, {
-          withCredentials: true,
-        });
+    if (!user) return;
+
+    axios
+      .get(`/api/closets/${user.id}`, { withCredentials: true })
+      .then((response) => {
         const data = response.data;
-        setItems(Array.isArray(data) ? data : [data]);
-      } catch (error) {
-        console.error("옷장 데이터를 가져오는 데 실패했습니다.", error);
-      } finally {
+        if (Array.isArray(data)) {
+          setItems(data);
+        } else {
+          setItems([data]);
+        }
         setLoading(false);
-      }
-    };
-    fetchItems();
-  }, [user]); // useEffect에 비동기 호출 래핑
-
-  // 나머지 함수와 JSX 코드는 그대로 유지합니다.
-
-
-  const handleLoadMore = (category) => {
-    const filteredItems = items.filter(
-      (item) => item.category === category || category === "전체"
-    );
-
-    setVisibleCounts((prevCounts) => ({
-      ...prevCounts,
-      [category]: visibleCounts[category] === 12 ? filteredItems.length : 12,
-    }));
-  };
+      })
+      .catch((error) => {
+        console.error("옷장 데이터를 가져오는 데 실패했습니다.", error);
+        setLoading(false);
+      });
+  }, [user]);
 
   const handleCheckboxChange = (closetIdx) => {
     setSelectedItems((prevSelected) =>
@@ -67,28 +62,107 @@ const MyWardrobe = ({ user }) => {
       return;
     }
 
+    const confirmDelete = window.confirm("선택한 아이템을 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+
     try {
-      console.log("Deleting items:", selectedItems); // 디버깅용 콘솔 출력
-      const response = await axios.post(
+      await axios.post(
         `/api/closets/delete`,
         { ids: selectedItems },
         { withCredentials: true }
       );
 
-      if (response.status === 200 || response.status === 204) {
-        setItems((prevItems) =>
-          prevItems.filter((item) => !selectedItems.includes(item.closetIdx))
-        );
-        setSelectedItems([]);
-        alert("선택한 아이템이 삭제되었습니다.");
-      } else {
-        console.error("Unexpected response:", response);
-        alert("삭제 요청이 실패했습니다.");
+      alert("선택한 아이템이 삭제되었습니다.");
+      // 새로고침 대신 상태 업데이트
+    setItems((prevItems) =>
+      prevItems.filter((item) => !selectedItems.includes(item.closetIdx))
+    );
+    setSelectedItems([]); // 선택된 목록 초기화
+  } catch (error) {
+    console.error("아이템 삭제 중 오류 발생:", error);
+    alert("아이템 삭제에 실패했습니다.");
+  }
+};
+
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("이미지 파일만 업로드 가능합니다.");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert("파일 크기는 5MB 이하이어야 합니다.");
+        return;
+      }
+      setUploadedImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const file = event.dataTransfer.files[0];
+    if (file) {
+      setUploadedImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!uploadedImage || !user) {
+      alert("이미지를 선택하고 로그인 상태를 확인하세요.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", uploadedImage);
+    formData.append("userId", user.id);
+    formData.append("category", selectedCategory);
+
+    try {
+      const response = await axios.post("/api/closets/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        alert("이미지가 성공적으로 업로드되었습니다!");
+        setShowModal(false); // 모달 닫기
+        setUploadedImage(null); // 이미지 초기화
+        setPreviewImage(null); // 미리보기 초기화
+        setSelectedCategory("상의"); // 카테고리 초기화
+        // 새로 업로드된 아이템을 서버에서 받아와서 추가할 수 있습니다.
+        setItems((prevItems) => [...prevItems, response.data]);
       }
     } catch (error) {
-      console.error("아이템 삭제 중 오류 발생:", error);
-      alert("아이템 삭제에 실패했습니다.");
+      console.error("이미지 업로드 중 오류 발생:", error);
+      alert("이미지 업로드에 실패했습니다.");
     }
+  };
+
+  const handleLoadMore = (category) => {
+    const filteredItems = items.filter(
+      (item) => item.category === category || category === "전체"
+    );
+
+    setVisibleCounts((prevCounts) => ({
+      ...prevCounts,
+      [category]: visibleCounts[category] === 12 ? filteredItems.length : 12,
+    }));
   };
 
   const renderItems = (category) => {
@@ -115,87 +189,42 @@ const MyWardrobe = ({ user }) => {
       <div>
         <div className="grid">
           {visibleItems.map((item) => (
-            <div
-              key={item.closetIdx}
-              className={`grid-item ${
-                selectedItems.includes(item.closetIdx) ? "selected" : ""
-              }`}
-            >
-              <div className="checkbox-wrapper">
-                <input
-                  type="checkbox"
-                  className="item-checkbox"
-                  checked={selectedItems.includes(item.closetIdx)}
-                  onChange={() => handleCheckboxChange(item.closetIdx)}
-                />
-              </div>
+            <div key={item.closetIdx} className="grid-item styled-grid-item">
+              {/* 체크박스 추가 */}
+              <input
+                type="checkbox"
+                className="item-checkbox"
+                checked={selectedItems.includes(item.closetIdx)}
+                onChange={() => handleCheckboxChange(item.closetIdx)}
+              />
+    
+              {/* 아이템 이미지 */}
               <img
                 src={`/api/closets/download/${item.file}`}
                 alt={`Item ${item.closetIdx}`}
+                className="item-image"
               />
-              <p>{item.name}</p>
+    
+              {/* 아이템 이름 */}
+              <p className="item-name">{item.name}</p>
             </div>
           ))}
         </div>
-        {showLoadMoreButton && (
+    
+      {/* 더 보기 버튼 */}
+      {showLoadMoreButton && (
+        <div className="load-more-container">
           <button
             className="load-more-button"
             onClick={() => handleLoadMore(category)}
           >
             {visibleCounts[category] === 12 ? "더 보기" : "접기"}
           </button>
-        )}
-      </div>
-    );
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      if (!file.type.startsWith("image/")) {
-        alert("이미지 파일만 업로드 가능합니다.");
-        return;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        alert("파일 크기는 5MB 이하이어야 합니다.");
-        return;
-      }
-      setUploadedImage(file);
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
-
-  const handleUpload = async () => {
-    if (!uploadedImage || !user) {
-      alert("이미지를 선택하고 로그인 상태를 확인하세요.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", uploadedImage);
-    formData.append("userId", user.id);
-    formData.append("category", selectedCategory);
-
-    try {
-      const response = await axios.post("/api/closets/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (response.status === 200 || response.status === 201) {
-        alert("이미지가 성공적으로 업로드되었습니다!");
-        setShowModal(false);
-        setUploadedImage(null);
-        setPreviewImage(null);
-        setSelectedCategory("상의");
-        setItems((prevItems) => [...prevItems, response.data]);
-      }
-    } catch (error) {
-      console.error("이미지 업로드 중 오류 발생:", error);
-      alert("이미지 업로드에 실패했습니다.");
-    }
-  };
+        </div>
+      )}
+    </div>
+  );
+};
 
   if (loading) {
     return <p>로딩 중...</p>;
@@ -208,7 +237,14 @@ const MyWardrobe = ({ user }) => {
           <h2>내 의류</h2>
           <ul>
             {["전체", "외투", "상의", "하의", "신발"].map((category) => (
-              <li key={category}>
+              <li
+                key={category}
+                onClick={() =>
+                  sectionsRef.current[category]?.scrollIntoView({
+                    behavior: "smooth",
+                  })
+                }
+              >
                 {category}
                 <hr />
               </li>
@@ -219,33 +255,34 @@ const MyWardrobe = ({ user }) => {
 
       <div className="main-content">
         <div className="navigation-bar">
-          <h1 className="left-text">My Wardrobe</h1>
           <div className="right-text">
             <a href="/Mypage" className="breadcrumb">
               My Page
             </a>{" "}
-            &gt; <span className="current">{currentPage}</span>
+            &gt;
+            <span className="current">{currentPage}</span>
           </div>
         </div>
 
         <div className="top-action-bar">
+          <h1 className="left-text">My Wardrobe</h1>
           <button
             className="add-clothing-button"
             onClick={() => setShowModal(true)}
           >
             내 옷 등록
           </button>
+          {/* 삭제하기 버튼 */}
           <button
             className="Wardrobe-delete-button"
             onClick={handleDeleteSelected}
-            disabled={selectedItems.length === 0}
           >
             삭제하기
           </button>
         </div>
 
         <hr className="category-divider" />
-        <section>
+        <section ref={(el) => (sectionsRef.current["최근 등록"] = el)}>
           <h2 className="category-title">최근 등록</h2>
           {renderItems("최근 등록")}
         </section>
@@ -253,7 +290,7 @@ const MyWardrobe = ({ user }) => {
         {["전체", "외투", "상의", "하의", "신발"].map((category) => (
           <React.Fragment key={category}>
             <hr className="category-divider" />
-            <section>
+            <section ref={(el) => (sectionsRef.current[category] = el)}>
               <h2 className="category-title">{category}</h2>
               {renderItems(category)}
             </section>
@@ -282,20 +319,40 @@ const MyWardrobe = ({ user }) => {
             </div>
             <div
               className="drop-zone"
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={handleFileChange}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current.click()}
             >
               <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
+              {uploadedImage && <p>업로드된 파일: {uploadedImage.name}</p>}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
             </div>
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              style={{ display: "none" }}
-            />
+
+            <select
+              id="category"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+            >
+              <option value="상의">상의</option>
+              <option value="하의">하의</option>
+              <option value="외투">외투</option>
+              <option value="신발">신발</option>
+            </select>
+
             <button className="upload-button" onClick={handleUpload}>
               업로드
+            </button>
+            <button
+              className="cancel-button"
+              onClick={() => setShowModal(false)}
+            >
+              취소
             </button>
           </div>
         </div>
