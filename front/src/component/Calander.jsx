@@ -310,9 +310,9 @@ export default function Buttonclick({ user, events, setEvents }) {
 
             return currentDate >= eventStartDate && currentDate <= eventEndDate;
           });
-
+        
           const eventCount = eventsForDate.length; // 해당 날짜의 이벤트 수 계산
-
+        
           return (
             <div style={{ position: "relative", padding: "5px" }}>
               {/* 날짜 */}
@@ -342,6 +342,7 @@ export default function Buttonclick({ user, events, setEvents }) {
             </div>
           );
         }}
+        
       />
 
       {/* 일정 추가 모달 */}

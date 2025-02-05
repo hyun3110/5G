@@ -32,7 +32,6 @@ const MyWardrobe = ({ user }) => {
         setItems(Array.isArray(data) ? data : [data]);
       } catch (error) {
         console.error("옷장 데이터를 가져오는 데 실패했습니다.", error);
-      } finally {
         setLoading(false);
       }
     };
