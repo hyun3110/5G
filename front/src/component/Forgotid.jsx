@@ -1,39 +1,56 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 import '../css/Forgotidstyle.css';
 
+// 이름, 주민번호로 아이디 찾기
 const ForgotId = () => {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState({ text: '', type: '' });
+  const [name, setName] = useState("");
+  const [rrnFirst, setRrnFirst] = useState("");
+  const [rrnSecond, setRrnSecond] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "" });
+  const [foundId, setFoundId] = useState("");
   const navigate = useNavigate();
 
-  const validEmailDomains = ['gmail.com', 'naver.com', 'kakao.com', 'daum.net', 'hanmail.net']; // 유효한 도메인 리스트
-
-  const handleRetrieveId = () => {
-    if (email.trim() === '') {
-      setMessage({ text: '유효한 이메일 주소를 입력해주세요.', type: 'error' });
-      return;
-    }
-
-    // 이메일 형식 및 도메인 검증
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setMessage({ text: '이메일 형식이 올바르지 않습니다.', type: 'error' });
-      return;
-    }
-
-    // 이메일 도메인 검증
-    const emailDomain = email.split('@')[1];
-    if (!validEmailDomains.includes(emailDomain)) {
-      setMessage({ text: `"${emailDomain}"는(은) 지원하지 않는 이메일입니다.`, type: 'error' });
-      return;
-    }
-
-    // 성공 메시지
-    setMessage({ text: `${email}로 링크를 보냈습니다.`, type: 'success' });
-    setEmail(''); // 입력 필드 초기화
+  
+  // 주민등록번호 입력 핸들러 (숫자만 입력 가능)
+  const handleRrnFirstChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, "");
+    if (value.length > 6) value = value.slice(0, 6); // 6자리 제한
+    setRrnFirst(value);
   };
 
+  const handleRrnSecondChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, "");
+    if (value.length > 7) value = value.slice(0, 7); // 7자리 제한
+    setRrnSecond(value);
+  };
+
+  // 아이디 찾기 요청
+  const handleRetrieveId = async () => {
+    if (!name.trim() || rrnFirst.length !== 6 || rrnSecond.length !== 7) {
+      setMessage({ text: "이름과 주민등록번호를 올바르게 입력하세요.", type: "error" });
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8081/api/auth/find-id", {
+        name,
+        residentRegNum: `${rrnFirst}-${rrnSecond}`,
+      });
+
+      if (response.data.userId) {
+        setFoundId(response.data.userId);
+        setMessage({ text: `회원님의 아이디는 "${response.data.userId}" 입니다.`, type: "success" });
+      } else {
+        setMessage({ text: "입력한 정보와 일치하는 아이디가 없습니다.", type: "error" });
+      }
+    } catch (error) {
+      setMessage({ text: "서버 오류가 발생했습니다. 다시 시도해주세요.", type: "error" });
+    }
+  };
+
+  // Enter 키 입력 시 실행
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleRetrieveId();
@@ -43,20 +60,45 @@ const ForgotId = () => {
   return (
     <div className="forgot-id-container">
       <div className="forgot-id-box">
-        <h1>Forgot ID?</h1>
-        <p>아래에 이메일 주소를 입력하시면 링크를 보내드립니다.</p>
+        <h1>아이디 찾기</h1>
+        <p>이름과 주민등록번호를 입력하면 아이디를 찾을 수 있습니다.</p>
+
         <input
-          type="email"
-          placeholder="이메일 입력"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyDown={handleKeyDown} // Enter 키 이벤트 핸들러 추가
+          type="text"
+          placeholder="이름 입력"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
-        {message.text && (
-          <div className={`message ${message.type}`}>
-            {message.text}
+
+<div className="rrn-group">
+          <input
+            type="text"
+            placeholder="주민등록번호 앞 6자리"
+            value={rrnFirst}
+            onChange={handleRrnFirstChange}
+            maxLength="6"
+            onKeyDown={handleKeyDown}
+          />
+          <span>-</span>
+          <input
+            type="text"
+            placeholder="주민등록번호 뒤 7자리"
+            value={rrnSecond}
+            onChange={handleRrnSecondChange}
+            maxLength="7"
+            onKeyDown={handleKeyDown}
+          />
+        </div>
+
+        {message.text && <div className={`message ${message.type}`}>{message.text}</div>}
+
+        {foundId && (
+          <div className="found-id">
+            <p>회원님의 아이디: <strong>{foundId}</strong></p>
           </div>
         )}
+
         <button onClick={handleRetrieveId}>ID 전송</button>
         <a onClick={() => navigate('/Login')}>로그인</a>
       </div>

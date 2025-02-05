@@ -19,14 +19,8 @@
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* 더 부드러운 그림자 */
   text-align: center;
-  max-width: 420px; /* 고정된 최대 너비 */
+  max-width: 432px; /* 고정된 최대 너비 */
   width: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.forgot-id-box:hover {
-  transform: translateY(-5px); /* 가벼운 위로 이동 효과 */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* 더 깊은 그림자 */
 }
 
 /* 제목 및 설명 */

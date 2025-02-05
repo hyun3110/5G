@@ -1,65 +1,101 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../css/Forgotpwstyle.css';
 
+// 아이디, 이름, 주민번호 확인 후 비밀번호 재설정
 const ForgotPassword = () => {
-  const [email, setEmail] = useState('');
+  const [userId, setUserId] = useState('');
+  const [name, setName] = useState('');
+  const [rrnFirst, setRrnFirst] = useState('');
+  const [rrnSecond, setRrnSecond] = useState('');
   const [message, setMessage] = useState({ text: '', type: '' });
   const navigate = useNavigate();
 
-  const validEmailDomains = ['gmail.com', 'naver.com', 'kakao.com', 'daum.net', 'hanmail.net']; // 유효한 도메인 리스트
-
-  const handleResetLink = () => {
-    if (email.trim() === '') {
-      setMessage({ text: '유효한 이메일 주소를 입력해주세요.', type: 'error' });
+  const handleVerification = async () => {
+    if (!userId || !name || !rrnFirst || !rrnSecond) {
+      setMessage({ text: '모든 필드를 입력해주세요.', type: 'error' });
       return;
     }
 
-    // 이메일 형식 및 도메인 검증
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setMessage({ text: '이메일 형식이 올바르지 않습니다.', type: 'error' });
+    // 주민등록번호 유효성 검사
+    const rrnPattern = /^\d{6}-\d{7}$/;
+    const fullRrn = `${rrnFirst}-${rrnSecond}`;
+
+    if (!rrnPattern.test(fullRrn)) {
+      setMessage({ text: '유효한 주민등록번호를 입력하세요.', type: 'error' });
       return;
     }
 
-    // 이메일 도메인 검증
-    const emailDomain = email.split('@')[1];
-    if (!validEmailDomains.includes(emailDomain)) {
-      setMessage({ text: `"${emailDomain}"는(은) 지원하지 않는 이메일입니다.`, type: 'error' });
-      return;
-    }
+    try {
+      const response = await axios.post('http://localhost:8081/api/auth/verify-user', {
+        userId,
+        name,
+        residentRegNum: fullRrn,
+      });
 
-    // 성공 메시지
-    setMessage({ text: `${email}로 링크를 보냈습니다.`, type: 'success' });
-    setEmail(''); // 입력 필드 초기화
+      if (response.data.success) {
+        navigate('/resetpassword', { state: { userId } }); // 비밀번호 재설정 페이지로 이동
+      } else {
+        setMessage({ text: '입력한 정보와 일치하는 사용자가 없습니다.', type: 'error' });
+      }
+    } catch (error) {
+      console.error('본인 확인 오류:', error);
+      setMessage({ text: '서버 오류 발생. 다시 시도해주세요.', type: 'error' });
+    }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      handleResetLink();
+      handleVerification();
     }
   };
 
   return (
     <div className="forgot-password-container">
       <div className="forgot-password-box">
-        <h1>비밀번호를 잊으셨나요?</h1>
-        <p>아래에 이메일 주소를 입력하시면</p>
-        <p>비밀번호 재설정 지침을 보내드립니다.</p>
+        <h1>비밀번호 찾기</h1>
+        <p>회원정보를 입력하면 본인 확인 후</p>
+        <p>비밀번호를 재설정할 수 있습니다.</p>
+
         <input
-          type="email"
-          placeholder="이메일 입력"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyDown={handleKeyDown} // Enter 키 이벤트 추가
+          type="text"
+          placeholder="아이디 입력"
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
-        {/* 메시지를 버튼 위로 이동 */}
-        {message.text && (
-          <div className={`message ${message.type}`}>
-            {message.text}
-          </div>
-        )}
-        <button className="re-link" onClick={handleResetLink}>재설정 링크 보내기</button>
+        <input
+          type="text"
+          placeholder="이름 입력"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <div className="rrn-group">
+          <input
+            type="text"
+            placeholder="주민등록번호 앞 6자리"
+            value={rrnFirst}
+            onChange={(e) => setRrnFirst(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
+            maxLength="6"
+            onKeyDown={handleKeyDown}
+          />
+          <span>-</span>
+          <input
+            type="text"
+            placeholder="주민등록번호 뒤 7자리"
+            value={rrnSecond}
+            onChange={(e) => setRrnSecond(e.target.value.replace(/[^0-9]/g, '').slice(0, 7))}
+            maxLength="7"
+            onKeyDown={handleKeyDown}
+          />
+        </div>
+
+        {message.text && <div className={`message ${message.type}`}>{message.text}</div>}
+
+
+        <button className="verify-button" onClick={handleVerification}>본인 확인</button>
         <a className="other-button" onClick={() => navigate('/Login')}>로그인</a>
       </div>
     </div>

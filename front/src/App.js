@@ -11,6 +11,7 @@ import Look from "./component/Look";
 import Pwconfirm from "./component/Pwconfirm";
 import Useredit from "./component/Useredit";
 import Weekcalander from "./component/Weekcalander";
+import Resetpw from "./component/Resetpw";
 import MyWardrobe from "./component/MyWardrobe"; // MyWardrobe 추가
 import axios from 'axios';
 
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="/pwconfirm" element={<Pwconfirm user={user}/>} />
           <Route path="/useredit" element={<Useredit user={user} setUser={setUser}/>} />
           <Route path="/weekcalander" element={<Weekcalander />} />
+          <Route path="/resetpw" element={<Resetpw />} />
           <Route path="/mywardrobe" element={<MyWardrobe user={user}/>} /> {/* MyWardrobe 경로 추가 */}
         </Routes>
       </div>
