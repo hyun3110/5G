@@ -100,6 +100,7 @@ body, html {
   border: none;
   color: white;
   font-size: 1.1em;
+  font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
   display: block; /* 중앙 정렬을 위한 block 설정 */
@@ -120,7 +121,7 @@ body, html {
 .additional-links .top-link {
   text-decoration: none;
   color: #5f75ff;
-  font-size: 10px;
+  font-size: 11px;
   transition: color 0.3s ease;
 }
 
@@ -138,7 +139,7 @@ body, html {
 .additional-links .right-links a {
   text-decoration: none;
   color: #5f75ff;
-  font-size: 10px;
+  font-size: 11px;
   transition: color 0.3s ease;
 }
 

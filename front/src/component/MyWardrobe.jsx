@@ -58,11 +58,11 @@ const MyWardrobe = ({ user }) => {
 
   const handleDeleteSelected = async () => {
     if (selectedItems.length === 0) {
-      alert("삭제할 아이템을 선택하세요.");
+      alert("삭제할 의류를 선택하세요.");
       return;
     }
 
-    const confirmDelete = window.confirm("선택한 아이템을 삭제하시겠습니까?");
+    const confirmDelete = window.confirm("선택한 의류를 삭제하시겠습니까?");
     if (!confirmDelete) return;
 
     try {
@@ -72,18 +72,18 @@ const MyWardrobe = ({ user }) => {
         { withCredentials: true }
       );
 
-      alert("선택한 아이템이 삭제되었습니다.");
+      alert("선택한 의류가 삭제되었습니다.");
       // 새로고침 대신 상태 업데이트
-    setItems((prevItems) =>
-      prevItems.filter((item) => !selectedItems.includes(item.closetIdx))
-    );
-    setSelectedItems([]); // 선택된 목록 초기화
-  } catch (error) {
-    console.error("아이템 삭제 중 오류 발생:", error);
-    alert("아이템 삭제에 실패했습니다.");
-  }
-};
+      setItems((prevItems) =>
+        prevItems.filter((item) => !selectedItems.includes(item.closetIdx))
+      );
 
+      setSelectedItems([]); // 선택된 목록 초기화
+    } catch (error) {
+      console.error("의류 삭제 중 오류 발생:", error);
+      alert("의류 삭제에 실패했습니다.");
+    }
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -170,7 +170,7 @@ const MyWardrobe = ({ user }) => {
       category === "최근 등록"
         ? items.filter((item) => {
             const today = new Date();
-            const uploadDate = new Date(item.uploadDate);
+            const uploadDate = new Date(item.uploadedAt);
             const diffDays = (today - uploadDate) / (1000 * 60 * 60 * 24);
             return diffDays <= 7;
           })
@@ -192,39 +192,43 @@ const MyWardrobe = ({ user }) => {
             <div key={item.closetIdx} className="grid-item styled-grid-item">
               {/* 체크박스 추가 */}
               <input
+                id={`checkbox-${item.closetIdx}`}
                 type="checkbox"
                 className="item-checkbox"
                 checked={selectedItems.includes(item.closetIdx)}
                 onChange={() => handleCheckboxChange(item.closetIdx)}
               />
-    
+              <label
+                htmlFor={`checkbox-${item.closetIdx}`}
+                className="checkbox-wrapper"
+              ></label>
               {/* 아이템 이미지 */}
               <img
                 src={`/api/closets/download/${item.file}`}
                 alt={`Item ${item.closetIdx}`}
                 className="item-image"
               />
-    
+
               {/* 아이템 이름 */}
               <p className="item-name">{item.name}</p>
             </div>
           ))}
         </div>
-    
-      {/* 더 보기 버튼 */}
-      {showLoadMoreButton && (
-        <div className="load-more-container">
-          <button
-            className="load-more-button"
-            onClick={() => handleLoadMore(category)}
-          >
-            {visibleCounts[category] === 12 ? "더 보기" : "접기"}
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
+
+        {/* 더 보기 버튼 */}
+        {showLoadMoreButton && (
+          <div className="load-more-container">
+            <button
+              className="load-more-button"
+              onClick={() => handleLoadMore(category)}
+            >
+              {visibleCounts[category] === 12 ? "더 보기" : "접기"}
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   if (loading) {
     return <p>로딩 중...</p>;
