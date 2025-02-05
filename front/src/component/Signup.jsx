@@ -162,7 +162,7 @@ const Signup = () => {
   };
 
   const handleCancel = () => {
-    navigate('/'); // 로그인 화면으로 이동
+    navigate('/login'); // 로그인 화면으로 이동
   };
 
   // 선호 스타일 선택 페이지 이동 (현재 입력 데이터 유지)
