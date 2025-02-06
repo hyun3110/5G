@@ -8,9 +8,10 @@ header {
     padding: 0;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
   }
   
-  .header-container {
+  .Main-header-container {
     display: flex;
     justify-content: space-between; /* 좌/우 요소 간 간격 */
     align-items: center; /* 수직 중앙 정렬 */
@@ -84,6 +85,21 @@ header {
     color: #333;
   }
   
+
+  .header-register-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6b21a8; /* 로그인 버튼과 동일한 색상 */
+    color: white;
+    cursor: pointer;
+    margin-right: 10px; /* 로그인 버튼과 간격 추가 */
+  }
+  
+  .header-register-button:hover {
+    background-color: #4c1d95; /* 로그인 버튼과 동일한 hover 색상 */
+  }
+  
   .header-login-button {
     padding: 5px 10px;
     border: none;
@@ -110,3 +126,6 @@ header {
   .header-logout-button:hover {
     background-color: #4c1d95;
   }
+
+
+  

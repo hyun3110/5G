@@ -22,8 +22,7 @@
     margin: 10px 0 5px;
   }
   
-  input,
-  select {
+  input, select {
     padding: 10px;
     border: 1px solid #ccc;
     margin-bottom: 10px;

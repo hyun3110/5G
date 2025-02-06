@@ -49,5 +49,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "chokidar": "^4.0.3",
+    "watchpack": "^2.4.2"
   }
 }

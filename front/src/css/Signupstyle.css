@@ -2,56 +2,63 @@
     font-family: Noto Sans KR;
     background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF) !important;
     margin: 0;
-    padding: 0;
+    padding: 20px 0; /* 스크롤 시 여유 공간 추가 */
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start; /* 위쪽에서 시작 */
+    min-height: 100vh; /* 최소 높이를 화면 크기로 설정 */
+    overflow-y: auto; /* 수직 스크롤 활성화 */
 }
 
 .form-container {
     background-color: white;
-    padding: 20px 30px;
+    padding: 15px 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 800px;
+    width: 600px; /* 너비를 줄임 */
+    max-width: 90%; /* 화면이 작을 때 유동적으로 크기 조정 */
+    margin: 20px auto; /* 화면 중앙 정렬 */
 }
+
 
 .form-container h1 {
     text-align: center;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .form-group {
     display: flex;
     align-items: center;
     justify-content: flex-start; /* 왼쪽 정렬 */
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     width: 100%;
 }
 
 .form-group label {
-    width: 150px; /* 라벨을 일정한 너비로 고정 */
-    text-align: left; /* 왼쪽 정렬 */
+    width: 120px; /* 라벨 너비 줄이기 */
+    text-align: left;
     font-weight: bold;
     color: #9f5fff;
 }
 
 .form-group input,
 .form-group select {
-    max-width: 300px; /* 입력 필드의 최대 너비 설정 */
-    padding: 10px;
+    max-width: 250px; /* 입력 필드의 최대 너비 설정 */
+    padding: 8px; /* 여백 줄이기 */
     border: none;
     border-bottom: 2px solid #9f5fff;
     outline: none;
     transition: border-color 0.3s ease;
+    font-size: 0.9em; /* 글자 크기 줄이기 */
 }
+
+
 
 /* 주민등록번호 입력 필드 스타일 */
 .rrn-group {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
 }
 
@@ -64,17 +71,10 @@
 .email-group {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-grow: 1;
+    gap: 8px;
 }
 
-/* 이메일 입력 부분 */
-.email-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-grow: 1;
-}
+
 
 /* 아이디 입력 필드 (이메일 @ 앞부분) */
 .email-group .email-id {
@@ -105,11 +105,11 @@
 }
 
 .btn-group button {
-    width: 20%;
-    padding: 10px;
+    width: 30%; /* 버튼 너비 줄이기 */
+    padding: 8px; /* 버튼 안쪽 여백 줄이기 */
+    font-size: 0.9em; /* 글자 크기 조정 */
     border: none;
     border-radius: 5px;
-    font-size: 1em;
     cursor: pointer;
 }
 
@@ -138,3 +138,4 @@
     border-bottom: 2px solid red !important;
     color: red;
 }
+ 

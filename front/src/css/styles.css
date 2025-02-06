@@ -2,15 +2,18 @@
   width: 12px;
   height: 12px;
 }
+
 ::-webkit-scrollbar-track {
   background-color: #f0f0f0;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: #ffffff;
   border-radius: 10px;
   border: 2px solid #f0f0f0;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background-color: #e0e0e0;
 }
@@ -25,33 +28,52 @@ body {
 }
 
 .app-container {
-  display: flex; /* flex 레이아웃 */
-  flex-direction: row; /* 좌우 배치 */
-  height: 100%; /* 화면 전체 높이 */
-  overflow: hidden; /* 스크롤바 표시 */
-  padding-top: 1.8%; /* Header 높이만큼 여백 추가 */
+  display: flex;
+  /* flex 레이아웃 */
+  flex-direction: row;
+  /* 좌우 배치 */
+  height: 100%;
+  /* 화면 전체 높이 */
+  overflow: hidden;
+  /* 스크롤바 표시 */
+  padding-top: 1.8%;
+  /* Header 높이만큼 여백 추가 */
 }
 
 /* Daily Look 텍스트 스타일 */
 .slider-container {
-  display: flex; /* 플렉스 박스 사용 */
-  flex-direction: column; /* 수직 방향 정렬 */
-  justify-content: center; /* 슬라이더를 세로로 중앙 정렬 */
-  align-items: center; /* 슬라이더를 가로로 중앙 정렬 */
-  width: 100%; /* 슬라이더 컨테이너 너비 */
-  height: 100%; /* 슬라이더 컨테이너 높이 */
-  position: relative; /* 내부 요소의 위치 조정을 위한 설정 */
+  display: flex;
+  /* 플렉스 박스 사용 */
+  flex-direction: column;
+  /* 수직 방향 정렬 */
+  justify-content: center;
+  /* 슬라이더를 세로로 중앙 정렬 */
+  align-items: center;
+  /* 슬라이더를 가로로 중앙 정렬 */
+  width: 100%;
+  /* 슬라이더 컨테이너 너비 */
+  height: 100%;
+  /* 슬라이더 컨테이너 높이 */
+  position: relative;
+  /* 내부 요소의 위치 조정을 위한 설정 */
 }
 
 .daily-look-title {
-  position: absolute; /* 슬라이더 상단 중앙에 배치 */
-  top: 5px; /* 상단에서의 간격을 줄임 */
-  left: 50%; /* 가로 중앙 정렬 */
-  transform: translateX(-50%); /* 중앙 정렬 보정 */
-  font-size: 30px; /* 글씨 크기 */
+  position: absolute;
+  /* 슬라이더 상단 중앙에 배치 */
+  top: 5px;
+  /* 상단에서의 간격을 줄임 */
+  left: 50%;
+  /* 가로 중앙 정렬 */
+  transform: translateX(-50%);
+  /* 중앙 정렬 보정 */
+  font-size: 30px;
+  /* 글씨 크기 */
   font-weight: bold;
-  z-index: 10; /* 슬라이더 위로 표시 */
-  margin-bottom: 20px; /* 아래 이미지와의 간격 유지 */
+  z-index: 10;
+  /* 슬라이더 위로 표시 */
+  margin-bottom: 20px;
+  /* 아래 이미지와의 간격 유지 */
 }
 
 
@@ -59,32 +81,42 @@ body {
 
 .nav {
   display: flex;
-  gap: 15px; /* 링크 간 간격 추가 */
+  gap: 15px;
+  /* 링크 간 간격 추가 */
 }
 
 .nav span {
-  margin-left: 20px; /* 다른 텍스트와 간격 추가 */
-  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  margin-left: 20px;
+  /* 다른 텍스트와 간격 추가 */
+  white-space: nowrap;
+  /* 텍스트 줄바꿈 방지 */
 }
 
 .weather-info {
-  display: flex; /* 가로로 배치 */
-  gap: 15px; /* 각 항목 간 간격 */
+  display: flex;
+  /* 가로로 배치 */
+  gap: 15px;
+  /* 각 항목 간 간격 */
   font-size: 14px;
-  color: #6b21a8; /* 보라색 */
-  align-items: center; /* 수직 가운데 정렬 */
-  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  color: #6b21a8;
+  /* 보라색 */
+  align-items: center;
+  /* 수직 가운데 정렬 */
+  white-space: nowrap;
+  /* 텍스트 줄바꿈 방지 */
   margin-left: 20px;
 }
 
 .weather-detail {
   display: flex;
   align-items: center;
-  gap: 5px; /* 라벨과 값 간 간격 */
+  gap: 5px;
+  /* 라벨과 값 간 간격 */
 }
 
 .weather-detail .label {
-  font-weight: bold; /* 라벨 강조 */
+  font-weight: bold;
+  /* 라벨 강조 */
 }
 
 .weather-detail .value {
@@ -95,7 +127,7 @@ body {
 .nav {
   display: flex;
   gap: 20px;
-  
+
 }
 
 .nav a {
@@ -147,7 +179,8 @@ body {
 /* Event Section 스타일 */
 .event-section {
   display: flex;
-  flex-direction: column; /* 세로로 배치 */
+  flex-direction: column;
+  /* 세로로 배치 */
   width: 45%;
   gap: 20px;
   padding: 20px;
@@ -175,12 +208,15 @@ body {
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease, transform 0.2s ease;
-  cursor: pointer; /* 마우스를 올리면 클릭 가능한 커서로 변경 */
+  cursor: pointer;
+  /* 마우스를 올리면 클릭 가능한 커서로 변경 */
 }
 
 .event-item:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 마우스 올림 시 그림자 강화 */
-  transform: translateY(-2px); /* 살짝 위로 이동 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* 마우스 올림 시 그림자 강화 */
+  transform: translateY(-2px);
+  /* 살짝 위로 이동 */
 }
 
 .event-dday {
@@ -206,18 +242,26 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80px; /* 고정 높이 설정 */
-  border: 1px solid #e0e0e0; /* 연한 회색 테두리 */
-  background-color: #f9f9f9; /* 연한 회색 배경 */
-  border-radius: 8px; /* 둥근 모서리 */
-  margin: 10px 0; /* 위아래 간격 */
+  height: 80px;
+  /* 고정 높이 설정 */
+  border: 1px solid #e0e0e0;
+  /* 연한 회색 테두리 */
+  background-color: #f9f9f9;
+  /* 연한 회색 배경 */
+  border-radius: 8px;
+  /* 둥근 모서리 */
+  margin: 10px 0;
+  /* 위아래 간격 */
   text-align: center;
 }
 
 .no-events-message {
-  font-size: 1rem; /* 글씨 크기 */
-  color: #999; /* 옅은 회색 텍스트 색상 */
-  font-weight: 400; /* 일반 굵기 */
+  font-size: 1rem;
+  /* 글씨 크기 */
+  color: #999;
+  /* 옅은 회색 텍스트 색상 */
+  font-weight: 400;
+  /* 일반 굵기 */
 }
 
 
@@ -280,7 +324,8 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  transition: all 0.3s ease-in-out; /* 부드러운 전환 효과 추가 */
+  transition: all 0.3s ease-in-out;
+  /* 부드러운 전환 효과 추가 */
 }
 
 .modal-content {
@@ -288,9 +333,11 @@ body {
   padding: 20px;
   border-radius: 8px;
   width: 400px;
-  max-width: 90%; /* 화면이 작은 경우에도 대응 */
+  max-width: 90%;
+  /* 화면이 작은 경우에도 대응 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease; /* 등장 애니메이션 */
+  animation: fadeIn 0.3s ease;
+  /* 등장 애니메이션 */
 }
 
 .modal-content h2 {
@@ -301,7 +348,8 @@ body {
 .modal-content p {
   margin: 10px 0;
   font-size: 14px;
-  color: #333; /* 텍스트 색상 명시 */
+  color: #333;
+  /* 텍스트 색상 명시 */
 }
 
 /* 닫기 버튼 */
@@ -313,20 +361,26 @@ body {
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.2s ease; /* 부드러운 전환 효과 */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  /* 부드러운 전환 효과 */
 }
 
 .close-modal-button:hover {
   background-color: #45a049;
-  transform: translateY(-2px); /* 버튼을 살짝 위로 이동 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자 강조 */
+  transform: translateY(-2px);
+  /* 버튼을 살짝 위로 이동 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  /* 그림자 강조 */
 }
 
 /* 마우스 커서를 올렸을 때 모달 컨텐츠 부각 */
 .modal-content:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 더 부각된 그림자 */
-  transform: scale(1.02); /* 살짝 확대 */
-  transition: all 0.3s ease-in-out; /* 부드러운 확대 효과 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  /* 더 부각된 그림자 */
+  transform: scale(1.02);
+  /* 살짝 확대 */
+  transition: all 0.3s ease-in-out;
+  /* 부드러운 확대 효과 */
 }
 
 /* 스크롤바 스타일 */
@@ -353,6 +407,7 @@ body {
     opacity: 0;
     transform: translateY(-10%);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -363,17 +418,24 @@ body {
 /* 달력 모달 속성*/
 /* 버튼 래퍼 스타일 */
 .button-wrapper {
-  display: flex; /* 가로 정렬 */
-  justify-content: center; /* 버튼 전체를 중앙 정렬 */
-  align-items: center; /* 세로 정렬 */
-  gap: 20px; /* 버튼 간 간격 */
-  margin-top: 20px; /* 위쪽 여백 */
+  display: flex;
+  /* 가로 정렬 */
+  justify-content: center;
+  /* 버튼 전체를 중앙 정렬 */
+  align-items: center;
+  /* 세로 정렬 */
+  gap: 20px;
+  /* 버튼 간 간격 */
+  margin-top: 20px;
+  /* 위쪽 여백 */
 }
 
 /* 버튼 스타일 */
 .button-wrapper button {
-  flex: 0 0 150px; /* 버튼 폭 고정 */
-  height: 50px; /* 버튼 높이 고정 */
+  flex: 0 0 150px;
+  /* 버튼 폭 고정 */
+  height: 50px;
+  /* 버튼 높이 고정 */
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -407,7 +469,8 @@ body {
 
 
 .slider-frame {
-  width: 100%; /* 프레임 전체 너비 */
+  width: 100%;
+  /* 프레임 전체 너비 */
   max-width: 900px;
   height: 100%;
   overflow: hidden;
@@ -419,27 +482,40 @@ body {
 
 /* 슬라이더 */
 .slider {
-  width: 100%; /* 슬라이더 너비를 부모에 맞춤 */
-  height: 100%; /* 슬라이더 높이를 부모에 맞춤 */
-  display: flex; /* 이미지들을 정렬 */
-  justify-content: center; /* 중앙 정렬 */
-  align-items: center; /* 수직 정렬 */
-  transition: transform 0.5s ease-in-out; /* 부드러운 이동 효과 */
+  width: 100%;
+  /* 슬라이더 너비를 부모에 맞춤 */
+  height: 100%;
+  /* 슬라이더 높이를 부모에 맞춤 */
+  display: flex;
+  /* 이미지들을 정렬 */
+  justify-content: center;
+  /* 중앙 정렬 */
+  align-items: center;
+  /* 수직 정렬 */
+  transition: transform 0.5s ease-in-out;
+  /* 부드러운 이동 효과 */
 }
 
 
 /* 슬라이더 아이템 */
 .slider-item {
-  width: 100%; /* 슬라이더 아이템이 부모의 너비를 가득 채우도록 설정 */
-  height: 100%; /* 슬라이더 아이템이 부모의 높이를 가득 채우도록 설정 */
-  display: flex; /* 이미지 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
+  width: 100%;
+  /* 슬라이더 아이템이 부모의 너비를 가득 채우도록 설정 */
+  height: 100%;
+  /* 슬라이더 아이템이 부모의 높이를 가득 채우도록 설정 */
+  display: flex;
+  /* 이미지 중앙 정렬 */
+  justify-content: center;
+  /* 수평 중앙 정렬 */
+  align-items: center;
+  /* 수직 중앙 정렬 */
 }
 
 .slider-item.active {
-  transform: scale(1); /* 선택된 슬라이드 확대 */
-  opacity: 1; /* 선택된 슬라이드 불투명 */
+  transform: scale(1);
+  /* 선택된 슬라이드 확대 */
+  opacity: 1;
+  /* 선택된 슬라이드 불투명 */
 }
 
 .main-pic {
@@ -455,11 +531,15 @@ figcaption {
   font-weight: bold;
   color: #444;
 }
+
 /* 확대 슬라이드 공간 */
 .large-slider-frame {
-  width: 80%; /* 프레임 너비 유지 */
-  height: 400px; /* 프레임 높이 유지 */
-  overflow: hidden; /* 넘치는 부분 숨김 */
+  width: 80%;
+  /* 프레임 너비 유지 */
+  height: 400px;
+  /* 프레임 높이 유지 */
+  overflow: hidden;
+  /* 넘치는 부분 숨김 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -470,28 +550,37 @@ figcaption {
 .large-slider {
   display: flex;
   align-items: center;
-  transition: transform 0.5s ease-in-out; /* 부드러운 이동 효과 */
+  transition: transform 0.5s ease-in-out;
+  /* 부드러운 이동 효과 */
 }
 
 .large-slider-item {
-  flex: 0 0 100%; /* 프레임 크기에 맞춤 */
+  flex: 0 0 100%;
+  /* 프레임 크기에 맞춤 */
   display: grid;
   justify-content: center;
   align-items: center;
 }
 
 .large-pic {
-  width: auto; /* 너비는 자동으로 조정 */
-  height: 55%; /* 이미지 높이를 프레임 높이의 60%로 줄임 */
-  max-width: 100%; /* 프레임 초과 방지 */
-  object-fit: contain; /* 비율 유지 및 짤림 방지 */
+  width: auto;
+  /* 너비는 자동으로 조정 */
+  height: 55%;
+  /* 이미지 높이를 프레임 높이의 60%로 줄임 */
+  max-width: 100%;
+  /* 프레임 초과 방지 */
+  object-fit: contain;
+  /* 비율 유지 및 짤림 방지 */
   display: block;
 }
 
 .small-slider-frame {
-  width: 300px; /* 작은 슬라이더 프레임 너비 */
-  height: 100px; /* 작은 슬라이더 프레임 높이 */
-  overflow: hidden; /* 양옆 잘리기 */
+  width: 300px;
+  /* 작은 슬라이더 프레임 너비 */
+  height: 100px;
+  /* 작은 슬라이더 프레임 높이 */
+  overflow: hidden;
+  /* 양옆 잘리기 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -504,7 +593,8 @@ figcaption {
 }
 
 .small-slider-item {
-  flex: 0 0 80px; /* 각 작은 슬라이더 아이템 너비 */
+  flex: 0 0 80px;
+  /* 각 작은 슬라이더 아이템 너비 */
   margin: 0 10px;
   cursor: pointer;
 }
@@ -540,35 +630,44 @@ figcaption {
   padding: 10px;
 }
 
-.fc-daygrid-day-top{
+.fc-daygrid-day-top {
   width: 100%;
 }
 
 /* 날짜를 상단 고정 */
 .fc-daygrid-day-number {
   position: absolute !important;
-  top: 5px; /* 상단에서의 위치 */
-  left: 5px; /* 좌측에서의 위치 */
-  font-size: 14px; /* 날짜 폰트 크기 */
-  font-weight: bold; /* 날짜 강조 */
-  z-index: 10; /* 날짜를 최상단에 표시 */
+  top: 5px;
+  /* 상단에서의 위치 */
+  left: 5px;
+  /* 좌측에서의 위치 */
+  font-size: 14px;
+  /* 날짜 폰트 크기 */
+  font-weight: bold;
+  /* 날짜 강조 */
+  z-index: 10;
+  /* 날짜를 최상단에 표시 */
   width: 90%;
 }
 
 /* 날짜 아래로 일정 배치 */
 .fc-daygrid-day-events {
-  margin-top: 40px !important; /* 날짜 아래로 일정 배치 */
+  margin-top: 40px !important;
+  /* 날짜 아래로 일정 배치 */
 }
 
 /* 일정 간 간격 줄이기 */
 .fc-daygrid-event {
-  margin: 2px 0 !important; /* 일정 간 간격 조정 */
+  margin: 2px 0 !important;
+  /* 일정 간 간격 조정 */
 }
 
 /* 하루 칸의 최소 높이 설정 */
 .fc-daygrid-day {
-  min-height: 120px !important; /* 하루 칸의 최소 높이 */
-  position: relative; /* 날짜 고정을 위해 상대 위치 */
+  min-height: 120px !important;
+  /* 하루 칸의 최소 높이 */
+  position: relative;
+  /* 날짜 고정을 위해 상대 위치 */
 }
 
 .fc-daygrid-day .event-count {
@@ -585,26 +684,41 @@ figcaption {
 
 /* 날짜를 좌측 상단에 정렬 */
 .fc-daygrid-day-top {
-  display: flex !important; /* flex 레이아웃 강제 적용 */
-  justify-content: flex-start !important; /* 수평 정렬: 좌측 */
-  align-items: flex-start !important; /* 수직 정렬: 상단 */
-  padding: 2px !important; /* 날짜 텍스트에 적당한 여백 추가 */
-  font-size: 12px !important; /* 날짜 텍스트 크기 */
-  position: absolute !important; /* 고정 위치로 상단 배치 */
-  top: 2px; /* 상단 여백 */
-  left: 2px; /* 좌측 여백 */
+  display: flex !important;
+  /* flex 레이아웃 강제 적용 */
+  justify-content: flex-start !important;
+  /* 수평 정렬: 좌측 */
+  align-items: flex-start !important;
+  /* 수직 정렬: 상단 */
+  padding: 2px !important;
+  /* 날짜 텍스트에 적당한 여백 추가 */
+  font-size: 12px !important;
+  /* 날짜 텍스트 크기 */
+  position: absolute !important;
+  /* 고정 위치로 상단 배치 */
+  top: 2px;
+  /* 상단 여백 */
+  left: 2px;
+  /* 좌측 여백 */
 }
 
 /* 일정 제목을 중앙에 정렬 */
 .fc-event-title-container {
   display: flex !important;
-  justify-content: center !important; /* 수평 중앙 정렬 */
-  align-items: center !important; /* 수직 중앙 정렬 */
-  white-space: nowrap !important; /* 제목이 줄바꿈되지 않도록 설정 */
-  overflow: hidden !important; /* 내용 초과 부분 숨기기 */
-  text-overflow: ellipsis !important; /* 말줄임표 추가 */
-  height: 100%; /* 부모 높이에 맞춤 */
-  font-size: 14px; /* 제목 크기 */
+  justify-content: center !important;
+  /* 수평 중앙 정렬 */
+  align-items: center !important;
+  /* 수직 중앙 정렬 */
+  white-space: nowrap !important;
+  /* 제목이 줄바꿈되지 않도록 설정 */
+  overflow: hidden !important;
+  /* 내용 초과 부분 숨기기 */
+  text-overflow: ellipsis !important;
+  /* 말줄임표 추가 */
+  height: 100%;
+  /* 부모 높이에 맞춤 */
+  font-size: 14px;
+  /* 제목 크기 */
 }
 
 
@@ -613,34 +727,45 @@ figcaption {
 
 .fc-view-harness {
 
-  max-height: 100%; /* 최대 높이를 부모 요소에 맞춤 */
-  overflow: auto; /* 넘치는 경우 스크롤 추가 */
+  max-height: 100%;
+  /* 최대 높이를 부모 요소에 맞춤 */
+  overflow: auto;
+  /* 넘치는 경우 스크롤 추가 */
 }
 
 .fc-scrollgrid {
-  width: 100%; /* 부모 요소의 너비를 따라가도록 설정 */
-  max-width: 100%; /* 최대 너비를 부모 요소에 제한 */
-  overflow-x: auto; /* 가로 스크롤 추가 */
+  width: 100%;
+  /* 부모 요소의 너비를 따라가도록 설정 */
+  max-width: 100%;
+  /* 최대 너비를 부모 요소에 제한 */
+  overflow-x: auto;
+  /* 가로 스크롤 추가 */
 }
 
 /* 모달의 최대 높이와 스크롤 설정 */
 .ReactModal__Content {
-  height: 85%; /* 화면 높이의 90% */
-  overflow-y: auto; /* 내용이 많으면 스크롤 추가 */
+  height: 85%;
+  /* 화면 높이의 90% */
+  overflow-y: auto;
+  /* 내용이 많으면 스크롤 추가 */
   padding: 20px;
   border-radius: 8px;
 }
 
 /* FullCalendar 이벤트 스타일 */
 .fc-event {
-  cursor: pointer; /* 커서를 클릭 가능한 형태로 변경 */
+  cursor: pointer;
+  /* 커서를 클릭 가능한 형태로 변경 */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .fc-event:hover {
-  transform: scale(1.05); /* 마우스를 올리면 약간 확대 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 마우스를 올리면 그림자 추가 */
-  z-index: 10; /* 이벤트가 다른 요소 위에 표시되도록 설정 */
+  transform: scale(1.05);
+  /* 마우스를 올리면 약간 확대 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* 마우스를 올리면 그림자 추가 */
+  z-index: 10;
+  /* 이벤트가 다른 요소 위에 표시되도록 설정 */
 }
 
 
@@ -648,70 +773,95 @@ figcaption {
 
 /* 모달 배경 색상 */
 .ReactModal__Overlay {
-  background-color: rgba(0, 0, 0, 0.5);  /* 반투명 배경 */
-  z-index: 1050;  /* 모달 창을 최상위로 띄우기 위한 z-index */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 반투명 배경 */
+  z-index: 1050;
+  /* 모달 창을 최상위로 띄우기 위한 z-index */
 }
 
 /* 모달 내용 스타일 */
 .ReactModal__Content {
-  width: 500px;
-  margin: 15px 500px;
+  width: 400px; /* 가로 크기 */
+  height: 500px; /* 세로 크기 */
+  margin: auto; /* 화면 중앙 정렬 */
   padding: 20px;
-  background-color: skyblue !important;  /* 모달 배경색 skyblue */
+  background-color: skyblue; /* 모달 배경색 */
   border-radius: 10px;
-  color: black;
-  overflow: auto;
-  opacity: 1 !important;  /* 불투명하게 설정 */
-  z-index: 1060;  /* 캘린더 위로 띄우기 */
+  overflow-y: auto; /* 스크롤 가능 */
+  z-index: 1060; /* 캘린더 위로 띄움 */
+}
+
+/* 모달 닫기 버튼 스타일 */
+.calander-xclose-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+.calander-xclose-button:hover {
+  background: none;
+}
+
+.calander-xclose-button:focus {
+  outline: none; /* 포커스 상태에서 외곽선 제거 */
 }
 
 /* 입력 필드 스타일 */
-input, textarea {
+input,
+textarea {
   margin: 10px 0;
   padding: 10px;
   width: 100%;
   font-size: 14px;
   border: 1px solid #ccc;
-  
-  box-sizing: border-box;  /* padding을 포함한 전체 너비 계산 */
+
+  box-sizing: border-box;
+  /* padding을 포함한 전체 너비 계산 */
 }
 
 .color-buttons-container {
-  display: flex; /* 가로 배열 */
-  gap: 10px; /* 버튼 간 간격 */
-  margin-top: 10px; /* 위쪽 여백 */
+  display: flex;
+  flex-wrap: wrap; /* 버튼 여러 줄로 배치 */
+  gap: 10px; /* 버튼 간격 */
+  margin-bottom: 1px;
 }
 
 .color-button {
-  width: 40px; /* 고정된 너비 */
-  height: 20px; /* 고정된 높이 */
-  border-radius: 5px; /* 모서리 둥글게 */
-  margin: 5px; /* 버튼 간격 */
-  cursor: pointer; /* 포인터 표시 */
-  border: 2px solid transparent; /* 기본 테두리 투명 */
-  display: flex;
-  justify-content: space-between; /* 좌우 정렬 */
-  align-items: center;
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  width: 35px; /* 버튼 크기 */
+  height: 35px;
+  border-radius: 50%; /* 원형 버튼 */
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .color-button:hover {
-  transform: scale(1.1); /* 호버 시 확대 효과 */
+  transform: scale(1.1);
+  /* 호버 시 확대 효과 */
 }
 
 .color-button.selected {
-  border: 2px solid black; /* 선택된 경우 테두리 강조 */
-  box-sizing: border-box; /* 테두리 포함 크기 계산 */
+  border: 2px solid black;
+  /* 선택된 경우 테두리 강조 */
+  box-sizing: border-box;
+  /* 테두리 포함 크기 계산 */
 }
 
-.color-button .checkmark {
-  font-size: 20px; /* 체크 표시 크기 */
-  color: white; /* 체크 표시 색상 */
-  visibility: hidden; /* 기본적으로 숨김 */
+.color-button {
+  font-size: 20px;
+  /* 체크 표시 크기 */
+  color: white;
+  /* 체크 표시 색상 */
+  visibility: hidden;
+  /* 기본적으로 숨김 */
 }
 
-.color-button.selected .checkmark {
-  visibility: visible; /* 선택된 경우 체크 표시 표시 */
+.color-button.selected {
+  visibility: visible;
+  /* 선택된 경우 체크 표시 표시 */
 }
 
 
@@ -719,7 +869,6 @@ input, textarea {
 button {
   padding: 10px 20px;
   cursor: pointer;
-  background-color: #4CAF50;
   color: white;
   border: none;
   border-radius: 5px;
@@ -728,10 +877,13 @@ button {
 /* 수정 및 삭제 버튼을 가로로 정렬 */
 .top-buttons {
   display: flex;
-  justify-content: space-between; /* 좌우 정렬 */
-  gap: 5px; /* 버튼 사이 간격 */
-  width: 100%; /* 전체 너비 */
-  
+  justify-content: space-between;
+  /* 좌우 정렬 */
+  gap: 5px;
+  /* 버튼 사이 간격 */
+  width: 100%;
+  /* 전체 너비 */
+
 }
 
 /* 수정 버튼 */
@@ -742,7 +894,8 @@ button.edit-button {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  flex: 1; /* 버튼 폭을 동일하게 */
+  flex: 1;
+  /* 버튼 폭을 동일하게 */
   transition: background-color 0.3s ease;
 }
 
@@ -758,7 +911,8 @@ button.delete-button {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  flex: 1; /* 버튼 폭을 동일하게 */
+  flex: 1;
+  /* 버튼 폭을 동일하게 */
   transition: background-color 0.3s ease;
 }
 
@@ -774,8 +928,10 @@ button.cancel-button {
   padding: 12px 20px;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%; /* 취소 버튼 너비를 최대화 */
-  margin-top: 5px; /* 위쪽 간격 */
+  width: 100%;
+  /* 취소 버튼 너비를 최대화 */
+  margin-top: 5px;
+  /* 위쪽 간격 */
   transition: background-color 0.3s ease;
 }
 
@@ -785,62 +941,96 @@ button.cancel-button:hover {
 
 /* 버튼 컨테이너 하단 중앙 정렬 */
 .button-container {
-  flex-direction: column; /* 세로 방향 배치 */
-  justify-content: center; /* 중앙 정렬 */
-  align-items: center; /* 중앙 정렬 */
-  margin-top: 20px; /* 위쪽 여백 */
-  width: 100%; /* 버튼 컨테이너 너비 */
+  flex-direction: column;
+  /* 세로 방향 배치 */
+  justify-content: center;
+  /* 중앙 정렬 */
+  align-items: center;
+  /* 중앙 정렬 */
+  margin-top: 20px;
+  /* 위쪽 여백 */
+  width: 100%;
+  /* 버튼 컨테이너 너비 */
 }
 
 
 button:hover {
-  background-color: #45a049;  /* 버튼 hover 상태 색상 */
+  background-color: #45a049;
+  /* 버튼 hover 상태 색상 */
 }
+
 /* 전체 컨테이너 */
 .app-container {
-  display: flex; /* flexbox로 좌우 영역 분리 */
-  height: 100vh; /* 화면 전체 높이 */
+  display: flex;
+  /* flexbox로 좌우 영역 분리 */
+  height: 100vh;
+  /* 화면 전체 높이 */
 }
 
 
 /* 왼쪽 영역 (슬라이더) */
 .left-side {
-  flex: 2; /* left-side의 비율 유지 */
-  display: flex; /* 플렉스 박스 사용 */
-  flex-direction: column; /* 수직 방향 정렬 */
-  justify-content: center; /* 세로 중앙 정렬 */
-  align-items: center; /* 가로 중앙 정렬 */
-  background-color: #f9f9f9; /* 배경색 유지 */
-  border-right: 1px solid #ddd; /* 경계선 유지 */
-  height: calc(100vh - 80px); /* 화면 높이에서 헤더 제외 */
-  box-sizing: border-box; /* 패딩 포함 크기 계산 */
+  flex: 2;
+  /* left-side의 비율 유지 */
+  display: flex;
+  /* 플렉스 박스 사용 */
+  flex-direction: column;
+  /* 수직 방향 정렬 */
+  justify-content: center;
+  /* 세로 중앙 정렬 */
+  align-items: center;
+  /* 가로 중앙 정렬 */
+  background-color: #f9f9f9;
+  /* 배경색 유지 */
+  border-right: 1px solid #ddd;
+  /* 경계선 유지 */
+  height: calc(100vh - 80px);
+  /* 화면 높이에서 헤더 제외 */
+  box-sizing: border-box;
+  /* 패딩 포함 크기 계산 */
 }
 
 /* 이미지 스타일 */
 .left-side img {
-  width: 100%; /* left-side의 너비를 가득 채움 */
-  height: 100%; /* left-side의 높이를 가득 채움 */
-  object-fit: cover; /* 이미지 비율 유지하면서 영역 채움 */
-  border-radius: 8px; /* 모서리 둥글게 설정 (선택 사항) */
+  width: 100%;
+  /* left-side의 너비를 가득 채움 */
+  height: 100%;
+  /* left-side의 높이를 가득 채움 */
+  object-fit: cover;
+  /* 이미지 비율 유지하면서 영역 채움 */
+  border-radius: 8px;
+  /* 모서리 둥글게 설정 (선택 사항) */
 }
 
 
 /* 오른쪽 영역 (헤더, 이벤트 섹션, 캘린더) */
 .right-side {
-  flex: 5; /* 왼쪽에 비해 더 넓은 영역 */
-  background-color: #fff; /* 배경 색상 */
-  padding: 20px; /* 여백 */
-  overflow-y: auto; /* 세로 스크롤 추가 */
-  height: calc(100vh - 80px); /* 화면 높이에서 헤더 높이를 제외 */
-  box-sizing: border-box; /* 패딩 포함 크기 계산 */
+  flex: 5;
+  /* 왼쪽에 비해 더 넓은 영역 */
+  background-color: #fff;
+  /* 배경 색상 */
+  padding: 20px;
+  /* 여백 */
+  overflow-y: auto;
+  /* 세로 스크롤 추가 */
+  height: calc(100vh - 80px);
+  /* 화면 높이에서 헤더 높이를 제외 */
+  box-sizing: border-box;
+  /* 패딩 포함 크기 계산 */
 }
 
 /* 각 컴포넌트 스타일 (헤더, 캘린더 등) */
-.header, .event-section, .calendar {
-  margin-bottom: 20px; /* 컴포넌트 간의 간격 */
+.header,
+.event-section,
+.calendar {
+  margin-bottom: 20px;
+  /* 컴포넌트 간의 간격 */
 }
+
 /* 버튼 컨테이너 중앙 정렬 */
 .button-container {
-  justify-content: center; /* 가로 중앙 정렬 */
-  gap: 10px; /* 버튼 간격 */
-} 
+  justify-content: center;
+  /* 가로 중앙 정렬 */
+  gap: 10px;
+  /* 버튼 간격 */
+}

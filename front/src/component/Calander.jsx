@@ -64,9 +64,26 @@ export default function Buttonclick({ user, events, setEvents }) {
     return true;
   };
 
-  // 일정 추가
+  const validateEventForm = () => {
+    const errors = [];
+
+    if (!eventDetails.title) errors.push("제목");
+    if (!eventDetails.type) errors.push("일정 유형");
+    if (!eventDetails.startDate) errors.push("시작일");
+    if (!eventDetails.endDate) errors.push("종료일");
+
+    if (errors.length > 0) {
+      setError(`${errors.join(", ")}을(를) 입력해주세요.`);
+      return false;
+    }
+
+    setError(""); // 에러 메시지 초기화
+    return true;
+  };
+
+  // 수정된 호출 부분
   const handleSaveAddEvent = () => {
-    if (!validateForm()) {
+    if (!validateEventForm()) {
       return; // 유효성 검사를 통과하지 못하면 추가되지 않음
     }
 
@@ -84,8 +101,6 @@ export default function Buttonclick({ user, events, setEvents }) {
       .post("/api/schedules/add", addEvent, { withCredentials: true })
       .then((response) => {
         const newEvent = response.data; // 여기서 받아온 데이터를 newEvent에 할당
-
-        // 종료일에 하루 더하기
         let adjustedEndDate = newEvent.endDate;
         if (newEvent.startDate !== newEvent.endDate) {
           const endDate = new Date(newEvent.endDate);
@@ -93,25 +108,20 @@ export default function Buttonclick({ user, events, setEvents }) {
           adjustedEndDate = endDate.toISOString().split("T")[0]; // ISO 형식으로 다시 변환
         }
 
-        setEvents((prevEvents) => {
-          const updatedEvents = [
-            ...prevEvents,
-            {
-              id: newEvent.scheIdx,
-              title: newEvent.scheTitle,
-              type: newEvent.scheType,
-              start: newEvent.startDate,
-              end: adjustedEndDate,
-              color: newEvent.color || "#ADD8E6",
-              description: newEvent.scheContent || "",
-              originalEndDate: newEvent.endDate,
-            },
-          ];
+        setEvents((prevEvents) => [
+          ...prevEvents,
+          {
+            id: newEvent.scheIdx,
+            title: newEvent.scheTitle,
+            type: newEvent.scheType,
+            start: newEvent.startDate,
+            end: adjustedEndDate,
+            color: newEvent.color || "#ADD8E6",
+            description: newEvent.scheContent || "",
+            originalEndDate: newEvent.endDate,
+          },
+        ]);
 
-          // 상태가 업데이트된 후 로컬스토리지에 저장
-          localStorage.setItem("events", JSON.stringify(updatedEvents));
-          return updatedEvents;
-        });
         closeAddModal(); // 추가 모달 닫기
       })
       .catch((error) => {
@@ -324,13 +334,17 @@ export default function Buttonclick({ user, events, setEvents }) {
           );
         }}
       />
-
       {/* 일정 추가 모달 */}
       <Modal isOpen={addModalIsOpen} onRequestClose={closeAddModal}>
-        <button class="calander-xclose-button" onclick="closeModal()">
+        <button className="calander-xclose-button" onClick={closeAddModal}>
           X
         </button>
         <h2>일정 추가</h2>
+        {error && (
+          <p className="error" style={{ color: "red" }}>
+            {error}
+          </p>
+        )}
         <label>제목</label>
         <input
           type="text"
@@ -402,115 +416,117 @@ export default function Buttonclick({ user, events, setEvents }) {
           ))}
         </div>
         <br />
-        {error && <p className="error">{error}</p>}
-        <div class="button-wrapper">
-          <button class="add-save-button">
+        <div className="button-wrapper">
+          <button
+            type="button"
+            className="add-save-button"
+            onClick={handleSaveAddEvent}
+          >
             저장
           </button>
-          <button class="add-cancel-button">
+          <button className="add-cancel-button" onClick={closeAddModal}>
             취소
           </button>
         </div>
       </Modal>
 
-      {/* 일정 수정 모달 */}
-      <Modal isOpen={editModalIsOpen} onRequestClose={closeEditModal}>
-        <button class="calander-xclose-button" onclick="closeModal()">
-          X
-        </button>
-        <h2>일정 수정</h2>
-        <label>제목</label>
-        <input
-          type="text"
-          value={eventDetails.title}
-          onChange={(e) =>
-            setEventDetails({ ...eventDetails, title: e.target.value })
-          }
-        />
-        <br />
-        <label>일정 유형: </label>
-        <select
-          value={eventDetails.type}
-          onChange={(e) =>
-            setEventDetails({ ...eventDetails, type: e.target.value })
-          }
-        >
-          <option value="">선택</option>
-          {eventTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
-        <br />
-        <br />
-        <label>시작일</label>
-        <input
-          type="date"
-          value={eventDetails.startDate}
-          onChange={(e) =>
-            setEventDetails({ ...eventDetails, startDate: e.target.value })
-          }
-        />
-        <br />
-        <label>종료일</label>
-        <input
-          type="date"
-          value={eventDetails.endDate}
-          onChange={(e) =>
-            setEventDetails({ ...eventDetails, endDate: e.target.value })
-          }
-        />
-        <br />
-        <label>내용</label>
-        <textarea
-          value={eventDetails.description}
-          onChange={(e) =>
-            setEventDetails({ ...eventDetails, description: e.target.value })
-          }
-        />
-        <br />
-        <label>색상 선택:</label>
-        <div className="color-buttons-container">
-          {colors.map((color) => (
-            <button
-              key={color}
-              type="button"
-              className={`color-button ${
-                color === eventDetails.color ? "selected" : ""
-              }`}
-              style={{ backgroundColor: color }}
-              onClick={() =>
-                setEventDetails((prev) => ({ ...prev, color: color }))
-              }
-            >
-              <span className="check-mark">
-                {color === eventDetails.color ? "✔" : ""}
-              </span>
-            </button>
-          ))}
-        </div>
-        <br />
-        {error && <p className="error">{error}</p>}
-        <div className="button-container">
-          <div className="top-buttons">
-            <button className="edit-button" onClick={handleSaveChanges}>
-              수정
-            </button>
-            <button
-              className="delete-button"
-              type="button"
-              onClick={handleDeleteEvent}
-              backgroundColor={{ color: "red" }}
-            >
-              삭제
-            </button>
-          </div>
-          <button className="cancel-button" onClick={closeEditModal}>
-            취소
-          </button>
-        </div>
-      </Modal>
+
+      ;{/* 일정 수정 모달 */}
+<Modal isOpen={editModalIsOpen} onRequestClose={closeEditModal}>
+  <button className="calander-xclose-button" onClick={closeEditModal}>
+    X
+  </button>
+  <h2>일정 수정</h2>
+  <label>제목</label>
+  <input
+    type="text"
+    value={eventDetails.title}
+    onChange={(e) =>
+      setEventDetails({ ...eventDetails, title: e.target.value })
+    }
+  />
+  <br />
+  <label>일정 유형: </label>
+  <select
+    value={eventDetails.type}
+    onChange={(e) =>
+      setEventDetails({ ...eventDetails, type: e.target.value })
+    }
+  >
+    <option value="">선택</option>
+    {eventTypes.map((type) => (
+      <option key={type} value={type}>
+        {type}
+      </option>
+    ))}
+  </select>
+  <br />
+  <label>시작일</label>
+  <input
+    type="date"
+    value={eventDetails.startDate}
+    onChange={(e) =>
+      setEventDetails({ ...eventDetails, startDate: e.target.value })
+    }
+  />
+  <br />
+  <label>종료일</label>
+  <input
+    type="date"
+    value={eventDetails.endDate}
+    onChange={(e) =>
+      setEventDetails({ ...eventDetails, endDate: e.target.value })
+    }
+  />
+  <br />
+  <label>내용</label>
+  <textarea
+    value={eventDetails.description}
+    onChange={(e) =>
+      setEventDetails({ ...eventDetails, description: e.target.value })
+    }
+  />
+  <br />
+  <label>색상 선택:</label>
+  <div>
+    {colors.map((color) => (
+      <button
+        key={color}
+        type="button"
+        style={{
+          backgroundColor: color,
+          border: "none",
+          margin: "0 5px",
+          cursor: "pointer",
+        }}
+        onClick={() =>
+          setEventDetails((prev) => ({ ...prev, color: color }))
+        }
+      >
+        {color === eventDetails.color ? "✔" : " "}
+      </button>
+    ))}
+  </div>
+  <br />
+  {error && <p className="error">{error}</p>}
+  <div className="button-container">
+    <div className="top-buttons">
+      <button className="edit-button" onClick={handleSaveChanges}>
+        수정
+      </button>
+      <button
+        className="delete-button"
+        type="button"
+        onClick={handleDeleteEvent}
+      >
+        삭제
+      </button>
     </div>
+    <button className="cancel-button" onClick={closeEditModal}>
+      취소
+    </button>
+  </div>
+</Modal>
+</div>
   );
 }
