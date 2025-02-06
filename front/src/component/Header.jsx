@@ -123,7 +123,7 @@ const Header = ({ user, setUser }) => {
 
   return (
     <header>
-      <div className="header-container">
+      <div className="Main-header-container">
         {/* 로고 */}
         <div className="header-logo">
           <a href="/">
@@ -182,13 +182,22 @@ const Header = ({ user, setUser }) => {
               </div>
             </>
           ) : (
-            <button
-              className="header-login-button"
-              onClick={() => navigate("/login")}
-            >
-              로그인
-            </button>
+            <div class="header-user-actions">
+              <button
+                class="header-register-button"
+                onClick={() => navigate("/signup")}
+              >
+                회원가입
+              </button>
+              <button
+                className="header-login-button"
+                onClick={() => navigate("/login")}
+              >
+                로그인
+              </button>
+            </div>
           )}
+          
         </div>
       </div>
     </header>

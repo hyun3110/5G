@@ -85,6 +85,13 @@ const MyWardrobe = ({ user }) => {
     }
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false); // 모달 닫기
+    setUploadedImage(null); // 업로드된 파일 초기화
+    setPreviewImage(null); // 미리보기 이미지 초기화
+    setSelectedCategory("상의"); // 카테고리 초기화
+  };
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -258,56 +265,67 @@ const MyWardrobe = ({ user }) => {
       </div>
 
       <div className="main-content">
-        <div className="navigation-bar">
-          <div className="right-text">
-            <a href="/Mypage" className="breadcrumb">
-              My Page
-            </a>{" "}
-            &gt;
-            <span className="current">{currentPage}</span>
+        <div className="fixed-header">
+          <div className="navigation-bar">
+            <div className="right-text">
+              <a href="/Mypage" className="breadcrumb">
+                My Page
+              </a>{" "}
+              &gt;
+              <span className="current">{currentPage}</span>
+            </div>
           </div>
+
+          <div className="top-action-bar">
+            <h1 className="left-text">My Wardrobe</h1>
+            <button
+              className="add-clothing-button"
+              onClick={() => setShowModal(true)}
+            >
+              내 옷 등록
+            </button>
+            {/* 삭제하기 버튼 */}
+            <button
+              className="Wardrobe-delete-button"
+              onClick={handleDeleteSelected}
+            >
+              삭제하기
+            </button>
+          </div>
+          <hr className="category-divider" />
         </div>
+        <div className="scrollable-content">
+          <section ref={(el) => (sectionsRef.current["최근 등록"] = el)}>
+            <h2 className="category-title">최근 등록</h2>
+            {renderItems("최근 등록")}
+          </section>
 
-        <div className="top-action-bar">
-          <h1 className="left-text">My Wardrobe</h1>
-          <button
-            className="add-clothing-button"
-            onClick={() => setShowModal(true)}
-          >
-            내 옷 등록
-          </button>
-          {/* 삭제하기 버튼 */}
-          <button
-            className="Wardrobe-delete-button"
-            onClick={handleDeleteSelected}
-          >
-            삭제하기
-          </button>
+          {["전체", "외투", "상의", "하의", "신발"].map((category) => (
+            <React.Fragment key={category}>
+              <hr className="category-divider" />
+              <section ref={(el) => (sectionsRef.current[category] = el)}>
+                <h2 className="category-title">{category}</h2>
+                {renderItems(category)}
+              </section>
+            </React.Fragment>
+          ))}
         </div>
-
-        <hr className="category-divider" />
-        <section ref={(el) => (sectionsRef.current["최근 등록"] = el)}>
-          <h2 className="category-title">최근 등록</h2>
-          {renderItems("최근 등록")}
-        </section>
-
-        {["전체", "외투", "상의", "하의", "신발"].map((category) => (
-          <React.Fragment key={category}>
-            <hr className="category-divider" />
-            <section ref={(el) => (sectionsRef.current[category] = el)}>
-              <h2 className="category-title">{category}</h2>
-              {renderItems(category)}
-            </section>
-          </React.Fragment>
-        ))}
-
         <hr className="category-divider" />
       </div>
 
       {showModal && (
         <div className="modal-backdrop">
           <div className="modal">
-            <h2>이미지 업로드</h2>
+            <div className="Wardrobe-modal-header">
+              <h2>이미지 업로드</h2>
+              <button
+                className="modal-close-button"
+                onClick={() => setShowModal(false)}
+                aria-label="닫기"
+              >
+                &times;
+              </button>
+            </div>
             <div className="image-preview-container">
               {previewImage ? (
                 <img
@@ -337,27 +355,34 @@ const MyWardrobe = ({ user }) => {
                 style={{ display: "none" }}
               />
             </div>
-
-            <select
-              id="category"
-              value={selectedCategory}
-              onChange={handleCategoryChange}
-            >
-              <option value="상의">상의</option>
-              <option value="하의">하의</option>
-              <option value="외투">외투</option>
-              <option value="신발">신발</option>
-            </select>
-
-            <button className="upload-button" onClick={handleUpload}>
-              업로드
-            </button>
-            <button
-              className="cancel-button"
-              onClick={() => setShowModal(false)}
-            >
-              취소
-            </button>
+            <div className="modal-category-container">
+              <label htmlFor="category" className="modal-category-label">
+                의류 분류:
+              </label>
+              <select
+                id="category"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                className="modal-category-select"
+              >
+                <option value="상의">상의</option>
+                <option value="하의">하의</option>
+                <option value="외투">외투</option>
+                <option value="신발">신발</option>
+              </select>
+            </div>
+            <hr></hr>
+            <div className="category-button-container">
+              <button className="category-upload-button" onClick={handleUpload}>
+                업로드
+              </button>
+              <button
+                className="category-cancel-button"
+                onClick={() => setShowModal(false)}
+              >
+                취소
+              </button>
+            </div>
           </div>
         </div>
       )}
