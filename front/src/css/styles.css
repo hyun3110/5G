@@ -19,7 +19,7 @@
 
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: Noto Sans KR;
   margin: 0;
   padding: 0;
 }
@@ -74,7 +74,7 @@ body {
   color: #6b21a8; /* 보라색 */
   align-items: center; /* 수직 가운데 정렬 */
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-  margin-left: 30px;
+  margin-left: 20px;
 }
 
 .weather-detail {
@@ -528,14 +528,14 @@ figcaption {
 
 /* 전역 스타일 */
 .App {
-  font-family: Arial, sans-serif;
+  font-family: Noto Sans KR;
   text-align: center;
   margin-top: 20px;
 }
 
 /* FullCalendar 기본 스타일 */
 .fc {
-  font-family: Arial, sans-serif;
+  font-family: Noto Sans KR;
   font-size: 14px;
   padding: 10px;
 }

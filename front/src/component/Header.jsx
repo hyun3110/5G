@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import '../css/header.css'
+import "../css/header.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -14,21 +14,21 @@ const Header = ({ user, setUser }) => {
 
   const translateDescription = (description) => {
     const translations = {
-      "clear sky": "맑음",
-      "few clouds": "구름 조금",
-      "scattered clouds": "흩어진 구름",
-      "broken clouds": "구름 많음",
-      "overcast clouds": "흐림",
-      "light rain": "약한 비",
-      "moderate rain": "보통 비",
-      "heavy intensity rain": "강한 비",
-      "light snow": "약한 눈",
-      snow: "눈",
-      "heavy snow": "강한 눈",
-      thunderstorm: "천둥번개",
-      mist: "안개",
-      haze: "연무",
-      smoke: "스모그",
+      "clear sky": "☀️맑음",
+      "few clouds": "🌤️구름 조금",
+      "scattered clouds": "⛅흩어진 구름",
+      "broken clouds": "☁️구름 많음",
+      "overcast clouds": "☁️흐림",
+      "light rain": "🌦️약한 비",
+      "moderate rain": "🌧️보통 비",
+      "heavy intensity rain": "⛈️강한 비",
+      "light snow": "🌨️약한 눈",
+      snow: "❄️눈",
+      "heavy snow": "❄️❄️강한 눈",
+      thunderstorm: "🌩️천둥번개",
+      mist: "🌫️안개",
+      haze: "🌫️연무",
+      smoke: "🔥스모그",
     };
     return translations[description] || description;
   };
@@ -54,7 +54,6 @@ const Header = ({ user, setUser }) => {
 
   const fetchWeatherData = async (latitude, longitude) => {
     try {
-
       const API_KEY = process.env.REACT_APP_OPENWEATHER_KEY; // 환경 변수에서 API 키 불러오기
 
       const response = await axios.get(
@@ -172,11 +171,23 @@ const Header = ({ user, setUser }) => {
         <div>
           {user ? (
             <>
-              <span>{`${user.name}님`}</span>
-              <button onClick={logout}>로그아웃</button>
+              <div className="header-container">
+                {/* 다른 헤더 요소들 */}
+                <div className="header-user-info">
+                  <span className="header-user-name">{`${user.name}님`}</span>
+                  <button className="header-logout-button" onClick={logout}>
+                    로그아웃
+                  </button>
+                </div>
+              </div>
             </>
           ) : (
-            <button onClick={() => navigate("/login")}>로그인</button>
+            <button
+              className="header-login-button"
+              onClick={() => navigate("/login")}
+            >
+              로그인
+            </button>
           )}
         </div>
       </div>

@@ -27,7 +27,7 @@ header {
     gap: 15px; /* 요소 간 간격 */
     font-size: 14px;
     color: #6b21a8; /* 보라색 텍스트 */
-    margin-right: 40%;
+    margin-right: 30%;
   }
   
   .header-nav a {
@@ -64,4 +64,49 @@ header {
     width: 25px;
     height: 25px;
     cursor: pointer;
+  }
+
+  .header-mypage {
+    cursor: pointer;
+    color: #6b21a8;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .header-user-info {
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 15px; /* 요소 간 간격 */
+  }
+  
+  .header-user-name {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .header-login-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6b21a8; /* 로그아웃 버튼과 동일한 기본 색상 */
+    color: white;
+    cursor: pointer;
+}
+
+.header-login-button:hover {
+    background-color: #4c1d95; /* 로그아웃 버튼과 동일한 hover 색상 */
+}
+
+
+  .header-logout-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6b21a8;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .header-logout-button:hover {
+    background-color: #4c1d95;
   }
