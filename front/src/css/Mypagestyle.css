@@ -2,7 +2,7 @@
 .mypage-container {
     font-family: Noto Sans KR;
     background-color: white; /* 배경을 흰색으로 변경 */
-    margin: 0;
+    margin: 50px auto;
     padding: 0;
   }
 
@@ -81,13 +81,13 @@
   
   /* 코디 추천 버튼 */
   .profile-card .btn:last-of-type {
-    background-color: #48c78e; /* 버튼 색상 */
+    background-color: #6a1b9a; /* 버튼 색상 */
     color: white;
   }
   
   /* 버튼 호버 효과 */
   .profile-card .btn:hover {
-    opacity: 0.9;
+    opacity: 0.8;
   }
   
   
@@ -165,3 +165,143 @@
     object-fit: cover;
   }
   
+ /* 모달 스타일 */
+.codi-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.codi-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 일정 입력 그룹 (일정명, 유형, 날짜) */
+.codi-input-group {
+  display: flex;
+  align-items: center;
+  gap: 37px;
+  width: 80%;
+}
+
+.codi-input-a-group {
+  display: flex;
+  align-items: center;
+  gap: 37px;
+  width: 80%;
+}
+
+.codi-input-b-group {
+  display: flex;
+  align-items: center;
+  gap: 37px;
+  width: 80%;
+}
+
+.codi-input-group label,
+.codi-input-a-group label,
+.codi-input-b-group label {
+  text-align: left; /* ✅ 텍스트 왼쪽 정렬 */
+  width: 74px;
+  margin-right: 10px;
+}
+
+.codi-input-group input,
+.codi-input-group select {
+  flex-grow: 1;  /* 남은 공간을 채우도록 설정 */
+  border: none;
+  border-bottom: 2px solid #9f5fff;
+  outline: none;
+  padding: 8px;
+  font-size: 16px;
+  width: 100%; /* ✅ 입력 필드의 너비를 통일 */
+  max-width: 250px; /* ✅ 일정 입력 필드와 장소 검색 필드의 너비를 맞춤 */
+}
+
+.codi-input-a-group input {
+  flex-grow: 1;  /* 남은 공간을 채우도록 설정 */
+  border: none;
+  border-bottom: 2px solid #9f5fff;
+  outline: none;
+  padding: 8px;
+  font-size: 16px;
+  width: 100%; /* ✅ 입력 필드의 너비를 통일 */
+  max-width: 250px; /* ✅ 일정 입력 필드와 장소 검색 필드의 너비를 맞춤 */
+}
+
+/* 장소 검색 */
+.codi-search-container {
+  display: flex;
+  align-items: center;
+  gap: 29px; /* 버튼과 입력 필드 사이의 간격 */
+  width: 100%;
+}
+
+.codi-search-container input {
+  border: none;
+  border-bottom: 2px solid #9f5fff;
+  outline: none;
+  padding: 8px;
+  font-size: 16px;
+  margin-right: 18px; /* 버튼과의 간격을 조절 */
+  margin-left: -240px;
+}
+
+.codi-search-container button {
+  width: 80px; /* 버튼의 크기를 고정 */
+  height: 40px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #6a1b9a;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px; /* 🔹 버튼과 입력창 사이의 간격 설정 */
+}
+
+.codi-search-container button:hover {
+  opacity: 0.8;
+}
+
+/* 모달 버튼 */
+.codi-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.codi-modal-buttons button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.codi-modal-buttons button:first-child {
+  background-color: #6a1b9a;
+  color: white;
+}
+
+.codi-modal-buttons button:last-child {
+  background-color: #ccc;
+}
+
+.codi-modal-buttons button:hover {
+  opacity: 0.8;
+}

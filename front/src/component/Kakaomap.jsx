@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import '../css/Mypagestyle.css';
 
 const KakaoMap = ({ onSelectLocation }) => {
   const [keyword, setKeyword] = useState('');
@@ -19,8 +20,9 @@ const KakaoMap = ({ onSelectLocation }) => {
           resolve();
           return;
         }
-
+        
         const API_KEY = process.env.REACT_APP_KAKAO_API_KEY; // 환경 변수에서 API 키 불러오기
+        console.log("📌 카카오 API 키:", API_KEY);
 
         const script = document.createElement('script');
         script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${API_KEY}&autoload=false&libraries=services`;
@@ -110,18 +112,26 @@ const KakaoMap = ({ onSelectLocation }) => {
 
   return (
     <div>
-      <div>
+      <div className="codi-search-container">
+      <div className="codi-input-b-group">
+      <label>장소:</label>
+      </div>
         <input
           type="text"
           placeholder="장소 검색"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+          }
+        }}
         />
         <button onClick={handleSearch} disabled={!scriptLoaded}>
           {scriptLoaded ? '검색' : '로딩 중...'}
         </button>
-      </div>
-
+        </div>
+     
       {/* 지도 표시 영역 */}
       <div
         ref={mapContainer}
