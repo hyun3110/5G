@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../css/MyWardrobe.css";
+import { useUser } from "../context/UserContext";
+import { getClosets, upload } from "../api/closetsService";
 import axios from "axios";
 
-const MyWardrobe = ({ user }) => {
+const MyWardrobe = () => {
   const [items, setItems] = useState([]); // 아이템 목록
   const [selectedItems, setSelectedItems] = useState([]); // 선택된 아이템 저장
-  const [loading, setLoading] = useState(true); // 로딩 상태
   const [showModal, setShowModal] = useState(false); // 모달 상태
   const [uploadedImage, setUploadedImage] = useState(null); // 업로드 이미지
   const [previewImage, setPreviewImage] = useState(null); // 이미지 미리보기
   const [selectedCategory, setSelectedCategory] = useState("상의"); // 선택된 카테고리
+  const { user } = useUser();  // user 정보 가져오기
   const [visibleCounts, setVisibleCounts] = useState({
     전체: 12,
     외투: 12,
@@ -25,14 +27,11 @@ const MyWardrobe = ({ user }) => {
     if (!user) return; // user가 없으면 API 호출하지 않음
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`/api/closets/${user.id}`, {
-          withCredentials: true,
-        });
-        const data = response.data;
+        const data = await getClosets(user.id);
+        // 데이터가 배열 형식으로 들어오는지 확인 후 상태 설정
         setItems(Array.isArray(data) ? data : [data]);
       } catch (error) {
-        console.error("옷장 데이터를 가져오는 데 실패했습니다.", error);
-        setLoading(false);
+        console.error("아이템을 가져오는 중 오류 발생:", error);
       }
     };
     fetchItems();
@@ -176,11 +175,7 @@ const MyWardrobe = ({ user }) => {
     formData.append("category", selectedCategory);
 
     try {
-      const response = await axios.post("/api/closets/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = upload(formData);
 
       if (response.status === 200 || response.status === 201) {
         alert("이미지가 성공적으로 업로드되었습니다!");
@@ -195,10 +190,6 @@ const MyWardrobe = ({ user }) => {
       alert("이미지 업로드에 실패했습니다.");
     }
   };
-
-  if (loading) {
-    return <p>로딩 중...</p>;
-  }
 
   return (
     <div className="wardrobe-container">

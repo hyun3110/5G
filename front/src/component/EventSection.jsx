@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useEvents } from "../context/eventsContext";
 import "../css/styles.css";
 
-const EventSection = ({ events, setEvents }) => {
+const EventSection = () => {
+  const { events, setEvents } = useEvents();
   const [showAll, setShowAll] = useState(false); // 전체 보기 상태
   const [selectedEvent, setSelectedEvent] = useState(null); // 선택된 이벤트 상태
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태

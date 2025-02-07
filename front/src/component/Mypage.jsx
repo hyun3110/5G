@@ -4,13 +4,15 @@ import '../css/Mypagestyle.css';
 import RecommendedStyles from './Recommended';
 import Favorites from './Favorites';
 import KakaoMap from './Kakaomap'; // KakaoMap 컴포넌트 import
+import { useUser } from "../context/UserContext";
 import "../css/modal.css";
 
-const MyPage = ({ user }) => {
+const MyPage = () => {
   const [profileImage, setProfileImage] = useState('/path/to/default-profile.png'); // 프로필 이미지 상태
   const [activeContent, setActiveContent] = useState('추천 받은 스타일'); // 현재 활성화된 콘텐츠 상태
   const [favorites, setFavorites] = useState([]); // 즐겨찾기한 스타일 리스트 상태
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 활성화 상태
+  const { user } = useUser();  // user 정보 가져오기
   const [schedule, setSchedule] = useState({
     name: '', // 일정명
     type: '', // 일정 유형 (결혼식, 데이트, 출퇴근 등)
