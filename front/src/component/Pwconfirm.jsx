@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/Pwconfirm.css";
+import { useUser } from "../context/UserContext";
 
 const API_BASE_URL = "http://localhost:8081/api/auth"; // 백엔드 API 주소
 
-const Pwconfirm = ({user}) => {
+const Pwconfirm = () => {
   const [password, setPassword] = useState(""); // 사용자가 입력한 비밀번호
   const navigate = useNavigate();
+  const { user } = useUser();  // user 정보 가져오기
 
   // 비밀번호 확인 요청
   const handleConfirm = async (e) => {

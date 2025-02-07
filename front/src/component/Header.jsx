@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import "../css/header.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
-const Header = ({ user, setUser }) => {
+const Header = () => {
   const [location, setLocation] = useState("서울"); // 기본 위치: 서울
   const navigate = useNavigate();
+  const { user, setUser } = useUser();  // user 정보 가져오기
   const [weatherData, setWeatherData] = useState({
     description: "", // 날씨 설명
     temp: "", // 실제 온도
@@ -114,7 +116,7 @@ const Header = ({ user, setUser }) => {
         sessionStorage.removeItem("user"); // sessionStorage에서 유저 정보 삭제
         localStorage.removeItem("events");
         setUser(null); // 유저 상태 초기화
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {
       console.error("로그아웃 실패", error);
