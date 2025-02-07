@@ -182,9 +182,9 @@ const Header = ({ user, setUser }) => {
               </div>
             </>
           ) : (
-            <div class="header-user-actions">
+            <div className="header-user-actions">
               <button
-                class="header-register-button"
+                className="header-register-button"
                 onClick={() => navigate("/signup")}
               >
                 회원가입
