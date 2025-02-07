@@ -83,6 +83,7 @@
   .profile-card .btn:last-of-type {
     background-color: #6a1b9a; /* 버튼 색상 */
     color: white;
+    margin-left: 6px;
   }
   
   /* 버튼 호버 효과 */

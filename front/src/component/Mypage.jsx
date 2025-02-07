@@ -36,9 +36,13 @@ const MyPage = (user) => {
     };
   }, []);
 
+  const handleSelectStyle = () => {
+    navigate("/look"); // 스타일 선택 페이지로 이동
+  };
+
   // 회원정보 수정 버튼 클릭 시 비밀번호 확인 페이지로 이동
   const handleEditProfile = () => {
-    navigate("/Pwconfirm"); // 비밀번호 확인 페이지로 이동
+    navigate("/pwconfirm"); // 비밀번호 확인 페이지로 이동
   };
 
   // 즐겨찾기 상태 업데이트 함수
@@ -60,7 +64,7 @@ const MyPage = (user) => {
       setActiveContent(item); // 추천 받은 스타일 또는 즐겨찾기로 콘텐츠 변경
     }
   };
-  
+
 
   const fetchCodiRecommendations = async () => {
     // ✅ schedule 데이터가 존재하는지 확인
@@ -222,11 +226,19 @@ const MyPage = (user) => {
       <main className="mypage-main">
         <section className="profile-section">
           <div className="profile-card">
-            <h2>{user.name}</h2>
+            <img
+              src={user.profileImage || "/img/profile-icon.png"}
+              alt="프로필 사진"
+              className="profile-image"
+              />
+              <h2>{user.name}</h2>
             <div className="btn-container">
               <button className="btn" onClick={handleEditProfile}>회원정보 수정</button> {/* 회원정보 수정 버튼 */}
               <button className="btn" onClick={handleModalToggle}>코디 추천</button> {/* 모달 열기 버튼 */}
             </div>
+            {/* 선호하는 스타일 수정 버튼 */}
+            <button className="btn style-btn" onClick={handleSelectStyle}>선호하는 스타일 고르기</button>
+
           </div>
 
           <div className="activity-card">
