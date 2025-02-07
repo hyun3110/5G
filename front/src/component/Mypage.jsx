@@ -227,7 +227,7 @@ const MyPage = (user) => {
         <section className="profile-section">
           <div className="profile-card">
             <img
-              src={user.profileImage || "/img/profile-icon.png"}
+              src={"/img/me.png"}
               alt="프로필 사진"
               className="profile-image"
               />
