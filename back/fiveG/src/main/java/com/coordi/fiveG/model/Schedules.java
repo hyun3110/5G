@@ -1,9 +1,10 @@
 package com.coordi.fiveG.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -29,10 +30,12 @@ public class Schedules {
     private String scheContent;
 
     @Column(name = "ST_DT")
-    private LocalDate startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime startDate;
 
     @Column(name = "ED_DT")
-    private LocalDate endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime endDate;
 
     @Column(name = "SCHE_TYPE")
     private String scheType;

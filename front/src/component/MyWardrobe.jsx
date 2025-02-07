@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../css/MyWardrobe.css";
+import { useUser } from "../context/UserContext";
+import { getClosets, upload } from "../api/closetsService";
 import axios from "axios";
 
 const MyWardrobe = ({ user }) => {
@@ -10,6 +12,7 @@ const MyWardrobe = ({ user }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("상의"); // 선택된 카테고리
+  const { user } = useUser();  // user 정보 가져오기
   const [visibleCounts, setVisibleCounts] = useState({
     "전체": 12,
     "외투": 12,
@@ -105,11 +108,7 @@ const MyWardrobe = ({ user }) => {
     formData.append("category", selectedCategory);
 
     try {
-      const response = await axios.post("/api/closets/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = upload(formData);
 
       if (response.status === 200 || response.status === 201) {
         alert("이미지가 성공적으로 업로드되었습니다!");
