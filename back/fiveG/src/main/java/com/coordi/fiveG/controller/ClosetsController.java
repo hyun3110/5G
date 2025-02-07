@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -79,5 +80,21 @@ public class ClosetsController {
         }
     }
 
+    // 의류 삭제
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteClosets(@RequestBody Map<String, List<Integer>> request) {
+        List<Integer> ids = request.get("ids");
+        if (ids == null || ids.isEmpty()) {
+            return ResponseEntity.badRequest().body("삭제할 의류 아이디가 없습니다.");
+        }
+
+        try {
+            closetsService.deleteClosets(ids);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // 삭제 성공
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("의류 삭제 중 오류가 발생했습니다.");
+        }
+    }
 
 }

@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../css/MyWardrobe.css";
 import { useUser } from "../context/UserContext";
-import { getClosets, upload } from "../api/closetsService";
-import axios from "axios";
+import { getClosets, upload, getImg, deleteClosets } from "../api/closetsService";
 
-const MyWardrobe = ({ user }) => {
-  const [items, setItems] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+const MyWardrobe = () => {
+  const [items, setItems] = useState([]); // 아이템 목록
+  const [selectedItems, setSelectedItems] = useState([]); // 선택된 아이템 저장
+  const [showModal, setShowModal] = useState(false); // 모달 상태
+  const [uploadedImage, setUploadedImage] = useState(null); // 업로드 이미지
+  const [previewImage, setPreviewImage] = useState(null); // 이미지 미리보기
   const [selectedCategory, setSelectedCategory] = useState("상의"); // 선택된 카테고리
   const { user } = useUser();  // user 정보 가져오기
   const [visibleCounts, setVisibleCounts] = useState({
@@ -20,6 +18,7 @@ const MyWardrobe = ({ user }) => {
     "하의": 12,
     "신발": 12,
   });
+  const [imageSrcs, setImageSrcs] = useState({}); // 각 아이템의 이미지 URL을 저장할 상태
   const fileInputRef = useRef();
   const sectionsRef = useRef({
     전체: null,
@@ -32,33 +31,84 @@ const MyWardrobe = ({ user }) => {
   const currentPage = "내 옷장";
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) return; // user가 없으면 API 호출하지 않음
+    const fetchItems = async () => {
+      try {
+        const data = await getClosets(user.id);
+        // 데이터가 배열 형식으로 들어오는지 확인 후 상태 설정
+        console.log(data)
+        setItems(Array.isArray(data) ? data : [data]);
+      } catch (error) {
+        console.error("아이템을 가져오는 중 오류 발생:", error);
+      }
+    };
+    fetchItems();
+  }, [user]); // useEffect에 비동기 호출 래핑
 
-    axios
-      .get(`/api/closets/${user.id}`, { withCredentials: true })
-      .then((response) => {
-        const data = response.data;
-        if (Array.isArray(data)) {
-          setItems(data);
-        } else {
-          setItems([data]);
+  // 이미지 로딩
+  useEffect(() => {
+    const fetchImages = async () => {
+      const newImageSrcs = {};  // 새로 이미지 URL을 저장할 객체
+      for (let item of items) {
+        try {
+          const image = await getImg(item.file);  // 이미지 불러오기
+          if (image && image.data) {
+            // Blob 데이터를 반환하는 경우
+            const imageBlob = image.data;
+            const imageUrl = URL.createObjectURL(imageBlob);  // Blob을 URL로 변환
+            newImageSrcs[item.closetIdx] = imageUrl;  // 아이템의 closetIdx를 키로 저장
+          } else if (image && typeof image === "string") {
+            // 이미 URL을 직접 반환하는 경우
+            newImageSrcs[item.closetIdx] = image;  // 아이템의 closetIdx를 키로 저장
+          } else {
+            console.error(`알 수 없는 데이터 형식: ${item.closetIdx}`);
+          }
+        } catch (error) {
+          console.error("이미지 로드 실패:", error);
         }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("옷장 데이터를 가져오는 데 실패했습니다.", error);
-        setLoading(false);
-      });
-  }, [user]);
+      }
+      setImageSrcs(newImageSrcs);  // 상태 업데이트
+    };
 
-  const getRecentItems = () => {
-    const today = new Date();
-    return items.filter((item) => {
-      const uploadDate = new Date(item.uploadedAt);
-      const diffDays = (today - uploadDate) / (1000 * 60 * 60 * 24);
-      return diffDays <= 7;
-    });
+    if (items.length > 0) {
+      fetchImages();  // 아이템이 있으면 이미지 가져오기
+    }
+  }, [items]);  // items 배열이 변경될 때마다 실행
+
+  const handleCheckboxChange = (closetIdx) => {
+    setSelectedItems((prevSelected) =>
+      prevSelected.includes(closetIdx)
+        ? prevSelected.filter((id) => id !== closetIdx)
+        : [...prevSelected, closetIdx]
+    );
   };
+
+  const handleDeleteSelected = async () => {
+    if (selectedItems.length === 0) {
+        alert("삭제할 의류를 선택하세요.");
+        return;
+    }
+
+    const confirmDelete = window.confirm("선택한 의류를 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+
+    try {
+        // 삭제 API 호출
+        const response = await deleteClosets(selectedItems);
+        if (response.status === 200 || response.status === 204) {
+            alert("선택한 의류가 삭제되었습니다.");
+            setItems((prevItems) =>
+                prevItems.filter((item) => !selectedItems.includes(item.closetIdx))
+            );
+            setSelectedItems([]); // 선택된 목록 초기화
+        } else {
+            alert("삭제에 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("의류 삭제 중 오류 발생:", error);
+        alert("의류 삭제에 실패했습니다.");
+    }
+};
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -108,8 +158,7 @@ const MyWardrobe = ({ user }) => {
     formData.append("category", selectedCategory);
 
     try {
-      const response = upload(formData);
-
+      const response = await upload(formData);
       if (response.status === 200 || response.status === 201) {
         alert("이미지가 성공적으로 업로드되었습니다!");
         setShowModal(false); // 모달 닫기
@@ -125,32 +174,81 @@ const MyWardrobe = ({ user }) => {
     }
   };
 
+  const handleLoadMore = (category) => {
+    const filteredItems = items.filter(
+      (item) => item.category === category || category === "전체"
+    );
+
+    setVisibleCounts((prevCounts) => ({
+      ...prevCounts,
+      [category]: visibleCounts[category] === 12 ? filteredItems.length : 12,
+    }));
+  };
+
   const renderItems = (category) => {
     const filteredItems =
-      category === "최근 등록" ? getRecentItems() : items.filter((item) => item.category === category || category === "전체");
+      category === "최근 등록"
+        ? items.filter((item) => {
+            const today = new Date();
+            const uploadDate = new Date(item.uploadedAt);
+            const diffDays = (today - uploadDate) / (1000 * 60 * 60 * 24);
+            return diffDays <= 7;
+          })
+        : items.filter(
+            (item) => item.category === category || category === "전체"
+          );
 
     if (filteredItems.length === 0) {
       return <p className="no-items">등록된 옷이 없습니다.</p>;
     }
 
     const visibleItems = filteredItems.slice(0, visibleCounts[category]);
+    const showLoadMoreButton = filteredItems.length > 12;
 
     return (
-      <div className="grid">
-        {visibleItems.map((item) => (
-          <div key={item.closetIdx} className="grid-item">
-            {/* 서버에서 반환한 이미지 URL을 사용하여 이미지 표시 */}
-            <img src={`/api/closets/download/${item.file}`} alt={`Item ${item.closetIdx}`} />
-            <p>{item.name}</p>
+      <div>
+        <div className="grid">
+          {visibleItems.map((item) => (
+            <div key={item.closetIdx} className="grid-item styled-grid-item">
+              {/* 체크박스 추가 */}
+              <input
+                id={`checkbox-${item.closetIdx}`}
+                type="checkbox"
+                className="item-checkbox"
+                checked={selectedItems.includes(item.closetIdx)}
+                onChange={() => handleCheckboxChange(item.closetIdx)}
+              />
+              <label
+                htmlFor={`checkbox-${item.closetIdx}`}
+                className="checkbox-wrapper"
+              ></label>
+              {/* 아이템 이미지 */}
+              <img
+                src={imageSrcs[item.closetIdx]}
+                alt={`Item ${item.closetIdx}`}
+                className="item-image"
+              />
+
+              {/* 아이템 이름 */}
+              <p className="item-name">{item.name}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* 더 보기 버튼 */}
+        {showLoadMoreButton && (
+          <div className="load-more-container">
+            <button
+              className="load-more-button"
+              onClick={() => handleLoadMore(category)}
+            >
+              {visibleCounts[category] === 12 ? "더 보기" : "접기"}
+            </button>
           </div>
-        ))}
+        )}
       </div>
     );
   };
-
-  if (loading) {
-    return <p>로딩 중...</p>;
-  }
 
   return (
     <div className="wardrobe-container">
@@ -159,7 +257,14 @@ const MyWardrobe = ({ user }) => {
           <h2>내 의류</h2>
           <ul>
             {["전체", "외투", "상의", "하의", "신발"].map((category) => (
-              <li key={category} onClick={() => sectionsRef.current[category]?.scrollIntoView({ behavior: "smooth" })}>
+              <li
+                key={category}
+                onClick={() =>
+                  sectionsRef.current[category]?.scrollIntoView({
+                    behavior: "smooth",
+                  })
+                }
+              >
                 {category}
                 <hr />
               </li>
@@ -169,48 +274,78 @@ const MyWardrobe = ({ user }) => {
       </div>
 
       <div className="main-content">
-        <div className="navigation-bar">
-          <h1 className="left-text">My Wardrobe</h1>
-          <div className="right-text">
-            <a href="/Mypage" className="breadcrumb">My Page</a> &gt;
-            <span className="current">{currentPage}</span>
+        <div className="fixed-header">
+          <div className="navigation-bar">
+            <div className="right-text">
+              <a href="/Mypage" className="breadcrumb">
+                My Page
+              </a>{" "}
+              &gt;
+              <span className="current">{currentPage}</span>
+            </div>
           </div>
+
+          <div className="top-action-bar">
+            <h1 className="left-text">My Wardrobe</h1>
+            <button
+              className="add-clothing-button"
+              onClick={() => setShowModal(true)}
+            >
+              내 옷 등록
+            </button>
+            {/* 삭제하기 버튼 */}
+            <button
+              className="Wardrobe-delete-button"
+              onClick={handleDeleteSelected}
+            >
+              삭제하기
+            </button>
+          </div>
+          <hr className="category-divider" />
         </div>
+        <div className="scrollable-content">
+          <section ref={(el) => (sectionsRef.current["최근 등록"] = el)}>
+            <h2 className="category-title">최근 등록</h2>
+            {renderItems("최근 등록")}
+          </section>
 
-        <div className="top-action-bar">
-          <button className="add-clothing-button" onClick={() => setShowModal(true)}>
-            내 옷 등록
-          </button>
+          {["전체", "외투", "상의", "하의", "신발"].map((category) => (
+            <React.Fragment key={category}>
+              <hr className="category-divider" />
+              <section ref={(el) => (sectionsRef.current[category] = el)}>
+                <h2 className="category-title">{category}</h2>
+                {renderItems(category)}
+              </section>
+            </React.Fragment>
+          ))}
         </div>
-
-        <hr className="category-divider" />
-        <section ref={(el) => (sectionsRef.current["최근 등록"] = el)}>
-          <h2 className="category-title">최근 등록</h2>
-          {renderItems("최근 등록")}
-        </section>
-
-        {["전체", "외투", "상의", "하의", "신발"].map((category) => (
-          <React.Fragment key={category}>
-            <hr className="category-divider" />
-            <section ref={(el) => (sectionsRef.current[category] = el)}>
-              <h2 className="category-title">{category}</h2>
-              {renderItems(category)}
-            </section>
-          </React.Fragment>
-        ))}
-
         <hr className="category-divider" />
       </div>
 
       {showModal && (
         <div className="modal-backdrop">
           <div className="modal">
-            <h2>이미지 업로드</h2>
+            <div className="Wardrobe-modal-header">
+              <h2>이미지 업로드</h2>
+              <button
+                className="modal-close-button"
+                onClick={() => setShowModal(false)}
+                aria-label="닫기"
+              >
+                &times;
+              </button>
+            </div>
             <div className="image-preview-container">
               {previewImage ? (
-                <img src={previewImage} alt="Preview" className="image-preview" />
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  className="image-preview"
+                />
               ) : (
-                <div className="empty-preview">이미지 미리보기가 여기에 표시됩니다.</div>
+                <div className="empty-preview">
+                  이미지 미리보기가 여기에 표시됩니다.
+                </div>
               )}
             </div>
             <div
@@ -229,24 +364,34 @@ const MyWardrobe = ({ user }) => {
                 style={{ display: "none" }}
               />
             </div>
-
-            <select
-              id="category"
-              value={selectedCategory}
-              onChange={handleCategoryChange}
-            >
-              <option value="상의">상의</option>
-              <option value="하의">하의</option>
-              <option value="외투">외투</option>
-              <option value="신발">신발</option>
-            </select>
-
-            <button className="upload-button" onClick={handleUpload}>
-              업로드
-            </button>
-            <button className="cancel-button" onClick={() => setShowModal(false)}>
-              취소
-            </button>
+            <div className="modal-category-container">
+              <label htmlFor="category" className="modal-category-label">
+                의류 분류:
+              </label>
+              <select
+                id="category"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                className="modal-category-select"
+              >
+                <option value="상의">상의</option>
+                <option value="하의">하의</option>
+                <option value="외투">외투</option>
+                <option value="신발">신발</option>
+              </select>
+            </div>
+            <hr></hr>
+            <div className="category-button-container">
+              <button className="category-upload-button" onClick={handleUpload}>
+                업로드
+              </button>
+              <button
+                className="category-cancel-button"
+                onClick={() => setShowModal(false)}
+              >
+                취소
+              </button>
+            </div>
           </div>
         </div>
       )}

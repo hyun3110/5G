@@ -11,8 +11,9 @@ import Look from "./component/Look";
 import Pwconfirm from "./component/Pwconfirm";
 import Useredit from "./component/Useredit";
 import Weekcalander from "./component/Weekcalander";
+import Resetpw from "./component/Resetpw";
+import CodiRecommend from './component/Codirecommend';
 import MyWardrobe from "./component/MyWardrobe"; // MyWardrobe 추가
-import Calendar from "./component/Calender";
 import { UserProvider } from "./context/UserContext"; // UserProvider import
 import { EventsProvider } from "./context/eventsContext";
 
@@ -37,7 +38,8 @@ const App = () => {
               <Route path="/useredit" element={<Useredit />} />
               <Route path="/weekcalander" element={<Weekcalander />} />
               <Route path="/mywardrobe" element={<MyWardrobe />} /> {/* MyWardrobe 경로 추가 */}
-              <Route path="/cal" element={<Calendar />} />
+              <Route path="/resetpw" element={<Resetpw />} />
+              <Route path="/codirecommend" element={<CodiRecommend />} />
             </Routes>
           </div>
         </Router>
