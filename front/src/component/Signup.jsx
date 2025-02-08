@@ -239,23 +239,19 @@ const Signup = () => {
         <h1>회원가입</h1>
         <form onSubmit={signup}>
           <div className="form-group">
-            <label htmlFor="userId">아이디</label>
-            <input
-              type="text"
-              id="userId"
-              placeholder="아이디 입력(6~20자)"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              onBlur={validateUserId}
-              required
-            />
-            <button
-              type="button"
-              className="verification-button"
-              onClick={handleUserIdCheck}
-            >
-              중복 확인
-            </button>
+            <div class="form-group id-group">
+              <label for="userId">아이디</label>
+              <input
+                type="text"
+                id="userId"
+                placeholder="아이디 입력(6~20자)"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                onBlur={validateUserId}
+                required
+              />
+              <button type="button">중복 확인</button>
+            </div>
             {userIdError && <div className="error-message">{userIdError}</div>}
           </div>
 
@@ -300,31 +296,24 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="residentRegNum">주민등록번호</label>
-            <div className="rrn-group">
-              <input
-                type="text"
-                id="rrn-first"
-                value={rrnFirst}
-                onChange={handleRrnFirstChange}
-                onBlur={validateRrn}
-                placeholder="앞 6자리"
-                maxLength="6"
-                required
-              />
-              <span>-</span>
-              <input
-                type="text"
-                id="rrn-second"
-                value={rrnSecond}
-                onChange={handleRrnSecondChange}
-                onBlur={validateRrn}
-                placeholder="뒤 7자리"
-                maxLength="7"
-                required
-              />
+            <div class="form-group">
+              <label for="rrn">주민등록번호</label>
+              <div class="rrn-group">
+                <input
+                  type="text"
+                  id="rrn-first"
+                  placeholder="앞 6자리"
+                  maxlength="6"
+                />
+                <span>-</span>
+                <input
+                  type="text"
+                  id="rrn-second"
+                  placeholder="뒤 7자리"
+                  maxlength="7"
+                />
+              </div>
             </div>
-            {rrnError && <p className="error-message">{rrnError}</p>}
           </div>
 
           <div className="form-group">
@@ -343,30 +332,32 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">이메일 주소</label>
-            <div className="email-group">
-              <input
-                type="text"
-                id="email"
-                value={email}
-                className="email-id"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="아이디 입력"
-              />
-              <span>@</span>
-              <select
-                id="email-domain"
-                value={emailDomain}
-                className="email-domain"
-                onChange={(e) => setEmailDomain(e.target.value)}
-                required
-              >
-                <option value="naver.com">naver.com</option>
-                <option value="gmail.com">gmail.com</option>
-                <option value="kakao.com">kakao.com</option>
-                <option value="daum.net">daum.net</option>
-                <option value="hanmail.net">hanmail.net</option>
-              </select>
+            <div className="form-group email-group">
+              <label htmlFor="email">이메일 주소</label>
+              <div className="email-group">
+                <input
+                  type="text"
+                  id="email"
+                  value={email}
+                  className="email-id"
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="아이디 입력"
+                />
+                <span>@</span>
+                <select
+                  id="email-domain"
+                  value={emailDomain}
+                  className="email-domain"
+                  onChange={(e) => setEmailDomain(e.target.value)}
+                  required
+                >
+                  <option value="naver.com">naver.com</option>
+                  <option value="gmail.com">gmail.com</option>
+                  <option value="kakao.com">kakao.com</option>
+                  <option value="daum.net">daum.net</option>
+                  <option value="hanmail.net">hanmail.net</option>
+                </select>
+              </div>
             </div>
           </div>
           <div className="form-group">
@@ -400,4 +391,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;  
+export default Signup;
