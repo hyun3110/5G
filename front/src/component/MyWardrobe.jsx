@@ -1,22 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../css/MyWardrobe.css";
-import axios from "axios";
+import { useUser } from "../context/UserContext";
+import { getClosets, upload, getImg, deleteClosets } from "../api/closetsService";
 
-const MyWardrobe = ({ user }) => {
-  const [items, setItems] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+const MyWardrobe = () => {
+  const [items, setItems] = useState([]); // 아이템 목록
+  const [selectedItems, setSelectedItems] = useState([]); // 선택된 아이템 저장
+  const [showModal, setShowModal] = useState(false); // 모달 상태
+  const [uploadedImage, setUploadedImage] = useState(null); // 업로드 이미지
+  const [previewImage, setPreviewImage] = useState(null); // 이미지 미리보기
   const [selectedCategory, setSelectedCategory] = useState("상의"); // 선택된 카테고리
+  const { user } = useUser();  // user 정보 가져오기
   const [visibleCounts, setVisibleCounts] = useState({
-    전체: 12,
-    외투: 12,
-    상의: 12,
-    하의: 12,
-    신발: 12,
+    "전체": 12,
+    "외투": 12,
+    "상의": 12,
+    "하의": 12,
+    "신발": 12,
   });
+  const [imageSrcs, setImageSrcs] = useState({}); // 각 아이템의 이미지 URL을 저장할 상태
   const fileInputRef = useRef();
   const sectionsRef = useRef({
     전체: null,
@@ -29,24 +31,49 @@ const MyWardrobe = ({ user }) => {
   const currentPage = "내 옷장";
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) return; // user가 없으면 API 호출하지 않음
+    const fetchItems = async () => {
+      try {
+        const data = await getClosets(user.id);
+        // 데이터가 배열 형식으로 들어오는지 확인 후 상태 설정
+        console.log(data)
+        setItems(Array.isArray(data) ? data : [data]);
+      } catch (error) {
+        console.error("아이템을 가져오는 중 오류 발생:", error);
+      }
+    };
+    fetchItems();
+  }, [user]); // useEffect에 비동기 호출 래핑
 
-    axios
-      .get(`/api/closets/${user.id}`, { withCredentials: true })
-      .then((response) => {
-        const data = response.data;
-        if (Array.isArray(data)) {
-          setItems(data);
-        } else {
-          setItems([data]);
+  // 이미지 로딩
+  useEffect(() => {
+    const fetchImages = async () => {
+      const newImageSrcs = {};  // 새로 이미지 URL을 저장할 객체
+      for (let item of items) {
+        try {
+          const image = await getImg(item.file);  // 이미지 불러오기
+          if (image && image.data) {
+            // Blob 데이터를 반환하는 경우
+            const imageBlob = image.data;
+            const imageUrl = URL.createObjectURL(imageBlob);  // Blob을 URL로 변환
+            newImageSrcs[item.closetIdx] = imageUrl;  // 아이템의 closetIdx를 키로 저장
+          } else if (image && typeof image === "string") {
+            // 이미 URL을 직접 반환하는 경우
+            newImageSrcs[item.closetIdx] = image;  // 아이템의 closetIdx를 키로 저장
+          } else {
+            console.error(`알 수 없는 데이터 형식: ${item.closetIdx}`);
+          }
+        } catch (error) {
+          console.error("이미지 로드 실패:", error);
         }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("옷장 데이터를 가져오는 데 실패했습니다.", error);
-        setLoading(false);
-      });
-  }, [user]);
+      }
+      setImageSrcs(newImageSrcs);  // 상태 업데이트
+    };
+
+    if (items.length > 0) {
+      fetchImages();  // 아이템이 있으면 이미지 가져오기
+    }
+  }, [items]);  // items 배열이 변경될 때마다 실행
 
   const handleCheckboxChange = (closetIdx) => {
     setSelectedItems((prevSelected) =>
@@ -58,39 +85,30 @@ const MyWardrobe = ({ user }) => {
 
   const handleDeleteSelected = async () => {
     if (selectedItems.length === 0) {
-      alert("삭제할 의류를 선택하세요.");
-      return;
+        alert("삭제할 의류를 선택하세요.");
+        return;
     }
 
     const confirmDelete = window.confirm("선택한 의류를 삭제하시겠습니까?");
     if (!confirmDelete) return;
 
     try {
-      await axios.post(
-        `/api/closets/delete`,
-        { ids: selectedItems },
-        { withCredentials: true }
-      );
-
-      alert("선택한 의류가 삭제되었습니다.");
-      // 새로고침 대신 상태 업데이트
-      setItems((prevItems) =>
-        prevItems.filter((item) => !selectedItems.includes(item.closetIdx))
-      );
-
-      setSelectedItems([]); // 선택된 목록 초기화
+        // 삭제 API 호출
+        const response = await deleteClosets(selectedItems);
+        if (response.status === 200 || response.status === 204) {
+            alert("선택한 의류가 삭제되었습니다.");
+            setItems((prevItems) =>
+                prevItems.filter((item) => !selectedItems.includes(item.closetIdx))
+            );
+            setSelectedItems([]); // 선택된 목록 초기화
+        } else {
+            alert("삭제에 실패했습니다.");
+        }
     } catch (error) {
-      console.error("의류 삭제 중 오류 발생:", error);
-      alert("의류 삭제에 실패했습니다.");
+        console.error("의류 삭제 중 오류 발생:", error);
+        alert("의류 삭제에 실패했습니다.");
     }
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false); // 모달 닫기
-    setUploadedImage(null); // 업로드된 파일 초기화
-    setPreviewImage(null); // 미리보기 이미지 초기화
-    setSelectedCategory("상의"); // 카테고리 초기화
-  };
+};
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -140,12 +158,7 @@ const MyWardrobe = ({ user }) => {
     formData.append("category", selectedCategory);
 
     try {
-      const response = await axios.post("/api/closets/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
+      const response = await upload(formData);
       if (response.status === 200 || response.status === 201) {
         alert("이미지가 성공적으로 업로드되었습니다!");
         setShowModal(false); // 모달 닫기
@@ -211,7 +224,7 @@ const MyWardrobe = ({ user }) => {
               ></label>
               {/* 아이템 이미지 */}
               <img
-                src={`/api/closets/download/${item.file}`}
+                src={imageSrcs[item.closetIdx]}
                 alt={`Item ${item.closetIdx}`}
                 className="item-image"
               />
@@ -236,10 +249,6 @@ const MyWardrobe = ({ user }) => {
       </div>
     );
   };
-
-  if (loading) {
-    return <p>로딩 중...</p>;
-  }
 
   return (
     <div className="wardrobe-container">

@@ -25,6 +25,7 @@ public class ScheduleController {
     // 일정 추가
     @PostMapping("/add")
     public ResponseEntity<?> addSchedule(@RequestBody ScheduleDTO scheduleDTO, HttpSession session) {
+        System.out.println(scheduleDTO);
         try {
             Schedules newSchedule = schedulesService.addSchedule(scheduleDTO, session);
             return ResponseEntity.ok(newSchedule);  // 정상적인 경우, 새로운 일정 반환
@@ -37,6 +38,7 @@ public class ScheduleController {
     // 일정 수정
     @PutMapping("/{id}")
     public ResponseEntity<?> updateSchedule(@PathVariable("id") Integer id, @RequestBody ScheduleDTO scheduleDTO) {
+        System.out.println(scheduleDTO);
         try {
             Schedules updateSchedule = schedulesService.updateSchedule(id, scheduleDTO);
             return ResponseEntity.ok(updateSchedule);  // 정상적인 경우, 새로운 일정 반환

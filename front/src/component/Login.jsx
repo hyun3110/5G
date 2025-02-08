@@ -1,13 +1,16 @@
+// src/components/Login.jsx
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../css/Loginstyle.css";
+import { useUser } from "../context/UserContext";
+import { loginUser, getUserInfo } from "../api/authService";  // 로그인 서비스 임포트
 
-function Login({ setUser }) {
+function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setUser } = useUser();  // UserContext에서 setUser 함수 가져오기
 
   const login = async (e) => {
     e.preventDefault();
@@ -20,31 +23,16 @@ function Login({ setUser }) {
 
     try {
       // 로그인 요청
-      const response = await axios.post(
-        "http://localhost:8081/api/auth/login",
-        {
-          userId: userId,
-          pw: password,
-        },
-        { withCredentials: true }
-      );
-
-      if (response.status === 200) {
-        // 로그인 성공 시 유저 정보 업데이트
-        axios
-          .get("http://localhost:8081/api/auth/userinfo", {
-            withCredentials: true,
-          })
-          .then((response) => {
-            setUser(response.data); // 유저 정보를 상태에 저장
-            sessionStorage.setItem("user", JSON.stringify(response.data)); // 세션에 저장
-            navigate("/"); // 메인 화면으로 리디렉션
-          });
-      } else {
-        setError("로그인 실패!");
+      const loginSuccess = await loginUser(userId, password);  // authService에서 처리
+      if (loginSuccess) {
+        // 로그인 성공 후 유저 정보 가져오기
+        const userInfo = await getUserInfo();  // authService에서 처리
+        setUser(userInfo);  // UserContext에 유저 정보 저장
+        sessionStorage.setItem("user", JSON.stringify(userInfo));  // 세션에 유저 정보 저장
+        navigate("/");  // 메인 화면으로 리디렉션
       }
     } catch (err) {
-      setError("요청 실패!");
+      setError(err.message);  // 에러 메시지 표시
     }
   };
 
@@ -56,7 +44,7 @@ function Login({ setUser }) {
           <h1>Welcome!</h1>
         </div>
         <form onSubmit={login}>
-          <div className="login-section" onSubmit={login}>
+          <div className="login-section">
             <h2>로그인</h2>
             <input
               type="text"
@@ -75,9 +63,7 @@ function Login({ setUser }) {
 
             <div className="additional-links">
               {/* 회원가입 버튼 */}
-              <a href="/signup" className="top-link">
-                회원가입
-              </a>
+              <a href="/signup" className="top-link">회원가입</a>
               {/* 아이디 찾기 및 비밀번호 찾기 */}
               <div className="right-links">
                 <a href="/forgotid">아이디 찾기</a>

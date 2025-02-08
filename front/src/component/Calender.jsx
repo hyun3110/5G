@@ -1,300 +1,234 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import Modal from "react-modal";
+import AddEventForm from "./AddEventForm.jsx";
+import EditEventForm from "./EditEventForm.jsx";
+import { getEvents, addEvent, updateEvent, deleteEvent } from "../api/apiService"; // API 호출
+import { useUser } from "../context/UserContext"; // UserContext
+import { useEvents } from "../context/eventsContext";
 
-// 모달 스타일 설정
 Modal.setAppElement("#root");
 
-export default function Buttonclick() {
-  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
-  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+export default function Calendar() {
+  const { events, setEvents } = useEvents();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAddMode, setIsAddMode] = useState(true);
+  const { user } = useUser();  // UserContext에서 유저 정보 가져오기
   const [eventDetails, setEventDetails] = useState({
     id: null,
+    title: "",
     type: "",
     startDate: "",
     endDate: "",
     description: "",
+    color: "#ADD8E6",
   });
-  const [events, setEvents] = useState([]);
+  const [error, setError] = useState("");
+  const [isFetched, setIsFetched] = useState(false);  // 일정이 한번만 로드되었는지 여부
 
+  const calendarRef = useRef(null);
+
+  // 일정 데이터를 가져오는 함수
+  const fetchEvents = async () => {
+    if (user && user.id && !isFetched) {  // user가 null이 아니고 user.id가 존재할 경우에만 API 호출
+      try {
+        const data = await getEvents(user.id);
+
+        // 이벤트 형식이 FullCalendar에 맞도록 변환
+        const formattedEvents = data.map((event) => ({
+          id: event.scheIdx,
+          title: event.scheTitle,
+          type: event.scheType,
+          start: event.startDate,
+          end: event.endDate,
+          description: event.scheContent || "",
+          color: event.color || "#ADD8E6",
+        }));
+
+        setEvents(formattedEvents);  // 변환된 이벤트 상태에 저장
+        setIsFetched(true);  // 데이터가 로드되었음을 표시
+      } catch (err) {
+        console.error("Error fetching events:", err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents(); // user.id가 변경될 때마다 일정 가져오기
+  }, [user?.id]);
+
+  // 일정 추가 모달 열기
   const openAddModal = () => {
-    resetEventDetails();
-    setAddModalIsOpen(true);
-  };
-
-  const openEditModal = (info) => {
-    const event = info.event;
-    setEventDetails({
-      id: event.id,
-      type: event.extendedProps.type || "",
-      startDate: event.startStr,
-      endDate: new Date(event.end).toISOString().slice(0, 10),
-      description: event.extendedProps.description || "",
-    });
-    setEditModalIsOpen(true);
-  };
-
-  const closeAddModal = () => setAddModalIsOpen(false);
-  const closeEditModal = () => setEditModalIsOpen(false);
-
-  const resetEventDetails = () => {
+    setIsAddMode(true);
     setEventDetails({
       id: null,
+      title: "",
       type: "",
       startDate: "",
       endDate: "",
       description: "",
+      color: "#ADD8E6",
     });
+    setIsOpen(true);  // 모달 열기
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  // 일정 수정 모달 열기
+  const openEditModal = (info) => {
+    setIsAddMode(false);
+    const eventId = info.event.id;
+    const eventToEdit = events.find((event) => String(event.id) === String(eventId));
 
-    // 시작 날짜 검증
-    if (name === "startDate") {
-      const currentDate = new Date().toISOString().slice(0, 10);
-      if (value < currentDate) {
-        alert("시작 날짜는 오늘 날짜 이후여야 합니다.");
-        setEventDetails((prev) => ({ ...prev, startDate: "" }));
-        return;
-      }
+    if (eventToEdit) {
+      setEventDetails({
+        id: eventToEdit.id,
+        title: eventToEdit.title,
+        type: eventToEdit.type,
+        startDate: eventToEdit.start,
+        endDate: eventToEdit.end,
+        description: eventToEdit.description || "",
+        color: eventToEdit.color || "#ADD8E6",
+      });
+      setIsOpen(true);  // 모달 열기
     }
-
-    // 종료 날짜 검증
-    if (name === "endDate") {
-      if (eventDetails.startDate && value < eventDetails.startDate) {
-        alert("종료 날짜는 시작 날짜 이후여야 합니다.");
-        setEventDetails((prev) => ({ ...prev, endDate: "" }));
-        return;
-      }
-    }
-
-    setEventDetails((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
   };
 
-  const handleTypeChange = (e) => {
-    setEventDetails((prev) => ({
-      ...prev,
-      type: e.target.value,
-    }));
+  // 모달 닫기
+  const closeModal = () => {
+    setIsOpen(false);
   };
 
-  const adjustEndDate = (endDate) => {
-    const adjustedDate = new Date(endDate);
-    adjustedDate.setDate(adjustedDate.getDate() + 1);
-    return adjustedDate.toISOString().slice(0, 10);
+  // 일정 수정 후 이벤트 상태 업데이트
+  const updateEventInCalendar = (updatedEvent) => {
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event
+      )
+    );
+
+    // 캘린더 API를 통해 새로 고침
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      calendarApi.refetchEvents();  // 변경된 이벤트를 다시 가져오도록 요청
+      calendarApi.render();  // 렌더링 강제 호출
+    }
   };
 
-  const handleSaveAddEvent = () => {
-    if (!eventDetails.type) {
-      alert("일정 유형을 선택하세요.");
-      return;
-    }
-
-    if (!eventDetails.startDate || !eventDetails.endDate) {
-      alert("시작 날짜와 종료 날짜를 모두 선택하세요.");
-      return;
-    }
-
-    const newEvent = {
-      id: Date.now(),
-      title: eventDetails.type,
-      start: eventDetails.startDate,
-      end: adjustEndDate(eventDetails.endDate),
-      extendedProps: {
-        type: eventDetails.type,
-        description: eventDetails.description,
-      },
-    };
-
-    setEvents((prevEvents) => [...prevEvents, newEvent]);
-    closeAddModal();
-  };
-
-  const handleSaveEditEvent = () => {
-    if (!eventDetails.type) {
-      alert("일정 유형을 선택하세요.");
-      return;
-    }
-
-    if (!eventDetails.startDate || !eventDetails.endDate) {
-      alert("시작 날짜와 종료 날짜를 모두 선택하세요.");
-      return;
-    }
-
-    const adjustedEndDate = new Date(eventDetails.endDate);
-    adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
-
-    setEvents((prevEvents) => {
-      const updatedEvents = prevEvents.map((event) =>
-        event.id === eventDetails.id
-          ? {
-              ...event,
-              title: eventDetails.type,
-              start: eventDetails.startDate,
-              end: adjustedEndDate.toISOString().slice(0, 10),
-              extendedProps: {
-                ...event.extendedProps,
-                description: eventDetails.description,
-              },
-            }
-          : event
-      );
-
-      console.log("Before update:", JSON.parse(JSON.stringify(prevEvents)));
-      console.log("After update:", JSON.parse(JSON.stringify(updatedEvents)));
-
-      return updatedEvents;
-    });
-
-    closeEditModal();
-  };
+  // 유저 정보가 없으면 로딩 상태 반환
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
+      {/* 캘린더 표시 */}
       <FullCalendar
-        key={events.length}
+        ref={calendarRef}
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
-        events={events}
+        events={events}  // events 상태에 따라 렌더링
         eventClick={openEditModal}
+        locale="ko"
+        dayMaxEventRows={7} // 한 칸에 최대 7개의 이벤트 표시
+        dayMaxEvents={true} // true로 설정하면 "더보기" 링크 활성화
+        displayEventTime={false}
         customButtons={{
           addEventButton: {
             text: "일정 추가",
-            click: openAddModal,
+            click: () => openAddModal(),
           },
         }}
         headerToolbar={{
-          start: "dayGridMonth,timeGridWeek,timeGridDay",
-          center: "title",
-          end: "addEventButton today prev,next",
+          left: "title",
+          center: "",
+          right: "addEventButton today prev,next",
+        }}
+        dayCellContent={(arg) => {
+          const currentDate = new Date(arg.date).setHours(0, 0, 0, 0); // 현재 셀의 날짜 (시간 제거)
+
+          // 해당 날짜에 포함되는 이벤트 필터링
+          const eventsForDate = events.filter((event) => {
+            const eventStartDate = new Date(event.start).setHours(0, 0, 0, 0);
+
+            // 종료 날짜를 하루 전날로 수정
+            const eventEndDate = new Date(event.end).setHours(0, 0, 0, 0); // 1일(24시간)을 빼기
+
+            // 종료일을 포함하도록 비교하면서, 일정 수 표시에서만 하루 줄이도록 함
+            return currentDate >= eventStartDate && currentDate <= eventEndDate;
+          });
+
+          const eventCount = eventsForDate.length; // 해당 날짜의 이벤트 수 계산
+
+          return (
+            <div style={{ position: "relative", padding: "5px" }}>
+              {/* 날짜 */}
+              <div style={{ fontSize: "14px", fontWeight: "bold" }}>
+                {arg.date.getDate()}
+              </div>
+              {/* 일정 수 표시 */}
+              {eventCount > 0 && (
+                <div
+                  className="event-count-badge"
+                  style={{
+                    position: "absolute",
+                    top: "2px",
+                    right: "2px",
+                    backgroundColor: "#ff5722",
+                    color: "white",
+                    fontSize: "10px",
+                    borderRadius: "50%",
+                    padding: "2px 6px",
+                    fontWeight: "bold",
+                    zIndex: 10,
+                  }}
+                >
+                  일정 수: {eventCount}
+                </div>
+              )}
+            </div>
+          );
         }}
       />
 
-      {/* 일정 추가 모달 */}
-      <Modal isOpen={addModalIsOpen} onRequestClose={closeAddModal} contentLabel="일정 추가">
-        <h2>일정 추가</h2>
-        <form>
-          <div>
-            <label>일정 유형:</label>
-            <div>
-              <input
-                type="radio"
-                name="type"
-                value="결혼식"
-                checked={eventDetails.type === "결혼식"}
-                onChange={handleTypeChange}
-              />
-              결혼식
-              <input
-                type="radio"
-                name="type"
-                value="데이트"
-                checked={eventDetails.type === "데이트"}
-                onChange={handleTypeChange}
-              />
-              데이트
-              <input
-                type="radio"
-                name="type"
-                value="출퇴근"
-                checked={eventDetails.type === "출퇴근"}
-                onChange={handleTypeChange}
-              />
-              출퇴근
-            </div>
-          </div>
-
-          <div>
-            <label>시작일자:</label>
-            <input
-              type="date"
-              name="startDate"
-              value={eventDetails.startDate}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div>
-            <label>종료일자:</label>
-            <input
-              type="date"
-              name="endDate"
-              value={eventDetails.endDate}
-              onChange={handleInputChange}
-              min={eventDetails.startDate}
-            />
-          </div>
-
-          <button type="button" onClick={handleSaveAddEvent}>
-            추가
-          </button>
-        </form>
-      </Modal>
-
-      {/* 일정 수정 모달 */}
-      <Modal isOpen={editModalIsOpen} onRequestClose={closeEditModal} contentLabel="일정 수정">
-        <h2>일정 수정</h2>
-        <form>
-          <div>
-            <label>일정 유형:</label>
-            <div>
-              <input
-                type="radio"
-                name="type"
-                value="결혼식"
-                checked={eventDetails.type === "결혼식"}
-                onChange={handleTypeChange}
-              />
-              결혼식
-              <input
-                type="radio"
-                name="type"
-                value="데이트"
-                checked={eventDetails.type === "데이트"}
-                onChange={handleTypeChange}
-              />
-              데이트
-              <input
-                type="radio"
-                name="type"
-                value="출퇴근"
-                checked={eventDetails.type === "출퇴근"}
-                onChange={handleTypeChange}
-              />
-              출퇴근
-            </div>
-          </div>
-
-          <div>
-            <label>시작일자:</label>
-            <input
-              type="date"
-              name="startDate"
-              value={eventDetails.startDate}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div>
-            <label>종료일자:</label>
-            <input
-              type="date"
-              name="endDate"
-              value={eventDetails.endDate}
-              onChange={handleInputChange}
-              min={eventDetails.startDate}
-            />
-          </div>
-
-          <button type="button" onClick={handleSaveEditEvent}>
-            수정 완료
-          </button>
-        </form>
+      {/* AddEventForm 또는 EditEventForm을 조건부로 렌더링 */}
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // 배경을 어두운 색으로
+          },
+          content: {
+            backgroundColor: "white", // 모달 배경 색
+            padding: "20px", // 내용 여백
+            borderRadius: "8px", // 모달 둥근 모서리
+            width: "400px", // 모달 폭
+            margin: "auto", // 가운데 정렬
+          },
+        }}
+      >
+        {isAddMode ? (
+          <AddEventForm
+            eventDetails={eventDetails}
+            setEventDetails={setEventDetails}
+            events={events}
+            setEvents={setEvents}
+            error={error}
+            setError={setError}
+            closeModal={closeModal}
+          />
+        ) : (
+          <EditEventForm
+            eventDetails={eventDetails}
+            setEventDetails={setEventDetails}
+            events={events}
+            setEvents={setEvents}
+            error={error}
+            setError={setError}
+            closeModal={closeModal}
+            updateEventInCalendar={updateEventInCalendar}  // 수정 후 이벤트 업데이트
+          />
+        )}
       </Modal>
     </div>
   );

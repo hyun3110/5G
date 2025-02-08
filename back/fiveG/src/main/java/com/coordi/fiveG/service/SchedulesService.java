@@ -8,8 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -35,8 +34,8 @@ public class SchedulesService {
             throw new RuntimeException("세션이 만료되었습니다. 다시 로그인해주세요.");
         }
 
-        LocalDate startDate = scheduleDTO.getStartDate();
-        LocalDate endDate = scheduleDTO.getEndDate();
+        LocalDateTime startDate = scheduleDTO.getStartDate();
+        LocalDateTime endDate = scheduleDTO.getEndDate();
 
         // DTO에서 데이터를 꺼내와서 새로운 Schedule 엔티티 객체를 만듬
         Schedules schedule = new Schedules();
@@ -55,8 +54,8 @@ public class SchedulesService {
     // 일정 수정
     public Schedules updateSchedule(Integer id, ScheduleDTO scheduleDTO) {
 
-        LocalDate startDate = scheduleDTO.getStartDate();
-        LocalDate endDate = scheduleDTO.getEndDate();
+        LocalDateTime startDate = scheduleDTO.getStartDate();
+        LocalDateTime endDate = scheduleDTO.getEndDate();
 
         // DTO에서 데이터를 꺼내와서 새로운 Schedule 엔티티 객체를 만듬
         Schedules schedule = schedulesRepository.findById(id).get();

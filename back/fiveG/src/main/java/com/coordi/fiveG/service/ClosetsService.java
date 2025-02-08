@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -83,4 +84,21 @@ public class ClosetsService {
                 savedCloset.getUploadedAt()
         );
     }
+
+    // 의류 삭제
+    public void deleteClosets(List<Integer> ids) throws Exception {
+        try {
+            for (Integer id : ids) {
+                Optional<Closets> closetOptional = closetsRepository.findById(id);
+                if (closetOptional.isPresent()) {
+                    closetsRepository.deleteById(id);
+                } else {
+                    throw new Exception("의류 아이디 " + id + "가 존재하지 않습니다.");
+                }
+            }
+        } catch (Exception e) {
+            throw new Exception("삭제 중 오류가 발생했습니다.", e);
+        }
+    }
+
 }
