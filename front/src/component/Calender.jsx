@@ -120,11 +120,6 @@ export default function Calendar() {
     }
 };
 
-  // 유저 정보가 없으면 로딩 상태 반환
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div>
       {/* 캘린더 표시 */}

@@ -34,3 +34,21 @@ export const getUserInfo = async () => {
     throw new Error("유저 정보를 가져오는 데 실패했습니다.");
   }
 };
+
+// 로그아웃
+export const logout = async () => {
+  try {
+    // 로그아웃 API 호출 (세션 무효화)
+    const response = await axios.post(
+      "http://localhost:8081/api/auth/logout",
+      {},
+      { withCredentials: true }
+    );
+    if (response.status === 200) {
+      return response
+    }
+  } catch (error) {
+    console.error("로그아웃 실패", error);
+    throw error;
+  }
+};
