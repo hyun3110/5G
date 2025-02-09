@@ -10,7 +10,7 @@ html, body {
 /* 최상위 컨테이너 설정 */
 .signup-container {
     font-family: 'Noto Sans KR', sans-serif;
-    background: linear-gradient(to bottom, #6a5acd, #7b68ee, #9370db, #ffffff);
+    background: linear-gradient(to bottom, #4D48F5, #BB62F6, #C97AF5, #FFFFFF);
     display: flex;
     justify-content: center;
     align-items: flex-start; /* 상단 정렬 */

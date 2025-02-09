@@ -16,6 +16,7 @@
     padding: 50px;
     width: 400px;
     text-align: center;
+    margin-top: 10%;
   }
   
   .forgot-password-box h1 {
@@ -28,6 +29,7 @@
     color: #555;
     font-size: 1em;
     line-height: 1.5;
+    margin: 0;
   }
   
   .forgot-password-box input {
@@ -35,6 +37,7 @@
     padding: 10px;
     margin-bottom: 20px;
     border: none;
+    border-radius: 0;
     border-bottom: 2px solid #9f5fff;
     outline: none;
     font-size: 1em;

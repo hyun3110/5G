@@ -116,7 +116,7 @@ const Header = () => {
         sessionStorage.removeItem("user"); // sessionStorage에서 유저 정보 삭제
         localStorage.removeItem("events");
         setUser(null); // 유저 상태 초기화
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.error("로그아웃 실패", error);

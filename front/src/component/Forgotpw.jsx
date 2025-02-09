@@ -95,7 +95,7 @@ const ForgotPassword = () => {
         {message.text && <div className={`message ${message.type}`}>{message.text}</div>}
 
 
-        <button className="verify-button" onClick={handleVerification}>본인 확인</button>
+        <button className="verify-button" onClick={handleVerification}>비밀번호 재설정</button>
         <a className="other-button" onClick={() => navigate('/Login')}>로그인</a>
       </div>
     </div>

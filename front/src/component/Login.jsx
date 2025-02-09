@@ -32,7 +32,7 @@ function Login() {
         navigate("/");  // 메인 화면으로 리디렉션
       }
     } catch (err) {
-      setError(err.message);  // 에러 메시지 표시
+      setError("아이디 혹은 패스워드를 확인해 주세요");  // 에러 메시지 표시
     }
   };
 

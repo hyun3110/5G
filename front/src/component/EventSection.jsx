@@ -4,7 +4,6 @@ import "../css/styles.css";
 
 const EventSection = () => {
   const { events, setEvents } = useEvents();
-  const [showAll, setShowAll] = useState(false); // 전체 보기 상태
   const [selectedEvent, setSelectedEvent] = useState(null); // 선택된 이벤트 상태
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
 
@@ -90,15 +89,9 @@ const EventSection = () => {
             ))
           )}
         </div>
-      </div>
+        </div>
     ))}
   </div>
-  <button
-    className="show-more-button"
-    onClick={() => setShowAll((prev) => !prev)}
-  >
-    {showAll ? "간략히 보기" : "더 보기"} {/* 버튼 텍스트 변경 */}
-  </button>
 
 
       {/* 모달 */}

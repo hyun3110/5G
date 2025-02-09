@@ -55,6 +55,7 @@ body, html {
   flex-direction: column;
   justify-content: center;
   margin-top: 15%;
+  width: 243px;
 }
 
 .login-section h2 {

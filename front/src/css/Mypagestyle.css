@@ -1,182 +1,229 @@
 /* 전체 컨테이너 스타일 */
 .mypage-container {
-    font-family: Noto Sans KR;
-    width: 80%;
-    background-color: white; /* 배경을 흰색으로 변경 */
-    margin: 50px auto;
-    padding: 12 20px;
-  }
+  font-family: Noto Sans KR;
+  width: 80%;
+  background-color: white;
+  /* 배경을 흰색으로 변경 */
+  margin: 50px auto;
+  padding: 12 20px;
+}
 
-  /* 메인 컨텐츠 스타일 */
-  .mypage-main {
-    justify-content: center;
-    padding: 20px;
-    gap: 20px; /* 프로필 섹션과 즐겨찾기 섹션 간 간격 조정 */
-  }
+/* 메인 컨텐츠 스타일 */
+.mypage-main {
+  justify-content: center;
+  padding: 20px;
+  gap: 20px;
+  /* 프로필 섹션과 즐겨찾기 섹션 간 간격 조정 */
+}
 
-  .mypage-main h2{
-    color:#9f5fff;
-    margin-right: 87%;
-  }
+.mypage-main h2 {
+  color: #9f5fff;
+  margin-right: 87%;
+}
 
-  .mypage-main divider {
-    border: none;
-    height: 2px;
-    background: #000000;
-  }
-  
-  /* 프로필 섹션 */
-  .profile-section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    flex-basis: 30%;
-  }
-  
-  .profile-card {
-    height: 300px;
-    background-color: white;
-    border-radius: 10px;
-    border: 1px solid #dddddd;
-    padding: 20px;
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 1%;
-    overflow: hidden; /* 이미지 넘침 방지 */
-  }
-  
-  .profile-image {
-    width: 150px; /* 이미지 크기 */
-    height: 150px; /* 이미지 크기 */
-    border-radius: 50%; /* 둥근 모서리 */
-    object-fit: cover; /* 비율 유지 */
-    margin-bottom: 10px;
-    margin-top: 20px;
-  }
+.mypage-main divider {
+  border: none;
+  height: 2px;
+  background: #000000;
+}
 
-  .profile-card h2 {
-    text-align: left;
-    width: 100%; /* 텍스트 정렬을 위한 너비 설정 */
-    margin-left: 15px; /* 추가로 여백 조정 */
-    color:#000000;
-  }
-  
-  
-/* 공통 버튼 스타일 */
+/* 프로필 섹션 */
+.profile-section {
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #dddddd;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+  position: relative; /* 버튼 위치 조정을 위해 추가 */
+}
+
+/* 프로필 이미지: 왼쪽 정렬 */
+.profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 사용자 이름 스타일 */
+.profile-card h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #000000;
+  position: absolute;
+  left: 130px; /* 프로필 이미지 크기 + 간격 */
+  top: 20px;
+}
+
+.profile-card ul {
+  list-style: none;
+  padding: 1px;
+  margin-right: 80px;
+  width: 50px;
+}
+
+.profile-card li {
+  margin-bottom: 10px;
+  width: 124px;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+.profile-card li:hover {
+  opacity: 0.8;
+}
+
+/* 회원정보 수정 버튼: 사용자 이름 아래에 위치 */
+.edit-btn {
+  background-color: #d8d8d8;
+  color: black;
+  font-size: 14px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  left: 130px; /* 사용자 이름 위치와 동일 */
+  top: 50px; /* 사용자 이름 아래에 배치 */
+}
+
+.edit-btn:hover {
+  background-color: #c0c0c0;
+}
+
+/* 버튼 컨테이너 */
 .btn-container {
-    display: flex; /* 가로 정렬 */
-    justify-content: center; /* 가운데 정렬 */
-    gap: 20px; /* 버튼 간 간격 */
-    margin-top: 10px; /* 컨테이너 상단 여백 */
-  }
-  
-  .profile-card .btn {
-    width: 230px; /* 버튼 너비 */
-    height: 40px; /* 버튼 높이 */
-    text-align: center; /* 가로 중앙 정렬 */
-    border-radius: 8px; /* 둥근 모서리 */
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-  }
-  
-  /* 회원정보 수정 버튼 */
-  .profile-card .btn:first-of-type {
-    background-color: #d8d8d8; /* 버튼 색상 */
-    color: black;
-  }
-  
-  /* 코디 추천 버튼 */
-  .profile-card .btn:last-of-type {
-    background-color: #6a1b9a; /* 버튼 색상 */
-    color: white;
-    margin-left: 6px;
-  }
-  
-  /* 버튼 호버 효과 */
-  .profile-card .btn:hover {
-    opacity: 0.8;
-  }
-  
-  
-  
-  .activity-card {
-    width: 500px;
-    height: 300px;
-    background-color: white;
-    border-radius: 10px;
-    border: 1px solid #dddddd;
-    padding: 20px;
-    text-align: left; /* 텍스트를 왼쪽으로 정렬 */
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-left: 50px;
-  }
-  
-  .activity-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
-    border-bottom: 2px solid #dddddd; /* 제목 아래 구분선 */
-    padding-bottom: 10px;
-  }
-  
-  .activity-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .activity-card li {
-    font-size: 1rem;
-    color: #333;
-    padding: 10px 0; /* 항목 상하 여백 */
-    cursor: pointer; /* 클릭 가능 */
-    border-bottom: 1px solid #dddddd; /* 각 항목 구분선 */
-    transition: color 0.3s ease;
-  }
-  
-  .activity-card li:hover {
-    color: #48c78e; /* 호버 시 색상 변경 */
-  }
-  
-  
-  /* 즐겨찾기 섹션 */
-  .favorites-section {
-    flex-basis: 65%;
-  }
-  
-  .favorites-section h3 {
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    color: #333;
-  }
-  
-  .favorites-list {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .favorite-item {
-    width: 150px;
-    height: 200px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .favorite-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
- /* 모달 스타일 */
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  margin-top: 80px; /* 회원정보 수정 버튼과 일정 간격 */
+  margin-left: 14px;
+}
+
+
+.profile-card .btn {
+  background-color: #d8d8d8;
+  color: black;
+  font-size: 14px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+/* 회원정보 수정 버튼 */
+.profile-card .btn:first-of-type {
+  background-color: #d8d8d8;
+  /* 버튼 색상 */
+  color: black;
+}
+
+/* 코디 추천 버튼 */
+.profile-card .btn:last-of-type {
+  background-color: #6a1b9a;
+  /* 버튼 색상 */
+  color: white;
+}
+
+/* 버튼 호버 효과 */
+.profile-card .btn:hover {
+  opacity: 0.8;
+}
+
+
+
+.activity-card {
+  width: 500px;
+  height: 300px;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #dddddd;
+  padding: 20px;
+  text-align: left;
+  /* 텍스트를 왼쪽으로 정렬 */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.activity-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+  border-bottom: 2px solid #dddddd;
+  /* 제목 아래 구분선 */
+  padding-bottom: 10px;
+}
+
+.activity-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-card li {
+  font-size: 1rem;
+  color: #333;
+  padding: 10px 0;
+  /* 항목 상하 여백 */
+  cursor: pointer;
+  /* 클릭 가능 */
+  border-bottom: 1px solid #dddddd;
+  /* 각 항목 구분선 */
+  transition: color 0.3s ease;
+}
+
+.activity-card li:hover {
+  color: #48c78e;
+  /* 호버 시 색상 변경 */
+}
+
+
+/* 즐겨찾기 섹션 */
+.favorites-section {
+  flex-basis: 65%;
+}
+
+.favorites-section h3 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.favorites-list {
+  display: flex;
+  gap: 20px;
+}
+
+.favorite-item {
+  width: 150px;
+  height: 200px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 모달 스타일 */
 .codi-modal-overlay {
   position: fixed;
   top: 0;
@@ -226,39 +273,47 @@
 .codi-input-group label,
 .codi-input-a-group label,
 .codi-input-b-group label {
-  text-align: left; /* ✅ 텍스트 왼쪽 정렬 */
+  text-align: left;
+  /* ✅ 텍스트 왼쪽 정렬 */
   width: 74px;
   margin-right: 10px;
 }
 
 .codi-input-group input,
 .codi-input-group select {
-  flex-grow: 1;  /* 남은 공간을 채우도록 설정 */
+  flex-grow: 1;
+  /* 남은 공간을 채우도록 설정 */
   border: none;
   border-bottom: 2px solid #9f5fff;
   outline: none;
   padding: 8px;
   font-size: 16px;
-  width: 100%; /* ✅ 입력 필드의 너비를 통일 */
-  max-width: 250px; /* ✅ 일정 입력 필드와 장소 검색 필드의 너비를 맞춤 */
+  width: 100%;
+  /* ✅ 입력 필드의 너비를 통일 */
+  max-width: 250px;
+  /* ✅ 일정 입력 필드와 장소 검색 필드의 너비를 맞춤 */
 }
 
 .codi-input-a-group input {
-  flex-grow: 1;  /* 남은 공간을 채우도록 설정 */
+  flex-grow: 1;
+  /* 남은 공간을 채우도록 설정 */
   border: none;
   border-bottom: 2px solid #9f5fff;
   outline: none;
   padding: 8px;
   font-size: 16px;
-  width: 100%; /* ✅ 입력 필드의 너비를 통일 */
-  max-width: 250px; /* ✅ 일정 입력 필드와 장소 검색 필드의 너비를 맞춤 */
+  width: 100%;
+  /* ✅ 입력 필드의 너비를 통일 */
+  max-width: 250px;
+  /* ✅ 일정 입력 필드와 장소 검색 필드의 너비를 맞춤 */
 }
 
 /* 장소 검색 */
 .codi-search-container {
   display: flex;
   align-items: center;
-  gap: 29px; /* 버튼과 입력 필드 사이의 간격 */
+  gap: 29px;
+  /* 버튼과 입력 필드 사이의 간격 */
   width: 100%;
 }
 
@@ -268,12 +323,14 @@
   outline: none;
   padding: 8px;
   font-size: 16px;
-  margin-right: 18px; /* 버튼과의 간격을 조절 */
+  margin-right: 18px;
+  /* 버튼과의 간격을 조절 */
   margin-left: -240px;
 }
 
 .codi-search-container button {
-  width: 80px; /* 버튼의 크기를 고정 */
+  width: 80px;
+  /* 버튼의 크기를 고정 */
   height: 40px;
   padding: 8px 15px;
   border: none;
@@ -282,7 +339,8 @@
   color: white;
   cursor: pointer;
   font-size: 16px;
-  margin-left: 10px; /* 🔹 버튼과 입력창 사이의 간격 설정 */
+  margin-left: 10px;
+  /* 🔹 버튼과 입력창 사이의 간격 설정 */
 }
 
 .codi-search-container button:hover {
