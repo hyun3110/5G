@@ -36,11 +36,11 @@ public class ScheduleController {
     }
 
     // 일정 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateSchedule(@PathVariable("id") Integer id, @RequestBody ScheduleDTO scheduleDTO) {
+    @PutMapping("/update")
+    public ResponseEntity<?> updateSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         System.out.println(scheduleDTO);
         try {
-            Schedules updateSchedule = schedulesService.updateSchedule(id, scheduleDTO);
+            Schedules updateSchedule = schedulesService.updateSchedule(scheduleDTO);
             return ResponseEntity.ok(updateSchedule);  // 정상적인 경우, 새로운 일정 반환
         } catch (Exception e) {
             e.printStackTrace();  // 에러 발생 시 서버 로그에 출력

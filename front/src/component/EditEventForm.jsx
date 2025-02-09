@@ -13,20 +13,6 @@ const EditEventForm = ({
 }) => {
     const today = new Date().toISOString().split("T")[0];
 
-    // 날짜를 "YYYY-MM-DDT00:00:00" 형식으로 변환하는 함수
-    const formatDateWithTime = (date) => {
-        return `${date}T00:00:00`;
-    };
-
-    const handleStartDateChange = (e) => {
-        setEventDetails({ ...eventDetails, startDate: formatDateWithTime(e.target.value) });
-    };
-
-    const handleEndDateChange = (e) => {
-        setEventDetails({ ...eventDetails, endDate: formatDateWithTime(e.target.value) });
-        setError(""); // 종료일이 유효하면 에러 메시지 초기화
-    };
-
     const handleSaveEvent = () => {
         if (
             !eventDetails.title ||
@@ -37,8 +23,25 @@ const EditEventForm = ({
             setError("모든 내용을 입력해주세요.");
             return;
         }
+        const newEvent = {
+            id: eventDetails.id,
+            title: eventDetails.title,
+            type: eventDetails.type,
+            startDate: eventDetails.startDate
+            ? eventDetails.startDate.includes("T")
+                ? eventDetails.startDate  // 이미 T가 붙은 경우 그대로 사용
+                : `${eventDetails.startDate}T00:00:01`  // 수정된 경우 T 추가
+            : eventDetails.startDate,  // 수정되지 않았다면 기존 값 그대로 사용
+        endDate: eventDetails.endDate
+            ? eventDetails.endDate.includes("T")
+                ? eventDetails.endDate  // 이미 T가 붙은 경우 그대로 사용
+                : `${eventDetails.endDate}T23:59:59`  // 수정된 경우 T 추가
+            : eventDetails.endDate,  // 수정되지 않았다면 기존 값 그대로 사용
+            description: eventDetails.description,
+            color: eventDetails.color,
+        }
 
-        updateEvent(eventDetails)
+        updateEvent(newEvent)
             .then((updatedEvent) => {
                 setEvents((prevEvents) =>
                     prevEvents.map((event) =>
@@ -81,10 +84,6 @@ const EditEventForm = ({
 
     return (
         <div>
-            <button className="calander-xclose-button" onClick={closeModal}>
-                X
-            </button>
-            <br />
             <label>제목</label>
             <input
                 type="text"
@@ -113,7 +112,9 @@ const EditEventForm = ({
             <input
                 type="date"
                 value={eventDetails.startDate.split("T")[0]}
-                onChange={handleStartDateChange}
+                onChange={(e) =>
+                    setEventDetails({ ...eventDetails, startDate: e.target.value })
+                }
                 min={today}
             />
             <br />
@@ -121,7 +122,9 @@ const EditEventForm = ({
             <input
                 type="date"
                 value={eventDetails.endDate.split("T")[0]}
-                onChange={handleEndDateChange}
+                onChange={(e) =>
+                    setEventDetails({ ...eventDetails, endDate: e.target.value })
+                }
                 min={eventDetails.startDate.split("T")[0]}
             />
             <br />
@@ -161,6 +164,7 @@ const EditEventForm = ({
             <button onClick={handleDeleteEvent} className="delete-button">
                 삭제
             </button>
+            <button onClick={closeModal}>닫기</button>
         </div>
     );
 };

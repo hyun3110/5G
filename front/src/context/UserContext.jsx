@@ -7,7 +7,7 @@ export const UserProvider = ({ children }) => {
 
   // 컴포넌트가 마운트될 때 localStorage에서 유저 정보 불러오기
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -16,7 +16,7 @@ export const UserProvider = ({ children }) => {
   // 유저 정보가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
     }
   }, [user]);
 

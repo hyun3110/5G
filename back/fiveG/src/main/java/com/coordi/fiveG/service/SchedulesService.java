@@ -52,13 +52,13 @@ public class SchedulesService {
     }
 
     // 일정 수정
-    public Schedules updateSchedule(Integer id, ScheduleDTO scheduleDTO) {
+    public Schedules updateSchedule(ScheduleDTO scheduleDTO) {
 
         LocalDateTime startDate = scheduleDTO.getStartDate();
         LocalDateTime endDate = scheduleDTO.getEndDate();
 
         // DTO에서 데이터를 꺼내와서 새로운 Schedule 엔티티 객체를 만듬
-        Schedules schedule = schedulesRepository.findById(id).get();
+        Schedules schedule = schedulesRepository.findById(scheduleDTO.getScheIdx()).get();
         schedule.setScheType(scheduleDTO.getScheType());
         schedule.setScheTitle(scheduleDTO.getScheTitle());
         schedule.setStartDate(startDate);

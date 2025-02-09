@@ -11,10 +11,10 @@ import { useEvents } from "../context/eventsContext";
 Modal.setAppElement("#root");
 
 export default function Calendar() {
+  const { user } = useUser();  // UserContext에서 유저 정보 가져오기
   const { events, setEvents } = useEvents();
   const [isOpen, setIsOpen] = useState(false);
   const [isAddMode, setIsAddMode] = useState(true);
-  const { user } = useUser();  // UserContext에서 유저 정보 가져오기
   const [eventDetails, setEventDetails] = useState({
     id: null,
     title: "",
@@ -25,13 +25,12 @@ export default function Calendar() {
     color: "#ADD8E6",
   });
   const [error, setError] = useState("");
-  const [isFetched, setIsFetched] = useState(false);  // 일정이 한번만 로드되었는지 여부
 
   const calendarRef = useRef(null);
 
   // 일정 데이터를 가져오는 함수
   const fetchEvents = async () => {
-    if (user && user.id && !isFetched) {  // user가 null이 아니고 user.id가 존재할 경우에만 API 호출
+    if (user && user.id) {  // user가 null이 아니고 user.id가 존재할 경우에만 API 호출
       try {
         const data = await getEvents(user.id);
 
@@ -47,7 +46,6 @@ export default function Calendar() {
         }));
 
         setEvents(formattedEvents);  // 변환된 이벤트 상태에 저장
-        setIsFetched(true);  // 데이터가 로드되었음을 표시
       } catch (err) {
         console.error("Error fetching events:", err);
       }
@@ -55,8 +53,10 @@ export default function Calendar() {
   };
 
   useEffect(() => {
-    fetchEvents(); // user.id가 변경될 때마다 일정 가져오기
-  }, [user?.id]);
+    if (user?.id) {
+      fetchEvents();
+    }
+  }, [user?.id, events]);
 
   // 일정 추가 모달 열기
   const openAddModal = () => {
@@ -96,23 +96,29 @@ export default function Calendar() {
   // 모달 닫기
   const closeModal = () => {
     setIsOpen(false);
-  };
+
+    if (calendarRef.current) {
+        const calendarApi = calendarRef.current.getApi();
+        calendarApi.refetchEvents();  // 모달 닫을 때 이벤트 다시 로드
+        calendarApi.render();  // 캘린더 강제 렌더링
+    }
+};
 
   // 일정 수정 후 이벤트 상태 업데이트
   const updateEventInCalendar = (updatedEvent) => {
     setEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event
-      )
+        prevEvents.map((event) =>
+            event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event
+        )
     );
 
-    // 캘린더 API를 통해 새로 고침
+    // 캘린더의 refetchEvents() 및 render() 호출
     if (calendarRef.current) {
-      const calendarApi = calendarRef.current.getApi();
-      calendarApi.refetchEvents();  // 변경된 이벤트를 다시 가져오도록 요청
-      calendarApi.render();  // 렌더링 강제 호출
+        const calendarApi = calendarRef.current.getApi();
+        calendarApi.refetchEvents();  // 변경된 이벤트를 다시 가져오도록 요청
+        calendarApi.render();  // 강제로 캘린더 렌더링
     }
-  };
+};
 
   // 유저 정보가 없으면 로딩 상태 반환
   if (!user) {

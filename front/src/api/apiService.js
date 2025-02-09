@@ -17,8 +17,8 @@ export const addEvent = async (eventDetails) => {
     const addEvent = {
       scheTitle: eventDetails.title,
       scheType: eventDetails.type,
-      startDate: `${eventDetails.startDate}T00:00:00`,
-      endDate: `${eventDetails.endDate}T00:00:00`,
+      startDate: eventDetails.startDate,
+      endDate: eventDetails.endDate,
       scheContent: eventDetails.description,
       color: eventDetails.color,
     };
@@ -35,6 +35,7 @@ export const addEvent = async (eventDetails) => {
 export const updateEvent = async (eventDetails) => {
   try {
     const updateEvent = {
+      scheIdx: eventDetails.id,
       scheTitle: eventDetails.title,
       scheType: eventDetails.type,
       startDate: eventDetails.startDate,
@@ -42,7 +43,7 @@ export const updateEvent = async (eventDetails) => {
       scheContent: eventDetails.description,
       color: eventDetails.color,
     };
-    const response = await axios.put(`${API_URL}/api/schedules/${eventDetails.id}`, updateEvent, {
+    const response = await axios.put(`${API_URL}/api/schedules/update`, updateEvent, {
       withCredentials: true,
     });
     return response.data;

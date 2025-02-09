@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { addEvent } from '../api/apiService'; // API 호출
 
 const AddEventForm = ({
@@ -11,12 +11,13 @@ const AddEventForm = ({
     closeModal,
 }) => {
     const today = new Date().toISOString().split("T")[0];
+    const calendarRef = useRef(null);
 
     // 종료일이 시작일보다 이전일 경우 에러 메시지 설정
     const handleEndDateChange = (e) => {
         const endDate = e.target.value;
         setEventDetails({ ...eventDetails, endDate });
-        
+
         if (new Date(endDate) < new Date(eventDetails.startDate)) {
             setError("종료일은 시작일보다 앞설 수 없습니다.");
         } else {
@@ -47,7 +48,16 @@ const AddEventForm = ({
             return;
         }
 
-        addEvent(eventDetails)
+        const newEvent = {
+            title: eventDetails.title,
+            type: eventDetails.type,
+            startDate: `${eventDetails.startDate}T00:00:01`,
+            endDate: `${eventDetails.endDate}T23:59:59`,
+            description: eventDetails.description,
+            color: eventDetails.color,
+        }
+
+        addEvent(newEvent)
             .then((newEvent) => {
                 setEvents((prevEvents) => {
                     const updatedEvents = [
@@ -61,9 +71,17 @@ const AddEventForm = ({
                             description: newEvent.scheContent || "",
                         },
                     ];
-                    localStorage.setItem("events", JSON.stringify(updatedEvents));
+                    localStorage.setItem("events", JSON.stringify(events));
                     return updatedEvents;
                 });
+
+                // 캘린더 업데이트
+                if (calendarRef.current) {
+                    const calendarApi = calendarRef.current.getApi();
+                    calendarApi.refetchEvents();  // 변경된 이벤트를 다시 가져오도록 요청
+                    calendarApi.render();  // 강제로 캘린더 렌더링
+                }
+
                 closeModal();
             })
             .catch((err) => {
@@ -73,10 +91,6 @@ const AddEventForm = ({
 
     return (
         <div>
-            <button className="calander-xclose-button" onClick={closeModal}>
-                X
-            </button>
-            <br />
             <label>제목</label>
             <input
                 type="text"
@@ -150,6 +164,7 @@ const AddEventForm = ({
             <br />
             {error && <p className="error">{error}</p>}
             <button onClick={handleSaveEvent}>저장</button>
+            <button onClick={closeModal}>닫기</button>
         </div>
     );
 };
