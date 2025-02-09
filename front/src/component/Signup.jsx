@@ -177,6 +177,7 @@ const Signup = () => {
   const handleStyleSelection = () => {
     navigate("/look", {
       state: {
+        from: "signup",
         userId,
         pw,
         confirmPassword,

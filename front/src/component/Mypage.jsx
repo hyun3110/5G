@@ -9,7 +9,7 @@ import "../css/modal.css";
 import axios from 'axios';
 
 //다 수정하고 괄호에 user 넣기
-const MyPage = (user) => {
+const MyPage = ({user}) => {
   const [activeContent, setActiveContent] = useState('추천 받은 스타일'); // 현재 활성화된 콘텐츠 상태
   const [favorites, setFavorites] = useState([]); // 즐겨찾기한 스타일 리스트 상태
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 활성화 상태
@@ -35,10 +35,6 @@ const MyPage = (user) => {
       document.body.style.backgroundColor = ''; // 컴포넌트 언마운트 시 배경색 초기화
     };
   }, []);
-
-  const handleSelectStyle = () => {
-    navigate("/look"); // 스타일 선택 페이지로 이동
-  };
 
   // 회원정보 수정 버튼 클릭 시 비밀번호 확인 페이지로 이동
   const handleEditProfile = () => {
@@ -224,6 +220,8 @@ const MyPage = (user) => {
   return (
     <div className="mypage-container">
       <main className="mypage-main">
+        <h2>마이페이지</h2>
+        <hr className="divider" />
         <section className="profile-section">
           <div className="profile-card">
             <img
@@ -236,9 +234,6 @@ const MyPage = (user) => {
               <button className="btn" onClick={handleEditProfile}>회원정보 수정</button> {/* 회원정보 수정 버튼 */}
               <button className="btn" onClick={handleModalToggle}>코디 추천</button> {/* 모달 열기 버튼 */}
             </div>
-            {/* 선호하는 스타일 수정 버튼 */}
-            <button className="btn style-btn" onClick={handleSelectStyle}>선호하는 스타일 고르기</button>
-
           </div>
 
           <div className="activity-card">
