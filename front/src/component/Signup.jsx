@@ -12,8 +12,7 @@ const Signup = () => {
   const [pw, setPw] = useState(location.state?.pw || ""); // 비밀번호
   const [name, setName] = useState(location.state?.name || ""); // 이름
   const [confirmPassword, setConfirmPassword] = useState(
-    location.state?.confirmPassword || ""
-  );
+    location.state?.confirmPassword || "");
   // 주민등록번호 입력 핸들러 (앞자리, 뒷자리 분리)
   const [rrnFirst, setRrnFirst] = useState(location.state?.rnnFirst || "");
   const [rrnSecond, setRrnSecond] = useState(location.state?.rnnSecond || "");
@@ -31,8 +30,9 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState("");
   const [rrnError, setRrnError] = useState("");
   const [phoneError, setPhoneError] = useState("");
-  const [isUsernameValid, setIsUsernameValid] = useState(true);
+  const [isUsernameValid, setIsUsernameValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   // Look 페이지에서 돌아왔을 때 preferredStyle 유지
   useEffect(() => {
@@ -45,14 +45,22 @@ const Signup = () => {
 
   // 아이디 유효성 검사
   const validateUserId = (id) => {
-    const userIdPattern = /^[a-z0-9]{6,20}$/;
-    if (!userIdPattern.test(id)) {
-      setUserIdError("유효하지 않은 아이디입니다.");
+    const userIdPattern = /^(?=.*[a-z])(?=.*\d)[a-z0-9]{6,20}$/;
+
+    if (!id) {
+      setUserIdError("아이디를 입력하세요.");
       setIsUsernameValid(false);
-    } else {
-      setUserIdError("");
-      setIsUsernameValid(true);
+      return false;
     }
+
+    if (!userIdPattern.test(id)) {
+      setUserIdError("소문자, 숫자를 조합하여 6~20자로 입력하세요.");
+      setIsUsernameValid(false);
+      return false;
+    }
+
+    setUserIdError(""); // 형식이 맞으면 오류 메시지 초기화
+    return true;
   };
 
   // 비밀번호 유효성 검사
@@ -60,32 +68,45 @@ const Signup = () => {
     const passwordPattern =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordPattern.test(password)) {
-      setPasswordError("유효하지 않은 비밀번호입니다.");
-      setIsPasswordValid(false);
-    } else {
-      setPasswordError("");
-      setIsPasswordValid(true);
+      setPasswordError("문자, 숫자, 특수문자를 조합하여 8자 이상으로 입력하세요");
+      return false;
     }
+    setPasswordError("");
+    return true;
   };
+
+  // 비밀번호 확인 (불일치 검사만 수행)
+  const validatePasswordsMatch = () => {
+    if (!confirmPassword) {
+      setConfirmPasswordError(""); //] 비밀번호 확인 칸이 비어 있으면 오류 메시지 삭제
+      return false;
+    }
+
+    if (pw !== confirmPassword) {
+      setConfirmPasswordError("비밀번호가 일치하지 않습니다."); // 비밀번호 확인 칸에서만 오류 표시
+      return false;
+    }
+
+    setConfirmPasswordError(""); // 비밀번호가 일치하면 오류 메시지 삭제
+    return true;
+  };
+
+  // ✅ **비밀번호 & 비밀번호 확인 입력 시 실시간 검사**
+  useEffect(() => {
+    if (confirmPassword) validatePasswordsMatch();
+  }, [pw, confirmPassword]);
 
   // 아이디 중복 체크
   const handleUserIdCheck = async () => {
-    if (userId === "") {
-      setUserIdError("아이디를 입력하세요");
-      setIsUsernameValid(false);
-      return;
-    }
+    // 아이디 형식이 유효하지 않으면 중복 체크를 하지 않음
+    if (!validateUserId(userId)) return;
 
     try {
-      // 서버에 아이디 중복 확인 요청
-      const response = await axios.get(
-        "http://localhost:8081/api/auth/userIdCheck",
-        {
-          params: { userId },
-        }
-      );
+      const response = await axios.get("http://localhost:8081/api/auth/userIdCheck", {
+        params: { userId },
+      });
 
-      if (response.data) {
+      if (response.data.exists) {
         setUserIdError("이미 존재하는 아이디입니다.");
         setIsUsernameValid(false);
       } else {
@@ -94,6 +115,7 @@ const Signup = () => {
       }
     } catch (error) {
       console.error("아이디 중복 확인 오류:", error);
+      setUserIdError("서버 오류 발생");
     }
   };
 
@@ -194,6 +216,7 @@ const Signup = () => {
 
   const signup = async (e) => {
     e.preventDefault();
+    console.log("🚀 가입하기 버튼이 클릭됨!");
 
     // 아이디 중복 체크
     if (!isUsernameValid) {
@@ -201,11 +224,24 @@ const Signup = () => {
       return;
     }
 
-    // 주민등록번호 검사 추가
+    if (!validatePassword(pw)) {
+      alert("비밀번호를 올바르게 입력하세요.");
+      return;
+    }
+    if (!validatePasswordsMatch()) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
     if (!validateRrn()) {
       alert("유효한 주민등록번호를 입력하세요.");
       return;
     }
+    if (!validatePhone()) {
+      alert("유효한 전화번호를 입력하세요.");
+      return;
+    }
+
+    console.log("✅ 모든 유효성 검사 통과!");
 
     try {
       // 회원가입 요청
@@ -222,15 +258,18 @@ const Signup = () => {
         }
       );
 
-      if (response.status) {
-        alert("회원가입 성공");
-        navigate("/login");
+      console.log("📨 서버 응답:", response);
+
+      // ✅ 3. 회원가입 성공 처리
+      if (response.status === 200 || response.status === 201) {
+        alert("🎉 회원가입이 완료되었습니다!");
+        navigate("/login"); // 로그인 페이지로 이동
       } else {
-        alert("실패");
+        alert("❌ 회원가입 실패! 다시 시도해주세요.");
       }
     } catch (err) {
-      console.error("회원가입 오류:", err);
-      alert("서버 오류 발생");
+      console.error("❌ 회원가입 오류:", err);
+      alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
@@ -240,18 +279,21 @@ const Signup = () => {
         <h1>회원가입</h1>
         <form onSubmit={signup}>
           <div className="form-group">
-            <div class="form-group id-group">
-              <label for="userId">아이디</label>
+            <div className="form-group id-group">
+              <label htmlFor="userId">아이디</label>
               <input
                 type="text"
                 id="userId"
                 placeholder="아이디 입력(6~20자)"
                 value={userId}
-                onChange={(e) => setUserId(e.target.value)}
+                onChange={(e) => {
+                  setUserId(e.target.value);
+                  validateUserId(e.target.value);
+                }}
                 onBlur={validateUserId}
                 required
               />
-              <button type="button">중복 확인</button>
+              <button type="button" onClick={handleUserIdCheck}>중복 확인</button>
             </div>
             {userIdError && <div className="error-message">{userIdError}</div>}
           </div>
@@ -262,14 +304,15 @@ const Signup = () => {
               type="password"
               id="pw"
               placeholder="대소문자, 특수기호, 숫자 포함"
+              className="password-input"
               value={pw}
-              onChange={(e) => setPw(e.target.value)}
-              onBlur={validatePassword}
+              onChange={(e) => {
+                setPw(e.target.value);
+                validatePassword(e.target.value);
+              }}
               required
             />
-            {passwordError && (
-              <div className="error-message">{passwordError}</div>
-            )}
+            {passwordError && <div className="error-message">{passwordError}</div>}
           </div>
 
           <div className="form-group">
@@ -279,9 +322,13 @@ const Signup = () => {
               id="pw-confirm"
               placeholder="비밀번호 확인"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                validatePasswordsMatch();
+              }}
               required
             />
+            {confirmPasswordError && <div className="error-message">{confirmPasswordError}</div>}
           </div>
 
           <div className="form-group">
@@ -297,21 +344,25 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <div class="form-group">
-              <label for="rrn">주민등록번호</label>
-              <div class="rrn-group">
+            <div className="form-group">
+              <label htmlFor="rrn">주민등록번호</label>
+              <div className="rrn-group">
                 <input
                   type="text"
                   id="rrn-first"
+                  onChange={handleRrnFirstChange}
+                  onBlur={validateRrn}
                   placeholder="앞 6자리"
-                  maxlength="6"
+                  maxLength="6"
                 />
                 <span>-</span>
                 <input
-                  type="text"
+                  type="password"
                   id="rrn-second"
+                  onChange={handleRrnSecondChange}
+                  onBlur={validateRrn}
                   placeholder="뒤 7자리"
-                  maxlength="7"
+                  maxLength="7"
                 />
               </div>
             </div>
@@ -361,24 +412,30 @@ const Signup = () => {
               </div>
             </div>
           </div>
+
           <div className="form-group">
-            <label htmlFor="email">
-              선호 스타일
-              <button
-                type="button"
-                className="style-button"
-                onClick={handleStyleSelection}
-              >
-                선호하는 스타일 선택
-              </button>
-            </label>
+            <label>선호 스타일</label>
+            <div className="preferred-style">
+              {preferredStyle.length > 0 ? (
+                <span>{preferredStyle.join(", ")}</span>
+              ) : (
+                <span className="placeholder-text">선택된 스타일이 없습니다.</span>
+              )}
+            </div>
+            <button
+              type="button"
+              className="style-button"
+              onClick={handleStyleSelection}
+            >
+              선호하는 스타일 선택
+            </button>
           </div>
 
           <div className="btn-group">
             <button
               type="submit"
               className="btn-submit"
-              disabled={!isUsernameValid}
+              onClick={signup}
             >
               가입하기
             </button>

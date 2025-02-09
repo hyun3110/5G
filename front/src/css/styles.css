@@ -172,8 +172,15 @@ body {
   color: #555;
 }
 
-
-
+.category-events{
+  background-color: white; /* 배경색 */
+  border-radius: 10px; /* 둥근 모서리 */
+  padding: 15px; /* 내부 여백 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 카드형 박스 그림자 */
+  height: 100px;
+  overflow: hidden;
+  overflow-y: auto;
+}
 
 
 /* Event Section 스타일 */
@@ -182,11 +189,13 @@ body {
   flex-direction: column;
   /* 세로로 배치 */
   width: 45%;
+  height: 10%;
   gap: 20px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: #f9f9f9;
+  overflow-y: auto;
 }
 
 .event-header {
@@ -204,12 +213,14 @@ body {
 .event-item {
   padding: 10px;
   background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 2px solid #ccc;
+  box-shadow: none;
   transition: box-shadow 0.3s ease, transform 0.2s ease;
   cursor: pointer;
-  /* 마우스를 올리면 클릭 가능한 커서로 변경 */
+  overflow-y: auto;
 }
 
 .event-item:hover {
@@ -262,21 +273,6 @@ body {
   /* 옅은 회색 텍스트 색상 */
   font-weight: 400;
   /* 일반 굵기 */
-}
-
-
-.show-more-button {
-  align-self: center;
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.show-more-button:hover {
-  background-color: #45a049;
 }
 
 .event-divider {
@@ -984,7 +980,7 @@ button:hover {
   /* 배경색 유지 */
   border-right: 1px solid #ddd;
   /* 경계선 유지 */
-  height: calc(100vh - 80px);
+  height: calc(100vh - -60px);
   /* 화면 높이에서 헤더 제외 */
   box-sizing: border-box;
   /* 패딩 포함 크기 계산 */
@@ -1013,7 +1009,7 @@ button:hover {
   /* 여백 */
   overflow-y: auto;
   /* 세로 스크롤 추가 */
-  height: calc(100vh - 80px);
+  height: calc(100vh - -67px);
   /* 화면 높이에서 헤더 높이를 제외 */
   box-sizing: border-box;
   /* 패딩 포함 크기 계산 */

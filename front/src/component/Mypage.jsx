@@ -224,29 +224,30 @@ const MyPage = () => {
       <main className="mypage-main">
         <h2>마이페이지</h2>
         <hr className="divider" />
+
         <section className="profile-section">
           <div className="profile-card">
             <img
-              src={"/img/me.png"}
+              src={"/img/profile-icon.png"}
               alt="프로필 사진"
               className="profile-image"
               />
-              <h2>{user.name}</h2>
+              <h2>{user.name} 님</h2>
             <div className="btn-container">
-              <button className="btn" onClick={handleEditProfile}>회원정보 수정</button> {/* 회원정보 수정 버튼 */}
-              <button className="btn" onClick={handleModalToggle}>코디 추천</button> {/* 모달 열기 버튼 */}
+              <button className="btn edit-btn" onClick={handleEditProfile}>회원정보 수정</button> {/* 회원정보 수정 버튼 */}
+              <button className="btn" onClick={handleModalToggle}>코디 추천</button>
             </div>
-          </div>
-
-          <div className="activity-card">
-            <h3>Activity</h3>
             <ul>
               <li onClick={() => handleItemClick('옷 장')}>옷 장</li> {/* 옷 장 항목 */}
               <li onClick={() => handleItemClick('추천 받은 스타일')}>추천 받은 스타일</li> {/* 추천 받은 스타일 항목 */}
               <li onClick={() => handleItemClick('즐겨찾기')}>즐겨찾기</li> {/* 즐겨찾기 항목 */}
             </ul>
           </div>
+
         </section>
+          {/* <div className="activity-card">
+            <h3>Activity</h3>
+          </div> */}
 
         <section className="favorites-section">{renderContent()}</section> {/* 활성화된 콘텐츠 */}
       </main>

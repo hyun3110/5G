@@ -119,7 +119,7 @@ const Header = () => {
         localStorage.removeItem("events");
         setUser(null); // 유저 상태 초기화
         setEvents([]); // 이벤트 상태 초기화
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.error("로그아웃 실패", error);

@@ -12,7 +12,7 @@ const ForgotId = () => {
   const [foundId, setFoundId] = useState("");
   const navigate = useNavigate();
 
-  
+
   // 주민등록번호 입력 핸들러 (숫자만 입력 가능)
   const handleRrnFirstChange = (e) => {
     let value = e.target.value.replace(/[^0-9]/g, "");
@@ -43,10 +43,10 @@ const ForgotId = () => {
         setFoundId(response.data.userId);
         setMessage({ text: `회원님의 아이디는 "${response.data.userId}" 입니다.`, type: "success" });
       } else {
-        setMessage({ text: "입력한 정보와 일치하는 아이디가 없습니다.", type: "error" });
+        setMessage({ text: "입력한 정보와 일치하는 아이디가 없습니다", type: "error" });
       }
     } catch (error) {
-      setMessage({ text: "서버 오류가 발생했습니다. 다시 시도해주세요.", type: "error" });
+      setMessage({ text: "입력한 정보와 일치하는 아이디가 없습니다", type: "error" });
     }
   };
 
@@ -71,7 +71,7 @@ const ForgotId = () => {
           onKeyDown={handleKeyDown}
         />
 
-<div className="rrn-group">
+        <div className="rrn-group">
           <input
             type="text"
             placeholder="주민등록번호 앞 6자리"
