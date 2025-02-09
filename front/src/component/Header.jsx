@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { useEvents } from "../context/eventsContext";
+import { logout } from "../api/authService";
 
 const Header = () => {
   const [location, setLocation] = useState("서울"); // 기본 위치: 서울
@@ -104,22 +105,18 @@ const Header = () => {
     }
   };
 
-  const logout = async () => {
+  // 로그아웃 함수
+  const handleLogout = async () => {
     try {
-      // 로그아웃 API 호출 (세션 무효화)
-      const response = await axios.post(
-        "http://localhost:8081/api/auth/logout",
-        {},
-        { withCredentials: true }
-      );
-
+      // 로그아웃 API 호출
+      const response = await logout(); // 여기서 분리한 logout 함수 호출
       if (response.status === 200) {
-        // 로그아웃 성공 후 클라이언트에서 세션 데이터 제거
-        sessionStorage.removeItem("user"); // sessionStorage에서 유저 정보 삭제
-        localStorage.removeItem("events");
+        // 로그아웃 성공 시 세션 및 상태 초기화
+        sessionStorage.removeItem("user"); // 세션에서 유저 정보 삭제
+        localStorage.removeItem("events"); // 로컬 스토리지에서 이벤트 정보 삭제
         setUser(null); // 유저 상태 초기화
         setEvents([]); // 이벤트 상태 초기화
-        navigate("/login");
+        navigate("/login"); // 로그인 페이지로 리디렉션
       }
     } catch (error) {
       console.error("로그아웃 실패", error);
@@ -180,7 +177,7 @@ const Header = () => {
                 {/* 다른 헤더 요소들 */}
                 <div className="header-user-info">
                   <span className="header-user-name">{`${user.name}님`}</span>
-                  <button className="header-logout-button" onClick={logout}>
+                  <button className="header-logout-button" onClick={handleLogout}>
                     로그아웃
                   </button>
                 </div>
