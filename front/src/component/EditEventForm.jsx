@@ -28,15 +28,17 @@ const EditEventForm = ({
             title: eventDetails.title,
             type: eventDetails.type,
             startDate: eventDetails.startDate
-            ? eventDetails.startDate.includes("T")
-                ? eventDetails.startDate  // 이미 T가 붙은 경우 그대로 사용
-                : `${eventDetails.startDate}T00:00:01`  // 수정된 경우 T 추가
-            : eventDetails.startDate,  // 수정되지 않았다면 기존 값 그대로 사용
-        endDate: eventDetails.endDate
-            ? eventDetails.endDate.includes("T")
-                ? eventDetails.endDate  // 이미 T가 붙은 경우 그대로 사용
-                : `${eventDetails.endDate}T23:59:59`  // 수정된 경우 T 추가
-            : eventDetails.endDate,  // 수정되지 않았다면 기존 값 그대로 사용
+                ? eventDetails.startDate.includes("T")
+                    ? eventDetails.startDate  // 이미 T가 붙은 경우 그대로 사용
+                    : `${eventDetails.startDate}T00:00:01`  // 수정된 경우 T 추가
+                : eventDetails.startDate,  // 수정되지 않았다면 기존 값 그대로 사용
+
+            endDate: eventDetails.endDate
+                ? eventDetails.endDate.includes("T")
+                    ? eventDetails.endDate  // 이미 T가 붙은 경우 그대로 사용
+                    : `${eventDetails.endDate}T23:59:59`  // 수정된 경우 T 추가
+                : eventDetails.endDate,  // 수정되지 않았다면 기존 값 그대로 사용
+
             description: eventDetails.description,
             color: eventDetails.color,
         }
