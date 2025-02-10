@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import "../css/Lookstyle.css";
 
 const outfits = [
@@ -33,31 +32,16 @@ const FashionRecommendation = () => {
   const handleConfirm = async () => {
     const selectedStyles = selectedOutfits.map((item) => item.style); // 변수 선언 추가
     console.log("선택된 스타일:", selectedOutfits.map((item) => item.style));
+    alert("선택한 스타일이 저장되었습니다!");
     
     if (location.state?.from === "signup") {
-      // 회원가입에서 온 경우 → Signup 페이지로 스타일 데이터 전달
-      alert("선택한 스타일이 저장되었습니다!");
       navigate("/signup", {
         state: { ...location.state, preferredStyle: selectedStyles }
       });
     } else if (location.state?.from === "useredit") {
-      // 회원정보 수정에서 온 경우 → 서버에 수정 요청
-      try {
-        const response = await axios.post("http://localhost:8081/api/auth/update-style", {
-          userId: location.state.userId,
-          preferredStyle: selectedStyles
-        });
-
-        if (response.status === 200) {
-          alert("스타일이 성공적으로 업데이트되었습니다!");
-          navigate("/useredit", {
-            state: { ...location.state, preferredStyle: selectedStyles }
-          });
-        }
-      } catch (error) {
-        console.error("스타일 업데이트 실패:", error);
-        alert("스타일 업데이트에 실패했습니다.");
-      }
+      navigate("/useredit", {
+        state: { ...location.state, preferredStyle: selectedStyles }
+      });
     }
   };
 

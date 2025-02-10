@@ -38,7 +38,25 @@ public class Users {
     @CreationTimestamp
     private LocalDateTime joinedAt;
 
-    @Column(name = "PREFERRED_STYLE")
-    private String preferredStyle;
+    @Column(name = "RESIDENTREGNUM")
+    private String residentNum;
+
+    @Column(name = "CASUAL")
+    private boolean casual;
+
+    @Column(name = "CHIC")
+    private boolean chic;
+
+    @Column(name = "CLASSIC")
+    private boolean classic;
+
+    @Column(name = "MINIMAL")
+    private boolean minimal;
+
+    @Column(name = "STREET")
+    private boolean street;
+
+    @Column(name = "SPORTY")
+    private boolean sporty;
 
 }

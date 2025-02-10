@@ -42,6 +42,13 @@ public class UsersService {
         user.setPhone(sDto.getPhone());
         user.setEmail(sDto.getEmail());
         user.setJoinedAt(LocalDateTime.now());
+        user.setResidentNum(sDto.getResidentNum());
+        user.setCasual(sDto.isCasual());
+        user.setChic(sDto.isChic());
+        user.setClassic(sDto.isClassic());
+        user.setMinimal(sDto.isMinimal());
+        user.setStreet(sDto.isStreet());
+        user.setSporty(sDto.isSporty());
 
         return usersRepository.save(user);
     }
@@ -66,7 +73,13 @@ public class UsersService {
         user.setPhone(userDTO.getPhone());
         user.setEmail(userDTO.getEmail());
         user.setJoinedAt(userDTO.getJoinedAt());
-        user.setPreferredStyle(userDTO.getPreferredStyle());
+        user.setResidentNum(userDTO.getResidentNum());
+        user.setCasual(userDTO.isCasual());
+        user.setChic(userDTO.isChic());
+        user.setClassic(userDTO.isClassic());
+        user.setMinimal(userDTO.isMinimal());
+        user.setStreet(userDTO.isStreet());
+        user.setSporty(userDTO.isSporty());
 
         return usersRepository.save(user);
     }

@@ -105,7 +105,7 @@ const Header = () => {
     }
   };
 
-  // 로그아웃 함수
+  // 로그아웃
   const handleLogout = async () => {
     try {
       // 로그아웃 API 호출

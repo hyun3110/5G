@@ -40,7 +40,7 @@ export const logout = async () => {
   try {
     // 로그아웃 API 호출 (세션 무효화)
     const response = await axios.post(
-      "http://localhost:8081/api/auth/logout",
+      `${API_URL}/api/auth/logout`,
       {},
       { withCredentials: true }
     );
@@ -52,3 +52,25 @@ export const logout = async () => {
     throw error;
   }
 };
+
+// 아이디 확인
+export const idCheck = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/auth/useridcheck`, {
+      params: { userId },
+    }, { withCredentials: true });
+    return response.data
+  } catch (error) {
+    console.error("아이디 중복 확인 오류:", error);
+  }
+}
+
+// 회원가입
+export const userSignup = async (signupData) => {
+  try{
+    const response = await axios.post(`${API_URL}/api/auth/signup`, signupData, { withCredentials: true });
+    return response
+  } catch (error) {
+    console.error("통신 오류:", error);
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom"; // useNavigate 훅 임포트
 import "../css/Signupstyle.css";
-import axios from "axios";
+import { idCheck, userSignup } from "../api/authService";
 
 const Signup = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -24,7 +24,13 @@ const Signup = () => {
   const [preferredStyle, setPreferredStyle] = useState(
     location.state?.preferredStyle || []
   ); // 선호 스타일
-
+  const [casual, setCasual] = useState(location.state?.casual || false);
+  const [chic, setChic] = useState(location.state?.chic || false);
+  const [classic, setClassic] = useState(location.state?.classic || false);
+  const [minimal, setMinimal] = useState(location.state?.minimal || false);
+  const [street, setStreet] = useState(location.state?.street || false);
+  const [sporty, setSporty] = useState(location.state?.sporty || false);
+  
   // 유효성 검사
   const [userIdError, setUserIdError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -40,6 +46,12 @@ const Signup = () => {
       setPreferredStyle(location.state.preferredStyle);
       setRrnFirst(location.state.rrnFirst || "");
       setRrnSecond(location.state.rrnSecond || "");
+      setCasual(preferredStyle.includes("casual"));
+      setChic(preferredStyle.includes("chic"));
+      setClassic(preferredStyle.includes("classic"));
+      setMinimal(preferredStyle.includes("minimal"));
+      setStreet(preferredStyle.includes("street"));
+      setSporty(preferredStyle.includes("spoty"));
     }
   }, [location.state?.preferredStyle]);
 
@@ -102,11 +114,8 @@ const Signup = () => {
     if (!validateUserId(userId)) return;
 
     try {
-      const response = await axios.get("http://localhost:8081/api/auth/userIdCheck", {
-        params: { userId },
-      });
-
-      if (response.data.exists) {
+      const response = await idCheck(userId);
+      if (response) {
         setUserIdError("이미 존재하는 아이디입니다.");
         setIsUsernameValid(false);
       } else {
@@ -245,18 +254,21 @@ const Signup = () => {
 
     try {
       // 회원가입 요청
-      const response = await axios.post(
-        "http://localhost:8081/api/auth/signup",
-        {
-          userId: userId,
-          pw: pw,
-          name: name,
-          phone: phone,
-          email: `${email}@${emailDomain}`,
-          residentRegNum: `${rrnFirst}-${rrnSecond}`,
-          preferredStyle,
-        }
-      );
+      const signupData = {
+        userId: userId,
+        pw: pw,
+        name: name,
+        phone: phone,
+        email: `${email}@${emailDomain}`,
+        residentNum: `${rrnFirst}-${rrnSecond}`,
+        casual: casual,
+        chic: chic,
+        classic: classic,
+        minimal: minimal,
+        street: street,
+        sporty: sporty
+      };
+      const response = await userSignup(signupData);
 
       console.log("📨 서버 응답:", response);
 
