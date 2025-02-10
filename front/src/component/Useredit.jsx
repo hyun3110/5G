@@ -16,22 +16,18 @@ const Useredit = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [preferredStyle, setPreferredStyle] = useState(user?.preferredStyle || []); // 선호 스타일 상태 추가
-  const [casual, setCasual] = useState(location.state?.preferredStyle?.includes("casual") || false);
-  const [chic, setChic] = useState(location.state?.preferredStyle?.includes("chic") || false);
-  const [classic, setClassic] = useState(location.state?.preferredStyle?.includes("classic") || false);
-  const [minimal, setMinimal] = useState(location.state?.preferredStyle?.includes("minimal") || false);
-  const [street, setStreet] = useState(location.state?.preferredStyle?.includes("street") || false);
-  const [sporty, setSporty] = useState(location.state?.preferredStyle?.includes("spoty") || false);
+  const [styles, setStyles] = useState({
+    casual: location.state?.preferredStyle?.includes("casual") || user.casual,
+    chic: location.state?.preferredStyle?.includes("chic") || user.chic,
+    classic: location.state?.preferredStyle?.includes("classic") || user.classic,
+    minimal: location.state?.preferredStyle?.includes("minimal") || user.minimal,
+    street: location.state?.preferredStyle?.includes("street") || user.street,
+    sporty: location.state?.preferredStyle?.includes("sporty") || user.sporty
+  });
 
   useEffect(() => {
     if (location.state?.preferredStyle) {
       setPreferredStyle(location.state.preferredStyle);
-      setCasual(preferredStyle.includes("casual"));
-      setChic(preferredStyle.includes("chic"));
-      setClassic(preferredStyle.includes("classic"));
-      setMinimal(preferredStyle.includes("minimal"));
-      setStreet(preferredStyle.includes("street"));
-      setSporty(preferredStyle.includes("spoty"));
     }
   }, [location.state?.preferredStyle]);
 
@@ -42,12 +38,12 @@ const Useredit = () => {
         userId: user.userId,
         phone: user.phone,
         email: user.email,
-        casual: user.casual,
-        chic: user.chic,
-        classic: user.classic,
-        minimal: user.minimal,
-        street: user.street,
-        sporty: user.sporty
+        casual: styles.casual,
+        chic: styles.chic,
+        classic: styles.classic,
+        minimal: styles.minimal,
+        street: styles.street,
+        sporty: styles.sporty
       },
     });
   };
@@ -62,13 +58,14 @@ const Useredit = () => {
       pw: password || user.pw, // 비밀번호 입력이 없으면 기존 값 유지
       phone: phone || user.phone, // 입력된 전화번호 값
       email: email || user.email, // 입력된 이메일 값
-      casual: casual || user.casual,
-      chic: chic || user.chic,
-      classic: classic || user.classic,
-      minimal: minimal || user.minimal,
-      street: street || user.street,
-      sporty: sporty || user.sporty
+      casual: styles.casual,
+      chic: styles.chic,
+      classic: styles.classic,
+      minimal: styles.minimal,
+      street: styles.street,
+      sporty: styles.sporty
     };
+    console.log(updatedUser)
 
     try {
       await axios.put(`${API_BASE_URL}/useredit`, updatedUser, { withCredentials: true });

@@ -109,14 +109,14 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       // 로그아웃 API 호출
-      const response = await logout(); // 여기서 분리한 logout 함수 호출
+      const response = await logout();
       if (response.status === 200) {
         // 로그아웃 성공 시 세션 및 상태 초기화
         sessionStorage.removeItem("user"); // 세션에서 유저 정보 삭제
         localStorage.removeItem("events"); // 로컬 스토리지에서 이벤트 정보 삭제
         setUser(null); // 유저 상태 초기화
         setEvents([]); // 이벤트 상태 초기화
-        navigate("/");
+        navigate("/login", { replace: true })
       }
     } catch (error) {
       console.error("로그아웃 실패", error);

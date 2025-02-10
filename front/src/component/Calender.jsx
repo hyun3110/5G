@@ -56,7 +56,7 @@ export default function Calendar() {
     if (user?.id) {
       fetchEvents();
     }
-  }, [user?.id, events]);
+  }, [user, events]);
 
   // 일정 추가 모달 열기
   const openAddModal = () => {
