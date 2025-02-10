@@ -32,12 +32,8 @@ body {
   /* flex 레이아웃 */
   flex-direction: row;
   /* 좌우 배치 */
-  height: 100%;
-  /* 화면 전체 높이 */
   overflow: hidden;
   /* 스크롤바 표시 */
-  padding-top: 1.8%;
-  /* Header 높이만큼 여백 추가 */
 }
 
 /* Daily Look 텍스트 스타일 */
@@ -74,6 +70,7 @@ body {
   /* 슬라이더 위로 표시 */
   margin-bottom: 20px;
   /* 아래 이미지와의 간격 유지 */
+  padding-bottom: 20px;
 }
 
 
@@ -718,9 +715,6 @@ figcaption {
 }
 
 
-
-
-
 .fc-view-harness {
 
   max-height: 100%;
@@ -955,13 +949,7 @@ button:hover {
   /* 버튼 hover 상태 색상 */
 }
 
-/* 전체 컨테이너 */
-.app-container {
-  display: flex;
-  /* flexbox로 좌우 영역 분리 */
-  height: 100vh;
-  /* 화면 전체 높이 */
-}
+
 
 
 /* 왼쪽 영역 (슬라이더) */
