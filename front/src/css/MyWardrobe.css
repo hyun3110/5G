@@ -3,11 +3,8 @@
   display: flex;
   flex-direction: row;
   gap: 20px;
-  padding: 20px;
-  padding-top: 80px;
-  padding-right:-20px;
   width: 100%;
-  height: calc(100vh + 15px); /* 화면 높이에 따라 자동 조정 */
+  height: 91.2vh;
   overflow-y: auto; /* 세로 스크롤 가능 */
   box-sizing: border-box;
 }
@@ -163,7 +160,6 @@
   top: -30px; /* 화면 상단에 고정 */
   background-color: white; /* 배경색 */
   z-index: 100; /* 다른 요소보다 위에 표시 */
-  padding-bottom: 10px; /* 구분선 여백 */
 }
 
 
@@ -388,6 +384,9 @@
 
 
 
+section {
+  scroll-margin-top: 110px; /* 고정 헤더 높이만큼 여백 추가 */
+}
 
 /* 구분선 */
 .section-divider {
