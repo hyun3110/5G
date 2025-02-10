@@ -35,7 +35,7 @@ public class AuthController {
     }
 
     // 아이디 중복 체크
-    @GetMapping("/userIdCheck")
+    @GetMapping("/useridcheck")
     public boolean userIdCheck(@RequestParam("userId") String userId){
         System.out.println(userId);
         return usersService.userIdCheck(userId);

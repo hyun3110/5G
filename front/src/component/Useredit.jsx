@@ -10,16 +10,28 @@ const Useredit = () => {
   const navigate = useNavigate(); // 페이지 이동 함수
   const { user } = useUser();  // user 정보 가져오기
   const location = useLocation();
-  
+
   // 사용자 정보 상태값 (초기값 null)
   const [password, setPassword] = useState(""); // 비밀번호 입력 필드
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [preferredStyle, setPreferredStyle] = useState(user?.preferredStyle || []); // 선호 스타일 상태 추가
+  const [casual, setCasual] = useState(location.state?.preferredStyle?.includes("casual") || false);
+  const [chic, setChic] = useState(location.state?.preferredStyle?.includes("chic") || false);
+  const [classic, setClassic] = useState(location.state?.preferredStyle?.includes("classic") || false);
+  const [minimal, setMinimal] = useState(location.state?.preferredStyle?.includes("minimal") || false);
+  const [street, setStreet] = useState(location.state?.preferredStyle?.includes("street") || false);
+  const [sporty, setSporty] = useState(location.state?.preferredStyle?.includes("spoty") || false);
 
   useEffect(() => {
     if (location.state?.preferredStyle) {
       setPreferredStyle(location.state.preferredStyle);
+      setCasual(preferredStyle.includes("casual"));
+      setChic(preferredStyle.includes("chic"));
+      setClassic(preferredStyle.includes("classic"));
+      setMinimal(preferredStyle.includes("minimal"));
+      setStreet(preferredStyle.includes("street"));
+      setSporty(preferredStyle.includes("spoty"));
     }
   }, [location.state?.preferredStyle]);
 
@@ -30,6 +42,12 @@ const Useredit = () => {
         userId: user.userId,
         phone: user.phone,
         email: user.email,
+        casual: user.casual,
+        chic: user.chic,
+        classic: user.classic,
+        minimal: user.minimal,
+        street: user.street,
+        sporty: user.sporty
       },
     });
   };
@@ -42,13 +60,18 @@ const Useredit = () => {
     const updatedUser = {
       ...user, // 기존 사용자 정보 유지
       pw: password || user.pw, // 비밀번호 입력이 없으면 기존 값 유지
-      phone : phone || user.phone, // 입력된 전화번호 값
-      email : email || user.email, // 입력된 이메일 값
-      preferredStyle, // 선택한 스타일 반영
+      phone: phone || user.phone, // 입력된 전화번호 값
+      email: email || user.email, // 입력된 이메일 값
+      casual: casual || user.casual,
+      chic: chic || user.chic,
+      classic: classic || user.classic,
+      minimal: minimal || user.minimal,
+      street: street || user.street,
+      sporty: sporty || user.sporty
     };
 
     try {
-      await axios.put(`${API_BASE_URL}/useredit`, updatedUser,{ withCredentials: true });
+      await axios.put(`${API_BASE_URL}/useredit`, updatedUser, { withCredentials: true });
       alert("회원 정보가 수정되었습니다."); // 성공 메시지
       navigate("/mypage"); // 수정 완료 후 마이페이지로 이동
     } catch (error) {
@@ -73,17 +96,17 @@ const Useredit = () => {
           />
 
           <label>전화번호</label>
-          <input 
-            type="text" 
-            value={phone} 
-            onChange={(e) => setPhone(e.target.value)} 
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
 
           <label>이메일 주소</label>
-          <input 
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           {/* 선호 스타일 선택 버튼 추가 */}

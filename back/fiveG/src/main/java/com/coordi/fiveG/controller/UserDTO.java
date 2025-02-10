@@ -1,5 +1,6 @@
 package com.coordi.fiveG.controller;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,6 +20,11 @@ public class UserDTO {
     private String phone;
     private String email;
     private LocalDateTime joinedAt;
-    private String preferredStyle;
-
+    private String residentNum;
+    private boolean casual;
+    private boolean chic;
+    private boolean classic;
+    private boolean minimal;
+    private boolean street;
+    private boolean sporty;
 }
