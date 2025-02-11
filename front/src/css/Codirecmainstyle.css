@@ -72,3 +72,45 @@
     border: 1px solid #4caf50;
   }
   
+  .closet-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .closet-item {
+    width: 100px;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.3s;
+  }
+  
+  .closet-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .closet-item.selected {
+    border: 2px solid #4caf50;
+    background-color: #e8f5e9;
+  }
+  
+  .selected-clothes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .selected-item {
+    width: 80px;
+    text-align: center;
+  }
+  
+  .selected-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
