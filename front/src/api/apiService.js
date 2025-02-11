@@ -60,3 +60,64 @@ export const deleteEvent = async (eventId) => {
     throw new Error("일정을 삭제하는 데 실패했습니다.");
   }
 };
+
+// KakaoMap에서 좌표를 주소로 변환하는 함수
+export const getAddressFromCoords = async (lat, lon) => {
+  try {
+    const response = await axios.get(`https://dapi.kakao.com/v2/local/geo/coord2address.json`, {
+      params: { x: lon, y: lat },
+      headers: { Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_API_KEY}` },
+    });
+
+    if (response.data.documents.length > 0) {
+      return response.data.documents[0].address.address_name;
+    } else {
+      return "주소 정보를 찾을 수 없습니다.";
+    }
+  } catch (error) {
+    console.error("카카오 API 주소 변환 오류:", error);
+    return "주소 정보를 불러올 수 없습니다.";
+  }
+};
+
+// OpenWeather API를 통해 날씨 정보 가져오기
+export const getWeatherData = async (lat, lon) => {
+  try {
+    const API_KEY = process.env.REACT_APP_OPENWEATHER_KEY;
+    const response = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+    );
+
+    if (response.data) {
+      return {
+        weather: response.data.weather[0].main,
+        temp: response.data.main.temp,
+        feelsLike: response.data.main.feels_like,
+      };
+    }
+  } catch (error) {
+    console.error("날씨 데이터 가져오기 오류:", error);
+    return null;
+  }
+};
+
+// 코디 추천 API 호출
+export const fetchCodiRecommendations = async (type, feelsLike, weather) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/auth`, {
+      type,
+      feelsLike,
+      weather,
+    });
+
+    if (!response.data || response.data.length === 0) {
+      console.warn("⚠️ 추천된 코디가 없습니다.");
+      return [];
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("코디 추천 오류:", error);
+    return [];
+  }
+};
