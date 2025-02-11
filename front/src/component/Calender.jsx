@@ -7,9 +7,6 @@ import EditEventForm from "./EditEventForm.jsx";
 import { getEvents, addEvent, updateEvent, deleteEvent } from "../api/apiService"; // API 호출
 import { useUser } from "../context/UserContext"; // UserContext
 import { useEvents } from "../context/eventsContext";
-import axios from "axios"; // 코디 추천 API 호출
-import CodiRecommend from "./Codirecommend"; // 코디 추천 컴포넌트 추가
-import KakaoMap from "./Kakaomap"; // KakaoMap에서 장소 선택 기능 추가
 
 Modal.setAppElement("#root");
 
@@ -24,34 +21,12 @@ export default function Calendar() {
     type: "",
     startDate: "",
     endDate: "",
-    location: "",
-    weather: "",
-    temp: "",
-    feelsLike: "",
     description: "",
     color: "#ADD8E6",
   });
   const [error, setError] = useState("");
 
-  const [weatherDescription, setWeatherDescription] = useState(""); // 날씨 API의 설명만 저장
-  const [recommendedCodi, setRecommendedCodi] = useState([]); // 추천 코디 상태
-  const [isCodiVisible, setIsCodiVisible] = useState(false); // 코디 추천 결과 표시 여부
-
   const calendarRef = useRef(null);
-
-  useEffect(() => {
-    if (isOpen && !isAddMode) {
-      console.log("📌 일정 수정 모달 열림, KakaoMap 다시 로드");
-
-      // ✅ 기존에 저장된 위치가 있으면 그대로 유지
-      setEventDetails((prev) => ({
-        ...prev,
-        location: prev.location ?? "",  // 기존 위치 유지
-        lat: prev.lat ?? null,
-        lon: prev.lon ?? null
-      }));
-    }
-  }, [isOpen]);
 
   // 일정 데이터를 가져오는 함수
   const fetchEvents = async () => {
@@ -66,15 +41,10 @@ export default function Calendar() {
           type: event.scheType,
           start: event.startDate,
           end: event.endDate,
-          location: event.scheLocation || "",
-          lat: event.lat || null,
-          lon: event.lon || null,
-          weather: event.weather || "",
-          temp: event.temp || "",
-          feelsLike: event.feelsLike || "",
           description: event.scheContent || "",
           color: event.color || "#ADD8E6",
         }));
+
         setEvents(formattedEvents);  // 변환된 이벤트 상태에 저장
       } catch (err) {
         console.error("Error fetching events:", err);
@@ -86,7 +56,7 @@ export default function Calendar() {
     if (user?.id) {
       fetchEvents();
     }
-  }, [user, events]);
+  }, [user?.id, events]);
 
   // 일정 추가 모달 열기
   const openAddModal = () => {
@@ -97,10 +67,6 @@ export default function Calendar() {
       type: "",
       startDate: "",
       endDate: "",
-      location: "",
-      weather: "",
-      temp: "",
-      feelsLike: "",
       description: "",
       color: "#ADD8E6",
     });
@@ -120,10 +86,6 @@ export default function Calendar() {
         type: eventToEdit.type,
         startDate: eventToEdit.start,
         endDate: eventToEdit.end,
-        location: eventToEdit.location || "",
-        weather: eventToEdit.weather || "",
-        temp: eventToEdit.temp || "",
-        feelsLike: eventToEdit.feelsLike || "",
         description: eventToEdit.description || "",
         color: eventToEdit.color || "#ADD8E6",
       });
@@ -131,144 +93,32 @@ export default function Calendar() {
     }
   };
 
-  const updateEventHandler = async () => {
-    // 현재 수정된 일정 데이터 가져오기
-    const updatedEvent = {
-      id: eventDetails.id,
-      title: eventDetails.title,
-      type: eventDetails.type,
-      startDate: eventDetails.startDate,
-      endDate: eventDetails.endDate,
-      description: eventDetails.description,
-      color: eventDetails.color,
-    };
-
-    try {
-      console.log("📌 업데이트할 일정 데이터:", updatedEvent);
-
-      // ✅ DB에 일정 업데이트 요청
-      await updateEvent(updatedEvent);
-
-      // ✅ 상태 업데이트 (캘린더에 반영)
-      setEvents((prevEvents) =>
-        prevEvents.map((event) =>
-          event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event
-        )
-      );
-
-      // ✅ 캘린더 강제 업데이트
-      if (calendarRef.current) {
-        const calendarApi = calendarRef.current.getApi();
-        calendarApi.refetchEvents(); // 변경된 이벤트 다시 불러오기
-        calendarApi.render();
-      }
-
-      // ✅ 모달 닫기
-      closeModal();
-    } catch (error) {
-      console.error("❌ 일정 업데이트 오류:", error);
-      alert("일정 업데이트 중 오류가 발생했습니다.");
-    }
-  };
-
-
   // 모달 닫기
   const closeModal = () => {
     setIsOpen(false);
-    setIsCodiVisible(false); // 코디 추천 닫기
-
-    // ✅ 이전에 선택했던 위치를 유지
-    setEventDetails((prev) => ({
-      ...prev,
-      location: prev.location ?? "",  // 기존 값 유지
-      lat: prev.lat ?? null,
-      lon: prev.lon ?? null,
-    }));
 
     if (calendarRef.current) {
-      const calendarApi = calendarRef.current.getApi();
-      calendarApi.refetchEvents();  // 모달 닫을 때 이벤트 다시 로드
-      calendarApi.render();  // 캘린더 강제 렌더링
+        const calendarApi = calendarRef.current.getApi();
+        calendarApi.refetchEvents();  // 모달 닫을 때 이벤트 다시 로드
+        calendarApi.render();  // 캘린더 강제 렌더링
     }
-  };
-
-  // 장소 선택 처리 (KakaoMap API 사용)
-  const handleLocationSelect = async (location, lat, lon) => {
-    console.log("📌 선택된 위치:", location, lat, lon);
-    setEventDetails((prev) => ({ ...prev, location, lat, lon }));
-
-    const API_KEY = process.env.REACT_APP_OPENWEATHER_KEY;
-
-    try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // ✅ API 데이터 구조 확인 후 적용
-      setEventDetails((prev) => ({
-        ...prev,
-        weather: data.weather?.[0]?.main || "정보 없음", // 안전한 접근 방식
-        temp: data.main?.temp || "정보 없음",
-        feelsLike: data.main?.feels_like || "정보 없음",
-      }));
-
-      console.log("📌 현재 날씨 데이터:", data);
-    } catch (error) {
-      console.error("날씨 데이터 가져오기 오류:", error);
-    }
-  };
-
-  // 코디 추천 API 요청
-  const fetchCodiRecommendations = async () => {
-    if (!eventDetails.type || !eventDetails.weather || !eventDetails.feelsLike) {
-      alert("일정 유형과 날씨 정보를 입력해야 코디 추천을 받을 수 있습니다.");
-      return;
-    }
-
-    try {
-      const response = await axios.post("http://localhost:8081/api/auth", {
-        type: eventDetails.type,
-        feelsLike: eventDetails.feelsLike,
-        weather: eventDetails.weather,
-      });
-
-      // ✅ 응답이 없거나 비어있는 경우
-      if (!response.data || !Array.isArray(response.data) || response.data.length === 0) {
-        console.warn("⚠️ 추천된 코디가 없습니다.");
-        alert("추천된 코디가 없습니다.");
-        setIsCodiVisible(true); // ✅ 화면 유지 (빈 결과 표시)
-        return;
-      }
-      setRecommendedCodi(response.data);
-      setIsCodiVisible(true);
-    } catch (error) {
-      console.error("코디 추천 오류:", error);
-      alert("코디 추천을 불러오는 중 오류가 발생했습니다.");
-      setIsCodiVisible(false);
-    }
-  };
+};
 
   // 일정 수정 후 이벤트 상태 업데이트
   const updateEventInCalendar = (updatedEvent) => {
     setEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event
-      )
+        prevEvents.map((event) =>
+            event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event
+        )
     );
 
     // 캘린더의 refetchEvents() 및 render() 호출
     if (calendarRef.current) {
-      const calendarApi = calendarRef.current.getApi();
-      calendarApi.refetchEvents();  // 변경된 이벤트를 다시 가져오도록 요청
-      calendarApi.render();  // 강제로 캘린더 렌더링
+        const calendarApi = calendarRef.current.getApi();
+        calendarApi.refetchEvents();  // 변경된 이벤트를 다시 가져오도록 요청
+        calendarApi.render();  // 강제로 캘린더 렌더링
     }
-  };
+};
 
   return (
     <div>
@@ -295,19 +145,28 @@ export default function Calendar() {
           right: "addEventButton today prev,next",
         }}
         dayCellContent={(arg) => {
-          const currentDate = new Date(arg.date).setHours(0, 0, 0, 0);
+          const currentDate = new Date(arg.date).setHours(0, 0, 0, 0); // 현재 셀의 날짜 (시간 제거)
+
+          // 해당 날짜에 포함되는 이벤트 필터링
           const eventsForDate = events.filter((event) => {
             const eventStartDate = new Date(event.start).setHours(0, 0, 0, 0);
-            const eventEndDate = new Date(event.end).setHours(0, 0, 0, 0);
+
+            // 종료 날짜를 하루 전날로 수정
+            const eventEndDate = new Date(event.end).setHours(0, 0, 0, 0); // 1일(24시간)을 빼기
+
+            // 종료일을 포함하도록 비교하면서, 일정 수 표시에서만 하루 줄이도록 함
             return currentDate >= eventStartDate && currentDate <= eventEndDate;
           });
 
-          const eventCount = eventsForDate.length;
+          const eventCount = eventsForDate.length; // 해당 날짜의 이벤트 수 계산
+
           return (
             <div style={{ position: "relative", padding: "5px" }}>
+              {/* 날짜 */}
               <div style={{ fontSize: "14px", fontWeight: "bold" }}>
                 {arg.date.getDate()}
               </div>
+              {/* 일정 수 표시 */}
               {eventCount > 0 && (
                 <div
                   className="event-count-badge"
@@ -333,120 +192,44 @@ export default function Calendar() {
       />
 
       {/* AddEventForm 또는 EditEventForm을 조건부로 렌더링 */}
-      <Modal isOpen={isOpen} onRequestClose={closeModal} style={{
-        overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-        content: {
-          backgroundColor: "white",
-          padding: "20px",
-          borderRadius: "8px",
-          width: "1000px",
-          height: "850px",
-          margin: "auto",
-          display: "flex",
-          flexDirection: "row",
-          gap: "20px",
-        },
-      }}>
-        {/* 왼쪽 컬럼: 일정 추가 또는 수정 폼 */}
-        <div style={{
-          flex: "1",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          borderRight: "1px solid #ddd",
-          paddingRight: "20px",
-        }}>
-          <h2 style={{
-            fontSize: "22px",
-            fontWeight: "bold",
-            marginRight: "280px",
-            marginBottom: "20px",
-          }}>
-            {isAddMode ? "일정 추가" : "일정 수정"}
-          </h2>
-
-          {isAddMode ? (
-            <AddEventForm
-              eventDetails={eventDetails}
-              setEventDetails={setEventDetails}
-              closeModal={() => setIsOpen(false)}
-            />
-          ) : (
-            <EditEventForm
-              eventDetails={eventDetails}
-              setEventDetails={setEventDetails}
-              events={events}
-              setEvents={setEvents}
-              closeModal={() => setIsOpen(false)}
-              updateEventInCalendar={updateEventHandler}
-            />
-          )}
-        </div>
-
-        {/* ✅ 오른쪽 컬럼: 장소 선택, 날씨 정보, 코디 추천 (추가 & 수정 공통 적용) */}
-        <div style={{ flex: "1", display: "flex", flexDirection: "column", gap: "15px" }}>
-          {isCodiVisible ? (
-            // ✅ 추천된 코디 결과 화면
-            <div style={{ textAlign: "center" }}>
-              <h3>👕 추천된 코디</h3>
-              {recommendedCodi.length > 0 ? (
-                recommendedCodi.map((imgSrc, index) => (
-                  <img key={index} src={imgSrc} alt={`추천 코디 ${index + 1}`}
-                    style={{ width: "100%", borderRadius: "10px", marginBottom: "10px" }} />
-                ))
-              ) : (
-                <p>❌ 추천된 코디가 없습니다.</p>
-              )}
-
-              {/* 다시 추천 받기 버튼 */}
-              <button onClick={() => setIsCodiVisible(false)}
-                style={{ marginTop: "10px", padding: "10px", backgroundColor: "#ff5722", color: "white", borderRadius: "5px", width: "100%", fontSize: "16px", cursor: "pointer" }}>
-                다시 추천 받기
-              </button>
-            </div>
-          ) : (
-            <>
-              {/* KakaoMap 위치 선택 */}
-              <div>
-                <h3>📍 장소 선택</h3>
-                <KakaoMap onSelectLocation={handleLocationSelect} />
-              </div>
-
-              {/* 날씨 정보 */}
-              <div>
-                <h3>🌤 날씨 정보</h3>
-                {eventDetails.weather ? (
-                  <div style={{ background: "#f5f5f5", padding: "10px", borderRadius: "8px" }}>
-                    <p><strong>날씨:</strong> {eventDetails.weather}</p>
-                    <p><strong>기온:</strong> {eventDetails.temp}°C</p>
-                    <p><strong>체감 온도:</strong> {eventDetails.feelsLike}°C</p>
-                  </div>
-                ) : (
-                  <p>날씨 정보를 불러오는 중...</p>
-                )}
-              </div>
-
-              {/* 코디 추천 버튼 */}
-              <div>
-                <button
-                  onClick={fetchCodiRecommendations}
-                  style={{
-                    padding: "10px",
-                    backgroundColor: "#ff5722",
-                    color: "white",
-                    borderRadius: "5px",
-                    width: "100%",
-                    fontSize: "16px",
-                    cursor: "pointer"
-                  }}
-                >
-                  코디 추천 받기
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // 배경을 어두운 색으로
+          },
+          content: {
+            backgroundColor: "white", // 모달 배경 색
+            padding: "20px", // 내용 여백
+            borderRadius: "8px", // 모달 둥근 모서리
+            width: "400px", // 모달 폭
+            margin: "auto", // 가운데 정렬
+          },
+        }}
+      >
+        {isAddMode ? (
+          <AddEventForm
+            eventDetails={eventDetails}
+            setEventDetails={setEventDetails}
+            events={events}
+            setEvents={setEvents}
+            error={error}
+            setError={setError}
+            closeModal={closeModal}
+          />
+        ) : (
+          <EditEventForm
+            eventDetails={eventDetails}
+            setEventDetails={setEventDetails}
+            events={events}
+            setEvents={setEvents}
+            error={error}
+            setError={setError}
+            closeModal={closeModal}
+            updateEventInCalendar={updateEventInCalendar}  // 수정 후 이벤트 업데이트
+          />
+        )}
       </Modal>
     </div>
   );
