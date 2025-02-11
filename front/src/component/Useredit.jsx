@@ -26,6 +26,7 @@ const Useredit = () => {
   });
 
   useEffect(() => {
+    console.log(user);
     if (location.state?.preferredStyle) {
       setPreferredStyle(location.state.preferredStyle);
     }
