@@ -40,9 +40,9 @@ const AddEventForm = ({
     };
 
     // 장소 선택 처리 (KakaoMap API 사용)
-    const handleLocationSelect = async (location, lat, lon) => {
-        console.log("📌 선택된 위치:", location, lat, lon);
-        setEventDetails((prev) => ({ ...prev, location, lat, lon }));
+    const handleLocationSelect = async (lat, lon) => {
+        console.log("📌 선택된 위치:", lat, lon);
+        setEventDetails((prev) => ({ ...prev, lat, lon }));
 
         const API_KEY = process.env.REACT_APP_OPENWEATHER_KEY;
 

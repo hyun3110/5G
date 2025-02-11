@@ -97,9 +97,9 @@ export default function Calendar() {
         endDate: eventToEdit.end,
         description: eventToEdit.description || "",
         color: eventToEdit.color || "#ADD8E6",
-        feelsLike: eventDetails.feelsLike,
-        lat: eventDetails.lat,
-        lon: eventDetails.lon
+        feelsLike: eventToEdit.feelsLike,
+        lat: eventToEdit.lat,
+        lon: eventToEdit.lon
       });
       setIsOpen(true);  // 모달 열기
     }
