@@ -26,7 +26,6 @@ const Useredit = () => {
   const [newUser, setNewUser] = useState(null);
 
   useEffect(() => {
-    console.log(user);
     if (location.state?.preferredStyle) {
       setPreferredStyle(location.state.preferredStyle);
       setStyles({
