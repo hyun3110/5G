@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import Modal from "react-modal";
 import AddEventForm from "./AddEventForm.jsx";
 import EditEventForm from "./EditEventForm.jsx";
-import { getEvents, addEvent, updateEvent, deleteEvent } from "../api/apiService"; // API 호출
+import { getEvents } from "../api/apiService"; // API 호출
 import { useUser } from "../context/UserContext"; // UserContext
 import { useEvents } from "../context/eventsContext";
 
@@ -23,6 +23,9 @@ export default function Calendar() {
     endDate: "",
     description: "",
     color: "#ADD8E6",
+    feelsLike: "",
+    lat: "",
+    lon: ""
   });
   const [error, setError] = useState("");
 
@@ -43,6 +46,9 @@ export default function Calendar() {
           end: event.endDate,
           description: event.scheContent || "",
           color: event.color || "#ADD8E6",
+          feelsLike: event.feelsLike,
+          lat: event.lat,
+          lon: event.lon
         }));
 
         setEvents(formattedEvents);  // 변환된 이벤트 상태에 저장
@@ -69,6 +75,9 @@ export default function Calendar() {
       endDate: "",
       description: "",
       color: "#ADD8E6",
+      feelsLike: "",
+      lat: "",
+      lon: ""
     });
     setIsOpen(true);  // 모달 열기
   };
@@ -88,6 +97,9 @@ export default function Calendar() {
         endDate: eventToEdit.end,
         description: eventToEdit.description || "",
         color: eventToEdit.color || "#ADD8E6",
+        feelsLike: eventDetails.feelsLike,
+        lat: eventDetails.lat,
+        lon: eventDetails.lon
       });
       setIsOpen(true);  // 모달 열기
     }

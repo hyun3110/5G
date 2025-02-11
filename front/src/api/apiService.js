@@ -21,6 +21,9 @@ export const addEvent = async (eventDetails) => {
       endDate: eventDetails.endDate,
       scheContent: eventDetails.description,
       color: eventDetails.color,
+      feelsLike: eventDetails.feelsLike,
+      lat: eventDetails.lat,
+      lon: eventDetails.lon
     };
     const response = await axios.post(`${API_URL}/api/schedules/add`, addEvent, {
       withCredentials: true,
@@ -42,6 +45,9 @@ export const updateEvent = async (eventDetails) => {
       endDate: eventDetails.endDate,
       scheContent: eventDetails.description,
       color: eventDetails.color,
+      feelsLike: eventDetails.feelsLike,
+      lat: eventDetails.lat,
+      lon: eventDetails.lon
     };
     const response = await axios.put(`${API_URL}/api/schedules/update`, updateEvent, {
       withCredentials: true,

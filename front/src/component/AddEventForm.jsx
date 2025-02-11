@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
+import '../css/Codirecstyle.css';
 import { addEvent } from '../api/apiService'; // API 호출
+import KakaoMap from "./Kakaomap";
 
 const AddEventForm = ({
     eventDetails,
@@ -37,6 +39,36 @@ const AddEventForm = ({
         }
     };
 
+    // 장소 선택 처리 (KakaoMap API 사용)
+    const handleLocationSelect = async (location, lat, lon) => {
+        console.log("📌 선택된 위치:", location, lat, lon);
+        setEventDetails((prev) => ({ ...prev, location, lat, lon }));
+
+        const API_KEY = process.env.REACT_APP_OPENWEATHER_KEY;
+
+        try {
+            const response = await fetch(
+                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+            );
+
+            if (!response.ok) {
+                throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // ✅ API 데이터 구조 확인 후 적용
+            setEventDetails((prev) => ({
+                ...prev,
+                feelsLike: data.main?.feels_like || "정보 없음",
+            }));
+
+            console.log("📌 현재 날씨 데이터:", data);
+        } catch (error) {
+            console.error("날씨 데이터 가져오기 오류:", error);
+        }
+    };
+
     const handleSaveEvent = () => {
         if (
             !eventDetails.title ||
@@ -55,6 +87,9 @@ const AddEventForm = ({
             endDate: `${eventDetails.endDate}T23:59:59`,
             description: eventDetails.description,
             color: eventDetails.color,
+            feelsLike: eventDetails.feelsLike,
+            lat: eventDetails.lat,
+            lon: eventDetails.lon
         }
 
         addEvent(newEvent)
@@ -69,6 +104,9 @@ const AddEventForm = ({
                             endDate: newEvent.endDate,
                             color: newEvent.color || "#ADD8E6",
                             description: newEvent.scheContent || "",
+                            feelsLike: newEvent.feelsLike,
+                            lat: newEvent.lat,
+                            lot: newEvent.lot
                         },
                     ];
                     localStorage.setItem("events", JSON.stringify(events));
@@ -165,6 +203,19 @@ const AddEventForm = ({
             {error && <p className="error">{error}</p>}
             <button onClick={handleSaveEvent}>저장</button>
             <button onClick={closeModal}>닫기</button>
+            <h3>📍 장소 선택</h3>
+            <KakaoMap onSelectLocation={handleLocationSelect} />
+            {/* 날씨 정보 */}
+            <div>
+                <h3>🌤 날씨 정보</h3>
+                {eventDetails.feelsLike ? (
+                    <div style={{ background: "#f5f5f5", padding: "10px", borderRadius: "8px" }}>
+                        <p><strong>체감 온도:</strong> {eventDetails.feelsLike}°C</p>
+                    </div>
+                ) : (
+                    <p>날씨 정보를 불러오는 중...</p>
+                )}
+            </div>
         </div>
     );
 };

@@ -24,7 +24,9 @@ public class ScheduleDTO {
     private LocalDateTime endDate;
 
     private String scheType;
-    private String weather;
+    private String feelsLike;
     private String color;
+    private String lat;
+    private String lon;
 
 }

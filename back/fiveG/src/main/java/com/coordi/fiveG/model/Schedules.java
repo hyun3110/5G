@@ -41,9 +41,15 @@ public class Schedules {
     private String scheType;
 
     @Column(name = "WEATHER")
-    private String weather;
+    private String feelsLike;
 
     @Column(name = "COLOR")
     private String color;
+
+    @Column(name = "LAT")
+    private String lat;
+
+    @Column(name = "LON")
+    private String lon;
 
 }

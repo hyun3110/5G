@@ -46,6 +46,9 @@ public class SchedulesService {
         schedule.setEndDate(endDate);
         schedule.setScheContent(scheduleDTO.getScheContent());
         schedule.setColor(scheduleDTO.getColor());
+        schedule.setFeelsLike(scheduleDTO.getFeelsLike());
+        schedule.setLat(scheduleDTO.getLat());
+        schedule.setLon(scheduleDTO.getLon());
 
         // DB에 저장
         return schedulesRepository.save(schedule);
@@ -65,6 +68,9 @@ public class SchedulesService {
         schedule.setEndDate(endDate);
         schedule.setScheContent(scheduleDTO.getScheContent());
         schedule.setColor(scheduleDTO.getColor());
+        schedule.setFeelsLike(scheduleDTO.getFeelsLike());
+        schedule.setLat(scheduleDTO.getLat());
+        schedule.setLon(scheduleDTO.getLon());
 
         // DB에 저장
         return schedulesRepository.save(schedule);
