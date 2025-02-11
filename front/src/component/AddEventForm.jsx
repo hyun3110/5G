@@ -74,7 +74,8 @@ const AddEventForm = ({
             !eventDetails.title ||
             !eventDetails.type ||
             !eventDetails.startDate ||
-            !eventDetails.endDate
+            !eventDetails.endDate ||
+            !eventDetails.feelsLike
         ) {
             setError("모든 내용을 입력해주세요.");
             return;

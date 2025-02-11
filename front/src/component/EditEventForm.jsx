@@ -59,7 +59,8 @@ const EditEventForm = ({
             !eventDetails.title ||
             !eventDetails.type ||
             !eventDetails.startDate ||
-            !eventDetails.endDate
+            !eventDetails.endDate ||
+            !eventDetails.feelsLike
         ) {
             setError("모든 내용을 입력해주세요.");
             return;
@@ -82,6 +83,7 @@ const EditEventForm = ({
 
             description: eventDetails.description,
             color: eventDetails.color,
+            feelsLike: eventDetails.feelsLike,
             lat: eventDetails.lat,
             lon: eventDetails.lon
         }
@@ -98,6 +100,7 @@ const EditEventForm = ({
                                 end: updatedEvent.endDate,
                                 color: updatedEvent.color || "#ADD8E6",
                                 description: updatedEvent.scheContent || "",
+                                feelsLike: updatedEvent.feelsLike,
                                 lat: updatedEvent.lat,
                                 lon: updatedEvent.lon
                             }
