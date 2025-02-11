@@ -86,3 +86,16 @@ export const userEdit = async (updateData) => {
   console.error("통신 오류:", error);
 }
 }
+
+// 비밀번호 확인
+export const pwCheck = async (userId, pw) => {
+  try{
+    const response = await axios.post(`${API_URL}/api/auth/verifypassword`, {
+      userId: userId,
+      pw: pw,
+    }, { withCredentials: true });
+    return response
+  }catch (error){
+    console.error("통신 오류:", error);
+  }
+}

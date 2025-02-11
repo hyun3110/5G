@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../css/Pwconfirm.css";
 import { useUser } from "../context/UserContext";
-
-const API_BASE_URL = "http://localhost:8081/api/auth"; // 백엔드 API 주소
+import { pwCheck } from "../api/authService";
 
 const Pwconfirm = () => {
   const [password, setPassword] = useState(""); // 사용자가 입력한 비밀번호
@@ -16,11 +14,7 @@ const Pwconfirm = () => {
     e.preventDefault(); // 기본 이벤트 방지
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/verifypassword`, {
-        userId:user.userId,
-        pw:password,
-      }, { withCredentials: true });
-
+      const response = await pwCheck(user.userId, password);
       if (response.data) {
         navigate("/Useredit"); // 비밀번호가 맞으면 회원정보 수정 페이지로 이동
       } else {
