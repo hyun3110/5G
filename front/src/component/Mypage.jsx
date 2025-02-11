@@ -235,7 +235,7 @@ const MyPage = () => {
               <h2>{user.name} 님</h2>
             <div className="btn-container">
               <button className="btn edit-btn" onClick={handleEditProfile}>회원정보 수정</button> {/* 회원정보 수정 버튼 */}
-              <button className="btn" onClick={handleModalToggle}>코디 추천</button>
+              {/* <button className="btn" onClick={handleModalToggle}>코디 추천</button> */}
             </div>
             <ul>
               <li onClick={() => handleItemClick('옷 장')}>옷 장</li> {/* 옷 장 항목 */}

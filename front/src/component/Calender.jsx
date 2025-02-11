@@ -238,12 +238,13 @@ export default function Calendar() {
         weather: eventDetails.weather,
       });
 
-      if (!response.data || response.data.length === 0) {
+      // ✅ 응답이 없거나 비어있는 경우
+      if (!response.data || !Array.isArray(response.data) || response.data.length === 0) {
+        console.warn("⚠️ 추천된 코디가 없습니다.");
         alert("추천된 코디가 없습니다.");
-        setIsCodiVisible(false);
+        setIsCodiVisible(true); // ✅ 화면 유지 (빈 결과 표시)
         return;
       }
-
       setRecommendedCodi(response.data);
       setIsCodiVisible(true);
     } catch (error) {
@@ -294,28 +295,19 @@ export default function Calendar() {
           right: "addEventButton today prev,next",
         }}
         dayCellContent={(arg) => {
-          const currentDate = new Date(arg.date).setHours(0, 0, 0, 0); // 현재 셀의 날짜 (시간 제거)
-
-          // 해당 날짜에 포함되는 이벤트 필터링
+          const currentDate = new Date(arg.date).setHours(0, 0, 0, 0);
           const eventsForDate = events.filter((event) => {
             const eventStartDate = new Date(event.start).setHours(0, 0, 0, 0);
-
-            // 종료 날짜를 하루 전날로 수정
-            const eventEndDate = new Date(event.end).setHours(0, 0, 0, 0); // 1일(24시간)을 빼기
-
-            // 종료일을 포함하도록 비교하면서, 일정 수 표시에서만 하루 줄이도록 함
+            const eventEndDate = new Date(event.end).setHours(0, 0, 0, 0);
             return currentDate >= eventStartDate && currentDate <= eventEndDate;
           });
 
-          const eventCount = eventsForDate.length; // 해당 날짜의 이벤트 수 계산
-
+          const eventCount = eventsForDate.length;
           return (
             <div style={{ position: "relative", padding: "5px" }}>
-              {/* 날짜 */}
               <div style={{ fontSize: "14px", fontWeight: "bold" }}>
                 {arg.date.getDate()}
               </div>
-              {/* 일정 수 표시 */}
               {eventCount > 0 && (
                 <div
                   className="event-count-badge"
@@ -342,102 +334,119 @@ export default function Calendar() {
 
       {/* AddEventForm 또는 EditEventForm을 조건부로 렌더링 */}
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={{
-        overlay: {
-          backgroundColor: "rgba(0, 0, 0, 0.5)", // 배경을 어두운 색으로
-        },
+        overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
         content: {
-          backgroundColor: "white", // 모달 배경 색
-          padding: "20px", // 내부 여백
-          borderRadius: "8px", // 모서리 둥글게
-          width: "1000px", // 모달 전체 너비 (좌우 배치 고려)
-          height: "850px", // 모달 높이 조정
-          margin: "auto", // 가운데 정렬
-          display: "flex", // 좌우 컬럼 배치
-          flexDirection: "row", // 가로 정렬
-          gap: "20px", // 두 컬럼 사이 여백
+          backgroundColor: "white",
+          padding: "20px",
+          borderRadius: "8px",
+          width: "1000px",
+          height: "850px",
+          margin: "auto",
+          display: "flex",
+          flexDirection: "row",
+          gap: "20px",
         },
       }}>
-        {/* 왼쪽 컬럼: 일정 수정 폼 */}
+        {/* 왼쪽 컬럼: 일정 추가 또는 수정 폼 */}
         <div style={{
           flex: "1",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center", // ✅ 세로 중앙 정렬
-          alignItems: "center", // ✅ 가로 중앙 정렬 (선택적)
+          justifyContent: "center",
+          alignItems: "center",
           borderRight: "1px solid #ddd",
           paddingRight: "20px",
         }}>
-
-          {/* ✅ 추가된 '일정 수정' 제목 */}
           <h2 style={{
             fontSize: "22px",
             fontWeight: "bold",
             marginRight: "280px",
-            marginBottom: "20px", // 제목 아래 여백 추가
+            marginBottom: "20px",
           }}>
-            일정 수정
+            {isAddMode ? "일정 추가" : "일정 수정"}
           </h2>
 
           {isAddMode ? (
-            <AddEventForm eventDetails={eventDetails} setEventDetails={setEventDetails} closeModal={() => setIsOpen(false)} />
+            <AddEventForm
+              eventDetails={eventDetails}
+              setEventDetails={setEventDetails}
+              closeModal={() => setIsOpen(false)}
+            />
           ) : (
-
             <EditEventForm
               eventDetails={eventDetails}
               setEventDetails={setEventDetails}
-              events={events} // ✅ 기존 이벤트 배열 전달
-              setEvents={setEvents} // ✅ 이벤트 상태 업데이트 함수 전달
+              events={events}
+              setEvents={setEvents}
               closeModal={() => setIsOpen(false)}
-              updateEventInCalendar={updateEventHandler} // 수정된 일정 반영
+              updateEventInCalendar={updateEventHandler}
             />
           )}
         </div>
-        {/* 오른쪽 컬럼: 장소 선택, 날씨 정보, 코디 추천 */}
-        {!isAddMode && (
-          <div style={{ flex: "1", display: "flex", flexDirection: "column", gap: "15px" }}>
-            {/* KakaoMap 위치 선택 */}
-            <div>
-              <h3>📍 장소 선택</h3>
-              <KakaoMap onSelectLocation={handleLocationSelect} />
-            </div>
 
-            {/* 날씨 정보 */}
-            <div>
-              <h3>🌤 날씨 정보</h3>
-              {eventDetails.weather ? (
-                <div style={{ background: "#f5f5f5", padding: "10px", borderRadius: "8px" }}>
-                  <p><strong>날씨:</strong> {eventDetails.weather}</p>
-                  <p><strong>기온:</strong> {eventDetails.temp}°C</p>
-                  <p><strong>체감 온도:</strong> {eventDetails.feelsLike}°C</p>
-                  {/* <p><strong>설명:</strong> {weatherDescription}</p> */}
-                </div>
+        {/* ✅ 오른쪽 컬럼: 장소 선택, 날씨 정보, 코디 추천 (추가 & 수정 공통 적용) */}
+        <div style={{ flex: "1", display: "flex", flexDirection: "column", gap: "15px" }}>
+          {isCodiVisible ? (
+            // ✅ 추천된 코디 결과 화면
+            <div style={{ textAlign: "center" }}>
+              <h3>👕 추천된 코디</h3>
+              {recommendedCodi.length > 0 ? (
+                recommendedCodi.map((imgSrc, index) => (
+                  <img key={index} src={imgSrc} alt={`추천 코디 ${index + 1}`}
+                    style={{ width: "100%", borderRadius: "10px", marginBottom: "10px" }} />
+                ))
               ) : (
-                <p>날씨 정보를 불러오는 중...</p>
+                <p>❌ 추천된 코디가 없습니다.</p>
               )}
-            </div>
 
-            {/* 코디 추천 버튼 */}
-            <div>
-              <button
-                onClick={fetchCodiRecommendations}
-                style={{
-                  padding: "10px",
-                  backgroundColor: "#ff5722",
-                  color: "white",
-                  borderRadius: "5px",
-                  width: "100%",
-                  fontSize: "16px",
-                  cursor: "pointer"
-                }}
-              >
-                코디 추천 받기
+              {/* 다시 추천 받기 버튼 */}
+              <button onClick={() => setIsCodiVisible(false)}
+                style={{ marginTop: "10px", padding: "10px", backgroundColor: "#ff5722", color: "white", borderRadius: "5px", width: "100%", fontSize: "16px", cursor: "pointer" }}>
+                다시 추천 받기
               </button>
             </div>
+          ) : (
+            <>
+              {/* KakaoMap 위치 선택 */}
+              <div>
+                <h3>📍 장소 선택</h3>
+                <KakaoMap onSelectLocation={handleLocationSelect} />
+              </div>
 
-            {/* 추천된 코디 표시 */}
-            {isCodiVisible && <CodiRecommend recommendedCodi={recommendedCodi} />}
-          </div>
-        )}
+              {/* 날씨 정보 */}
+              <div>
+                <h3>🌤 날씨 정보</h3>
+                {eventDetails.weather ? (
+                  <div style={{ background: "#f5f5f5", padding: "10px", borderRadius: "8px" }}>
+                    <p><strong>날씨:</strong> {eventDetails.weather}</p>
+                    <p><strong>기온:</strong> {eventDetails.temp}°C</p>
+                    <p><strong>체감 온도:</strong> {eventDetails.feelsLike}°C</p>
+                  </div>
+                ) : (
+                  <p>날씨 정보를 불러오는 중...</p>
+                )}
+              </div>
+
+              {/* 코디 추천 버튼 */}
+              <div>
+                <button
+                  onClick={fetchCodiRecommendations}
+                  style={{
+                    padding: "10px",
+                    backgroundColor: "#ff5722",
+                    color: "white",
+                    borderRadius: "5px",
+                    width: "100%",
+                    fontSize: "16px",
+                    cursor: "pointer"
+                  }}
+                >
+                  코디 추천 받기
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </Modal>
     </div>
   );
