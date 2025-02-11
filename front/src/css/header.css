@@ -1,131 +1,181 @@
 header {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    margin: 0;
-    padding: 0;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    
-  }
-  
-  .Main-header-container {
-    display: flex;
-    justify-content: space-between; /* 좌/우 요소 간 간격 */
-    align-items: center; /* 수직 중앙 정렬 */
-    padding: 10px 30px;
-  }
-  
-  .header-logo img {
-    height: 40px;
-  }
-  
-  .header-nav {
-    display: flex;
-    align-items: center; /* 수직 정렬 */
-    gap: 15px; /* 요소 간 간격 */
-    font-size: 14px;
-    color: #6b21a8; /* 보라색 텍스트 */
-    margin-right: 30%;
-  }
-  
-  .header-nav a {
-    text-decoration: none;
-    color: #6b21a8;
-    font-weight: bold;
-    display: flex;
-    align-items: center; /* 텍스트와 아이콘 중앙 정렬 */
-    gap: 5px; /* 아이콘과 텍스트 간 간격 */
-  }
-  
-  .header-nav img {
-    width: 20px; /* 원하는 너비 */
-    height: 20px; /* 원하는 높이 */
-    object-fit: contain; /* 비율 유지하면서 크기 조정 */
-  }
-  
-  
-  .header-nav span {
-    display: flex;
-    align-items: center; /* 텍스트와 아이콘 중앙 정렬 */
-    font-size: 14px;
-    gap: 5px; /* 아이콘과 텍스트 간 간격 */
-  }
-  
-  .header-icons {
-    display: flex;
-    align-items: center; /* 아이콘 수직 정렬 */
-    justify-content: center; /* 중앙 정렬 */
-    gap: 15px;
-  }
-  
-  .header-icons img {
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-  }
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
-  .header-mypage {
-    cursor: pointer;
-    color: #6b21a8;
-    font-weight: bold;
-    font-size: 14px;
-  }
+}
 
-  .header-user-info {
-    display: flex;
-    align-items: center; /* 수직 정렬 */
-    gap: 15px; /* 요소 간 간격 */
-  }
-  
-  .header-user-name {
-    font-size: 14px;
-    color: #333;
-  }
-  
+.Main-header-container {
+  display: flex;
+  justify-content: space-between;
+  /* 좌/우 요소 간 간격 */
+  align-items: center;
+  /* 수직 중앙 정렬 */
+  padding: 10px 30px;
+}
 
-  .header-register-button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #6b21a8; /* 로그인 버튼과 동일한 색상 */
-    color: white;
-    cursor: pointer;
-    margin-right: 10px; /* 로그인 버튼과 간격 추가 */
-  }
-  
-  .header-register-button:hover {
-    background-color: #4c1d95; /* 로그인 버튼과 동일한 hover 색상 */
-  }
-  
-  .header-login-button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #6b21a8; /* 로그아웃 버튼과 동일한 기본 색상 */
-    color: white;
-    cursor: pointer;
+.header-logo img {
+  height: 40px;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  /* 수직 정렬 */
+  gap: 15px;
+  /* 요소 간 간격 */
+  font-size: 14px;
+  color: #6b21a8;
+  /* 보라색 텍스트 */
+  margin-right: 30%;
+}
+
+.header-nav a {
+  text-decoration: none;
+  color: #6b21a8;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  /* 텍스트와 아이콘 중앙 정렬 */
+  gap: 5px;
+  /* 아이콘과 텍스트 간 간격 */
+}
+
+.header-nav img {
+  width: 20px;
+  /* 원하는 너비 */
+  height: 20px;
+  /* 원하는 높이 */
+  object-fit: contain;
+  /* 비율 유지하면서 크기 조정 */
+}
+
+
+.header-nav span {
+  display: flex;
+  align-items: center;
+  /* 텍스트와 아이콘 중앙 정렬 */
+  font-size: 14px;
+  gap: 5px;
+  /* 아이콘과 텍스트 간 간격 */
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  /* 아이콘 수직 정렬 */
+  justify-content: center;
+  /* 중앙 정렬 */
+  gap: 15px;
+}
+
+.header-icons img {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+/* 내 옷장과 마이페이지를 감싸는 컨테이너 */
+.header-sections {
+  display: flex;
+  /* 가로 정렬 */
+  align-items: center;
+  /* 수직 중앙 정렬 */
+  gap: 20px;
+  /* 요소 간 간격 */
+}
+
+/* 내 옷장 스타일 */
+.header-mycloth {
+  cursor: pointer;
+  color: #6b21a8;
+  font-weight: bold;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.header-mycloth:hover {
+  color: #4c1d95;
+  /* 마우스 오버 시 색상 변경 */
+}
+
+/* 마이페이지 스타일 */
+.header-mypage {
+  cursor: pointer;
+  color: #6b21a8;
+  font-weight: bold;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.header-mypage:hover {
+  color: #4c1d95;
+  /* 마우스 오버 시 색상 변경 */
+}
+
+
+.header-user-info {
+  display: flex;
+  align-items: center;
+  /* 수직 정렬 */
+  gap: 15px;
+  /* 요소 간 간격 */
+}
+
+.header-user-name {
+  font-size: 14px;
+  color: #333;
+}
+
+
+.header-register-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #6b21a8;
+  /* 로그인 버튼과 동일한 색상 */
+  color: white;
+  cursor: pointer;
+  margin-right: 10px;
+  /* 로그인 버튼과 간격 추가 */
+}
+
+.header-register-button:hover {
+  background-color: #4c1d95;
+  /* 로그인 버튼과 동일한 hover 색상 */
+}
+
+.header-login-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #6b21a8;
+  /* 로그아웃 버튼과 동일한 기본 색상 */
+  color: white;
+  cursor: pointer;
 }
 
 .header-login-button:hover {
-    background-color: #4c1d95; /* 로그아웃 버튼과 동일한 hover 색상 */
+  background-color: #4c1d95;
+  /* 로그아웃 버튼과 동일한 hover 색상 */
 }
 
 
-  .header-logout-button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #6b21a8;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .header-logout-button:hover {
-    background-color: #4c1d95;
-  }
+.header-logout-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #6b21a8;
+  color: white;
+  cursor: pointer;
+}
 
-
-  
+.header-logout-button:hover {
+  background-color: #4c1d95;
+}
