@@ -13,11 +13,13 @@ const EditEventForm = ({
     setError,
     closeModal,
 }) => {
+    const [initialLat, setInitialLat] = useState(eventDetails.lat);
+    const [initialLon, setInitialLon] = useState(eventDetails.lon);
 
     // 장소 선택 처리 (KakaoMap API 사용)
-    const handleLocationSelect = async (location, lat, lon) => {
-        console.log("📌 선택된 위치:", location, lat, lon);
-        setEventDetails((prev) => ({ ...prev, location, lat, lon }));
+    const handleLocationSelect = async (lat, lon) => {
+        console.log("📌 선택된 위치:", lat, lon);
+        setEventDetails((prev) => ({ ...prev, lat, lon }));
 
         const API_KEY = process.env.REACT_APP_OPENWEATHER_KEY;
 
@@ -44,6 +46,12 @@ const EditEventForm = ({
         }
     };
 
+    useEffect(() => {
+        console.log(eventDetails)
+        setInitialLat(eventDetails.lat);
+        setInitialLon(eventDetails.lon);
+    }, [eventDetails]);
+
     const today = new Date().toISOString().split("T")[0];
 
     const handleSaveEvent = () => {
@@ -51,7 +59,8 @@ const EditEventForm = ({
             !eventDetails.title ||
             !eventDetails.type ||
             !eventDetails.startDate ||
-            !eventDetails.endDate
+            !eventDetails.endDate ||
+            !eventDetails.feelsLike
         ) {
             setError("모든 내용을 입력해주세요.");
             return;
@@ -74,6 +83,9 @@ const EditEventForm = ({
 
             description: eventDetails.description,
             color: eventDetails.color,
+            feelsLike: eventDetails.feelsLike,
+            lat: eventDetails.lat,
+            lon: eventDetails.lon
         }
 
         updateEvent(newEvent)
@@ -88,6 +100,9 @@ const EditEventForm = ({
                                 end: updatedEvent.endDate,
                                 color: updatedEvent.color || "#ADD8E6",
                                 description: updatedEvent.scheContent || "",
+                                feelsLike: updatedEvent.feelsLike,
+                                lat: updatedEvent.lat,
+                                lon: updatedEvent.lon
                             }
                             : event
                     )
@@ -201,7 +216,10 @@ const EditEventForm = ({
             </button>
             <button onClick={closeModal}>닫기</button>
             <h3>📍 장소 선택</h3>
-            <KakaoMap onSelectLocation={handleLocationSelect} />
+            <KakaoMap
+                onSelectLocation={handleLocationSelect}
+                initialLat={initialLat}
+                initialLon={initialLon} />
             {/* 날씨 정보 */}
             <div>
                 <h3>🌤 날씨 정보</h3>
