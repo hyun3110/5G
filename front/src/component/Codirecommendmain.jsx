@@ -5,6 +5,7 @@ import "../css/Codirecmainstyle.css";
 const CodiRecommendmain = () => {
   const { events } = useEvents();
   const [selectedSchedule, setSelectedSchedule] = useState("");
+  
   const [selectedClothes, setSelectedClothes] = useState([]);
   const [generatedCodi, setGeneratedCodi] = useState(null);
 
