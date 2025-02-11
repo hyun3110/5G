@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom"; // 페이지 이동을 위한 Hook
 import "../css/Usereditstyle.css";
 import { useUser } from "../context/UserContext";
-
-const API_BASE_URL = "http://localhost:8081/api/auth"; // 백엔드 API 주소
+import { userEdit } from "../api/authService";
 
 const Useredit = () => {
   const navigate = useNavigate(); // 페이지 이동 함수
-  const { user } = useUser();  // user 정보 가져오기
+  const { user, setUser } = useUser();  // user 정보 가져오기
   const location = useLocation();
 
   // 사용자 정보 상태값 (초기값 null)
@@ -17,18 +15,28 @@ const Useredit = () => {
   const [email, setEmail] = useState("");
   const [preferredStyle, setPreferredStyle] = useState(user?.preferredStyle || []); // 선호 스타일 상태 추가
   const [styles, setStyles] = useState({
-    casual: location.state?.preferredStyle?.includes("casual") || user.casual,
-    chic: location.state?.preferredStyle?.includes("chic") || user.chic,
-    classic: location.state?.preferredStyle?.includes("classic") || user.classic,
-    minimal: location.state?.preferredStyle?.includes("minimal") || user.minimal,
-    street: location.state?.preferredStyle?.includes("street") || user.street,
-    sporty: location.state?.preferredStyle?.includes("sporty") || user.sporty
+    casual: user?.casual || false,
+    chic: user?.chic || false,
+    classic: user?.classic || false,
+    minimal: user?.minimal || false,
+    street: user?.street || false,
+    sporty: user?.sporty || false,
   });
+
+  const [newUser, setNewUser] = useState(null);
 
   useEffect(() => {
     console.log(user);
     if (location.state?.preferredStyle) {
       setPreferredStyle(location.state.preferredStyle);
+      setStyles({
+        casual: location.state.preferredStyle.includes("casual"),
+        chic: location.state.preferredStyle.includes("chic"),
+        classic: location.state.preferredStyle.includes("classic"),
+        minimal: location.state.preferredStyle.includes("minimal"),
+        street: location.state.preferredStyle.includes("street"),
+        sporty: location.state.preferredStyle.includes("spoty"),
+      });
     }
   }, [location.state?.preferredStyle]);
 
@@ -69,14 +77,22 @@ const Useredit = () => {
     console.log(updatedUser)
 
     try {
-      await axios.put(`${API_BASE_URL}/useredit`, updatedUser, { withCredentials: true });
-      alert("회원 정보가 수정되었습니다."); // 성공 메시지
-      navigate("/mypage"); // 수정 완료 후 마이페이지로 이동
+      const newUserResponse = await userEdit(updatedUser);
+      setNewUser(newUserResponse);
     } catch (error) {
       alert("수정 실패: " + error.message);
     }
   };
-
+  
+  useEffect(() => {
+    // 상태가 변경될 때마다 관련된 작업을 처리
+    if (newUser) {
+      setUser(newUser);
+      alert("회원 정보가 수정되었습니다."); // 성공 메시지
+      navigate("/mypage"); // 수정 완료 후 마이페이지로 이동
+    }
+  }, [newUser]);
+  
   return (
     <div className="member-edit-container">
       <h2>회원정보 수정</h2>

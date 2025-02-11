@@ -71,13 +71,13 @@ public class AuthController {
 
     // 회원정보 변경
     @PutMapping("/useredit")
-    public ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO, HttpSession session){
+    public ResponseEntity<Users> updateUser(@RequestBody UserDTO userDTO, HttpSession session){
         Users user = usersService.updateUser(userDTO);
         if (user != null){
             session.invalidate();
-            return ResponseEntity.ok("회원정보 수정 성공");
+            return ResponseEntity.ok(user);
         }else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("실패");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 

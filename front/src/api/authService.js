@@ -67,10 +67,22 @@ export const idCheck = async (userId) => {
 
 // 회원가입
 export const userSignup = async (signupData) => {
-  try{
+  try {
     const response = await axios.post(`${API_URL}/api/auth/signup`, signupData, { withCredentials: true });
     return response
   } catch (error) {
     console.error("통신 오류:", error);
   }
+}
+
+// 회원정보 변경
+export const userEdit = async (updateData) => {
+  try{
+    const response = await axios.put(`${API_URL}/api/auth/useredit`, updateData, { withCredentials: true });
+    if (response.status === 200 || response.status === 201){
+      return response.data
+    }
+ } catch (error) {
+  console.error("통신 오류:", error);
+}
 }
