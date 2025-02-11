@@ -10,7 +10,6 @@ import Mypage from "./component/Mypage";
 import Look from "./component/Look";
 import Pwconfirm from "./component/Pwconfirm";
 import Useredit from "./component/Useredit";
-import Weekcalander from "./component/Weekcalander";
 import Resetpw from "./component/Resetpw";
 import CodiRecommend from './component/Codirecommend';
 import MyWardrobe from "./component/MyWardrobe"; // MyWardrobe 추가
@@ -36,7 +35,6 @@ const App = () => {
               <Route path="/look" element={<Look />} />
               <Route path="/pwconfirm" element={<Pwconfirm />} />
               <Route path="/useredit" element={<Useredit />} />
-              <Route path="/weekcalander" element={<Weekcalander />} />
               <Route path="/mywardrobe" element={<MyWardrobe />} /> {/* MyWardrobe 경로 추가 */}
               <Route path="/resetpw" element={<Resetpw />} />
               <Route path="/codirecommend" element={<CodiRecommend />} />
