@@ -35,9 +35,7 @@
   color: black;
 }
 
-.navigation-bar .breadcrumb:hover {
-  text-decoration: underline;
-}
+
 
 .navigation-bar .current {
   font-weight: bold;
