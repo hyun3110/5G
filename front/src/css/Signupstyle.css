@@ -1,12 +1,3 @@
-/* 기본 설정: html과 body */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto; /* 세로 스크롤 허용 */
-}
-
 /* 최상위 컨테이너 설정 */
 .signup-container {
     font-family: 'Noto Sans KR', sans-serif;
@@ -15,10 +6,12 @@ html, body {
     justify-content: center;
     align-items: flex-start; /* 상단 정렬 */
     padding-top: 40px; /* 폼을 아래로 이동 */
-    padding-bottom: 60px; /* 하단 여백 추가 */
+    padding-bottom: 40px; /* 하단 여백 추가 */
     box-sizing: border-box;
-    min-height: calc(100vh - 60px); /* 상단바 높이 제외 */
+    height: 91vh; /* 전체 화면 높이 */
+    overflow-y: auto; /* 🔥 스크롤 가능하도록 설정 */
 }
+
 
 /* 폼 컨테이너 */
 .form-container {
@@ -220,6 +213,49 @@ html, body {
     margin-top: 10px;
 }
 
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 최소 150px, 최대 가득 채우기 */
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px; /* 최대 너비 제한 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+.favorite-image {
+    width: 100%; /* 부모 컨테이너에 맞춤 */
+    height: auto; /* 비율 유지 */
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    transition: transform 0.3s ease;
+}
+
+.favorite-image:hover {
+    transform: scale(1.05); /* 마우스 오버 시 확대 효과 */
+}
+
+/* 반응형: 화면 크기가 작을 때 이미지 크기 조정 */
+@media (max-width: 1024px) {
+    .favorites-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* 화면이 작으면 최소 크기 조정 */
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .favorites-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 모바일 환경에 맞게 최소 크기 축소 */
+        gap: 10px;
+    }
+
+    .favorite-image {
+        border-radius: 5px; /* 작은 화면에서 둥근 모서리 축소 */
+    }
+}
 
 
 /* 버튼 그룹 스타일 */
