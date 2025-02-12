@@ -9,13 +9,6 @@ import MainCodirecommend from "./MainCodirecommend"; // ✅ 경로 수정
 // 코디 추천 컴포넌트 추가
 
 const Main = () => {
-  const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
-
-  // 코디 추천 버튼 클릭 시 이동할 경로 설정
-  const handleRecommendClick = () => {
-    navigate("/codirecommendmain"); // 이동할 페이지 경로 (예: '/recommendation')
-  };
-
   return (
     <div className="app-container">
       {/* 왼쪽 섹션 - Daily Look 슬라이더 */}
@@ -26,13 +19,15 @@ const Main = () => {
         </div>
       </div>
 
-      {/* 오른쪽 섹션 - 다가올 일정 */}
+      {/* 오른쪽 섹션 - 다가올 일정과 코디 추천 포함 */}
       <div className="right-side">
-        {/* EventSection과 Calander 컴포넌트 */}
         <div className="event-and-calendar">
-          <MainCodirecommend />
-          <EventSection />
-          <Calendar />
+          {/* 일정 섹션 */}
+          <div className="event-section-container">
+            <MainCodirecommend />
+            <EventSection />
+            <Calendar />
+          </div>
         </div>
       </div>
     </div>

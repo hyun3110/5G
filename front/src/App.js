@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./component/Header"; // Header 추가
 import Login from "./component/Login";
@@ -11,7 +11,6 @@ import Look from "./component/Look";
 import Pwconfirm from "./component/Pwconfirm";
 import Useredit from "./component/Useredit";
 import Resetpw from "./component/Resetpw";
-import CodiRecommend from './component/Codirecommend';
 import CodiRecommendMain from './component/Codirecommendmain';
 import MainCodiRecommend from './component/MainCodirecommend'
 import MyWardrobe from "./component/MyWardrobe"; // MyWardrobe 추가
@@ -39,7 +38,6 @@ const App = () => {
               <Route path="/useredit" element={<Useredit />} />
               <Route path="/mywardrobe" element={<MyWardrobe />} /> {/* MyWardrobe 경로 추가 */}
               <Route path="/resetpw" element={<Resetpw />} />
-              <Route path="/codirecommend" element={<CodiRecommend />} />
               <Route path="/codirecommendmain" element={<CodiRecommendMain />} />
               <Route path="/maincodirecommend" element={<MainCodiRecommend />} />
             </Routes>

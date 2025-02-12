@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import '../css/Mypagestyle.css';
 import RecommendedStyles from './Recommended';
 import Favorites from './Favorites';
-import CodiRecommend from './Codirecommend';
 import { useUser } from "../context/UserContext";
 import "../css/modal.css";
 
@@ -12,8 +11,6 @@ const MyPage = () => {
   const [activeContent, setActiveContent] = useState('추천 받은 스타일'); // 현재 활성화된 콘텐츠 상태
   const [favorites, setFavorites] = useState([]); // 즐겨찾기한 스타일 리스트 상태
   const { user } = useUser();  // user 정보 가져오기
-  const [isCodiVisible, setIsCodiVisible] = useState(false); // 코디 추천 결과 표시 여부
-  const [recommendedCodi, setRecommendedCodi] = useState([]); // 추천된 코디 데이터 상태
 
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
@@ -51,9 +48,6 @@ const MyPage = () => {
   };
 
   const renderContent = () => {
-    if (isCodiVisible) {
-      return <CodiRecommend recommendedCodi={recommendedCodi} />;
-    }
     switch (activeContent) {
       case '추천 받은 스타일':
         return <RecommendedStyles onFavorite={handleFavoriteToggle} />; // 추천 받은 스타일 컴포넌트
