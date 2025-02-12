@@ -33,10 +33,10 @@ const MyPage = () => {
   // 즐겨찾기 상태 업데이트 함수
   const handleFavoriteToggle = (style) => {
     setFavorites((prevFavorites) => {
-      if (style.isFavorite) { // 스타일이 즐겨찾기 상태일 경우 추가
+      if (style.pick) { // 스타일이 즐겨찾기 상태일 경우 추가
         return [...prevFavorites, style];
       } else { // 즐겨찾기 상태가 아닐 경우 제거
-        return prevFavorites.filter((item) => item.id !== style.id);
+        return prevFavorites.filter((item) => item.idx !== style.idx);
       }
     });
   };
