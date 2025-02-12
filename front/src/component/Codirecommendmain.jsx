@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useEvents } from "../context/eventsContext";
 import "../css/Codirecmainstyle.css"; 
 
+{/* 코디추천 페이지 */}
 const CodiRecommendmain = () => {
   const { events } = useEvents();
   const [selectedSchedule, setSelectedSchedule] = useState("");
