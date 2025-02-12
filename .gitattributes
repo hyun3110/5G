@@ -6,3 +6,4 @@
 # 대용량 파일은 Git LFS로 관리
 *.psd filter=lfs diff=lfs merge=lfs -text
 *.jar filter=lfs diff=lfs merge=lfs -text
+C:/Users/SMHRD/Desktop/5g/5G/back/projectmodel/project_model/image_classification/image_classification.ipynb filter=lfs diff=lfs merge=lfs -text
