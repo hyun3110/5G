@@ -33,4 +33,7 @@ public class Closets {
     @CreationTimestamp
     private LocalDateTime uploadedAt;
 
+    @Column(name = "IDX")
+    private int idx;
+
 }

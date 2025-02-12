@@ -16,5 +16,6 @@ public class ClosetDTO {
     private String category;
     private String file;
     private LocalDateTime uploadedAt;
+    private int idx;
 
 }

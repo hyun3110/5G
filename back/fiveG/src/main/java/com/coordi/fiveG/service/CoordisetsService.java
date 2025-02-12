@@ -30,4 +30,11 @@ public class CoordisetsService {
     public List<Coordisets> getPickCoordisets(Long userId) {
         return coordisetsRepository.findByUserIdAndPick(userId, true);
     }
+
+    public void up(Long userId, String img) {
+        Coordisets coordi = new Coordisets();
+        coordi.setUserId(userId);
+        coordi.setImg(img);
+        coordisetsRepository.save(coordi);
+    }
 }

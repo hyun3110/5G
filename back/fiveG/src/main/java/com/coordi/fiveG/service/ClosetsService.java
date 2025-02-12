@@ -81,7 +81,8 @@ public class ClosetsService {
                 savedCloset.getUserId(),
                 savedCloset.getCategory(),
                 savedCloset.getFile(),
-                savedCloset.getUploadedAt()
+                savedCloset.getUploadedAt(),
+                savedCloset.getIdx()
         );
     }
 

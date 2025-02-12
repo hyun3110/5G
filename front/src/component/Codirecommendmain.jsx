@@ -3,8 +3,9 @@ import { useEvents } from "../context/eventsContext";
 import { useUser } from "../context/UserContext";
 import { getClosets, getImg } from "../api/closetsService";
 import "../css/Codirecmainstyle.css";
+import { fake, a } from "../api/fake";
 
-{/* 코디추천 페이지 */}
+{/* 코디추천 페이지 */ }
 const CodiRecommendmain = () => {
     const { events } = useEvents(); // 캘린더에서 가져온 일정
     const { user } = useUser();
@@ -12,13 +13,10 @@ const CodiRecommendmain = () => {
     const [closetItems, setClosetItems] = useState([]); // 사용자의 의류 데이터
     const [selectedClothes, setSelectedClothes] = useState([]); // 선택한 의류
     const [generatedCodi, setGeneratedCodi] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     // 일정 카테고리
     const scheduleCategories = ["결혼식", "데이트", "출퇴근"];
-
-    useEffect(() => {
-        console.log("📅 불러온 일정 데이터:", events);
-    }, [events]);
 
     // 사용자 의류 데이터 가져오기
     useEffect(() => {
@@ -35,10 +33,10 @@ const CodiRecommendmain = () => {
             // 이미지 URL 변환 및 카테고리 추가
             const updatedClosetItems = await Promise.all(
                 data.map(async (item) => ({
-                    id: item.id,
-                    name: item.name,
+                    id: item.closetIdx,
                     category: item.category, // 의류 카테고리 (상의, 하의, 아우터)
                     imageUrl: await getImg(item.file),
+                    idx: item.idx
                 }))
             );
 
@@ -48,26 +46,30 @@ const CodiRecommendmain = () => {
         }
     };
 
-    // ✅ 의류 선택 핸들러 (클릭하여 선택/해제)
-    const handleSelectClothing = (item) => {
-        setSelectedClothes((prev) =>
-            prev.includes(item) ? prev.filter((c) => c !== item) : [...prev, item]
-        );
-        console.log("선택된 옷 데이터:", item);
-    };
-
     // 코디 생성 버튼 핸들러
-    const handleGenerateCodi = () => {
+    const handleGenerateCodi = async () => {
         if (!selectedSchedule || selectedClothes.length === 0) {
             alert("일정과 보유 의류를 선택해주세요!");
             return;
         }
 
-        setGeneratedCodi({
-            schedule: selectedSchedule,
-            items: selectedClothes,
-            image: "/img/street.jpg",
-        });
+        // 로딩 상태 시작
+        setIsLoading(true);
+
+        // 3초 대기 (로딩 상태)
+        setTimeout(async () => {
+            try {
+                const response = await fake(selectedClothes.idx);
+                setGeneratedCodi(response); // API 응답을 처리하여 코디 생성
+                a(user.id, response.url)
+            } catch (error) {
+                console.error("코디 생성 실패:", error);
+            } finally {
+                // 로딩 상태 종료
+                setIsLoading(false);
+            }
+        }, 3000); // 3초 대기
+
     };
 
     return (
@@ -109,11 +111,10 @@ const CodiRecommendmain = () => {
                                 .map((item) => (
                                     <div
                                         key={item.id}
-                                        className={`closet-item ${selectedClothes.includes(item) ? "selected" : ""}`}
-                                        onClick={() => handleSelectClothing(item)}
+                                        className={`closet-item ${selectedClothes === item ? "selected" : ""}`}
+                                        onClick={() => setSelectedClothes(item)}
                                     >
-                                        <img src={item.imageUrl} alt={item.name} />
-                                        <p>{item.name}</p>
+                                        <img src={item.imageUrl} alt={item.id} />
                                     </div>
                                 ))}
                         </div>
@@ -123,10 +124,11 @@ const CodiRecommendmain = () => {
 
             {/* 오른쪽: 코디 이미지 출력 */}
             <div className="codi-section codi-right">
-                <h2>추천 코디</h2>
+                <h2>코디</h2>
+                {isLoading ? <p>로딩 중...</p> : null}
                 {generatedCodi ? (
                     <div>
-                        <img src={generatedCodi.image} alt="코디 이미지" />
+                        <img src={generatedCodi.url} alt="코디 이미지" />
                     </div>
                 ) : (
                     <p>코디를 추천해 드릴게요!</p>

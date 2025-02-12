@@ -39,4 +39,9 @@ public class CoordisetsController {
         return coordisetsService.getPickCoordisets(userId);
     }
 
+    @GetMapping("/")
+    private void update(@RequestParam("userId") Long userId, @RequestParam("url") String img){
+        coordisetsService.up(userId, img);
+    }
+
 }
