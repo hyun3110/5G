@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import '../css/Mypagestyle.css';
 import RecommendedStyles from './Recommended';
 import Favorites from './Favorites';
-import CodiRecommend from './Codirecommend';
 import { useUser } from "../context/UserContext";
 import "../css/modal.css";
 
@@ -33,10 +32,10 @@ const MyPage = () => {
   // 즐겨찾기 상태 업데이트 함수
   const handleFavoriteToggle = (style) => {
     setFavorites((prevFavorites) => {
-      if (style.isFavorite) { // 스타일이 즐겨찾기 상태일 경우 추가
+      if (style.pick) { // 스타일이 즐겨찾기 상태일 경우 추가
         return [...prevFavorites, style];
       } else { // 즐겨찾기 상태가 아닐 경우 제거
-        return prevFavorites.filter((item) => item.id !== style.id);
+        return prevFavorites.filter((item) => item.idx !== style.idx);
       }
     });
   };
@@ -51,14 +50,12 @@ const MyPage = () => {
   };
 
   const renderContent = () => {
-    if (isCodiVisible) {
-      return <CodiRecommend recommendedCodi={recommendedCodi} />;
-    }
+    
     switch (activeContent) {
       case '추천 받은 스타일':
         return <RecommendedStyles onFavorite={handleFavoriteToggle} />; // 추천 받은 스타일 컴포넌트
       case '즐겨찾기':
-        return <Favorites favorites={favorites} />; // 즐겨찾기한 스타일 리스트 컴포넌트
+        return <Favorites />; // 즐겨찾기한 스타일 리스트 컴포넌트
       default:
         return null; // 기본적으로 아무것도 표시하지 않음
     }
