@@ -13,6 +13,7 @@ import Useredit from "./component/Useredit";
 import Resetpw from "./component/Resetpw";
 import CodiRecommend from './component/Codirecommend';
 import CodiRecommendMain from './component/Codirecommendmain';
+import MainCodiRecommend from './component/MainCodirecommend'
 import MyWardrobe from "./component/MyWardrobe"; // MyWardrobe 추가
 import { UserProvider } from "./context/UserContext"; // UserProvider import
 import { EventsProvider } from "./context/eventsContext";
@@ -40,6 +41,7 @@ const App = () => {
               <Route path="/resetpw" element={<Resetpw />} />
               <Route path="/codirecommend" element={<CodiRecommend />} />
               <Route path="/codirecommendmain" element={<CodiRecommendMain />} />
+              <Route path="/maincodirecommend" element={<MainCodiRecommend />} />
             </Routes>
           </div>
         </Router>

@@ -1,3 +1,4 @@
+/*코디 추천 페이지*/
 .codi-container {
     display: flex;
     justify-content: space-between;
@@ -25,7 +26,6 @@
   }
   
   button {
-    margin-top: 10px;
     padding: 10px;
     background-color: #4CAF50;
     color: white;

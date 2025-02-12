@@ -1,6 +1,6 @@
 // src/components/Login.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // ✅ useLocation 추가
 import "../css/Loginstyle.css";
 import { useUser } from "../context/UserContext";
 import { loginUser, getUserInfo } from "../api/authService";  // 로그인 서비스 임포트
@@ -10,6 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ 현재 위치 가져오기
   const { setUser } = useUser();  // UserContext에서 setUser 함수 가져오기
 
   const login = async (e) => {
@@ -29,7 +30,10 @@ function Login() {
         const userInfo = await getUserInfo();  // authService에서 처리
         setUser(userInfo);  // UserContext에 유저 정보 저장
         sessionStorage.setItem("user", JSON.stringify(userInfo));  // 세션에 유저 정보 저장
-        navigate("/");  // 메인 화면으로 리디렉션
+        
+        // ✅ 로그인 전에 사용자가 가려고 했던 경로 확인
+        const redirectPath = location.state?.from || "/";  
+        navigate(redirectPath, { replace: true }); // ✅ 해당 경로로 이동
       }
     } catch (err) {
       setError("아이디 혹은 패스워드를 확인해 주세요");  // 에러 메시지 표시

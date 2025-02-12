@@ -19,22 +19,36 @@
 }
 
 
-
-
+/* 기본 설정: html과 body */
+html,
 body {
-  font-family: Noto Sans KR;
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100dvh;
+  /* 전체 화면을 차지하되, 작업 표시줄을 고려한 높이 설정 */
+  min-height: 100dvh;
+  /* 최소 높이 보장 */
+  font-family: Noto Sans KR;
+  overflow: hidden;
+  /* 전체 페이지에서 스크롤이 따로 생기지 않도록 설정 */
+  display: flex;
+  flex-direction: column;
 }
 
+
+/* 전체 컨테이너 */
 .app-container {
   display: flex;
-  /* flex 레이아웃 */
   flex-direction: row;
-  /* 좌우 배치 */
-  overflow: hidden;
-  /* 스크롤바 표시 */
+  flex-grow: 1;
+  /* 내부 요소가 남는 공간을 채우도록 설정 */
+  height: 100dvh;
+  /* 화면 높이를 고정하면서, 작업 표시줄을 포함한 높이로 설정 */
+  overflow: auto;
+  /* 내부 요소가 넘칠 경우 스크롤 가능하도록 설정 */
 }
+
 
 /* Daily Look 텍스트 스타일 */
 .slider-container {
@@ -68,8 +82,6 @@ body {
   font-weight: bold;
   z-index: 10;
   /* 슬라이더 위로 표시 */
-  margin-bottom: 20px;
-  /* 아래 이미지와의 간격 유지 */
 }
 
 
@@ -168,11 +180,15 @@ body {
   color: #555;
 }
 
-.category-events{
-  background-color: white; /* 배경색 */
-  border-radius: 10px; /* 둥근 모서리 */
-  padding: 15px; /* 내부 여백 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 카드형 박스 그림자 */
+.category-events {
+  background-color: white;
+  /* 배경색 */
+  border-radius: 10px;
+  /* 둥근 모서리 */
+  padding: 15px;
+  /* 내부 여백 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* 카드형 박스 그림자 */
   height: 100px;
   overflow: hidden;
   overflow-y: auto;
@@ -304,7 +320,6 @@ body {
 
 
 /* 이벤트 섹션 모달 스타일 */
-/* 모달 스타일 */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -327,6 +342,10 @@ body {
   width: 400px;
   max-width: 90%;
   /* 화면이 작은 경우에도 대응 */
+  max-height: 80vh;
+  /* 모달이 화면 80% 이상 커지지 않도록 설정 */
+  overflow-y: auto;
+  /* 모달 내부에서 스크롤 가능 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease;
   /* 등장 애니메이션 */
@@ -656,11 +675,15 @@ figcaption {
 
 /* 하루 칸의 최소 높이 설정 */
 .fc-daygrid-day {
-  min-height: 120px !important;
+  height: 100px !important;
+  /* 모든 날짜 칸의 높이를 일정하게 유지 */
+  min-height: 100px !important;
   /* 하루 칸의 최소 높이 */
   position: relative;
   /* 날짜 고정을 위해 상대 위치 */
 }
+
+
 
 .fc-daygrid-day .event-count {
   position: absolute;
@@ -715,9 +738,8 @@ figcaption {
 
 
 .fc-view-harness {
-
-  max-height: 100%;
-  /* 최대 높이를 부모 요소에 맞춤 */
+  max-height: calc(100dvh - 100px);
+  /* 헤더와 기타 요소를 제외한 나머지 높이를 자동 조절 */
   overflow: auto;
   /* 넘치는 경우 스크롤 추가 */
 }
@@ -770,14 +792,20 @@ figcaption {
 
 /* 모달 내용 스타일 */
 .ReactModal__Content {
-  width: 400px; /* 가로 크기 */
-  height: 500px; /* 세로 크기 */
-  margin: auto; /* 화면 중앙 정렬 */
+  width: 400px;
+  /* 가로 크기 */
+  height: 500px;
+  /* 세로 크기 */
+  margin: auto;
+  /* 화면 중앙 정렬 */
   padding: 20px;
-  background-color: skyblue; /* 모달 배경색 */
+  background-color: skyblue;
+  /* 모달 배경색 */
   border-radius: 10px;
-  overflow-y: auto; /* 스크롤 가능 */
-  z-index: 1060; /* 캘린더 위로 띄움 */
+  overflow-y: auto;
+  /* 스크롤 가능 */
+  z-index: 1060;
+  /* 캘린더 위로 띄움 */
 }
 
 /* 모달 닫기 버튼 스타일 */
@@ -790,12 +818,14 @@ figcaption {
   right: 10px;
   cursor: pointer;
 }
+
 .calander-xclose-button:hover {
   background: none;
 }
 
 .calander-xclose-button:focus {
-  outline: none; /* 포커스 상태에서 외곽선 제거 */
+  outline: none;
+  /* 포커스 상태에서 외곽선 제거 */
 }
 
 /* 입력 필드 스타일 */
@@ -813,15 +843,19 @@ textarea {
 
 .color-buttons-container {
   display: flex;
-  flex-wrap: wrap; /* 버튼 여러 줄로 배치 */
-  gap: 10px; /* 버튼 간격 */
+  flex-wrap: wrap;
+  /* 버튼 여러 줄로 배치 */
+  gap: 10px;
+  /* 버튼 간격 */
   margin-bottom: 1px;
 }
 
 .color-button {
-  width: 35px; /* 버튼 크기 */
+  width: 35px;
+  /* 버튼 크기 */
   height: 35px;
-  border-radius: 50%; /* 원형 버튼 */
+  border-radius: 50%;
+  /* 원형 버튼 */
   border: 2px solid transparent;
   cursor: pointer;
   transition: transform 0.3s ease, border-color 0.3s ease;
@@ -950,28 +984,28 @@ button:hover {
 
 
 
-
 /* 왼쪽 영역 (슬라이더) */
 .left-side {
   flex: 2;
-  /* left-side의 비율 유지 */
   display: flex;
-  /* 플렉스 박스 사용 */
   flex-direction: column;
-  /* 수직 방향 정렬 */
   justify-content: center;
-  /* 세로 중앙 정렬 */
   align-items: center;
-  /* 가로 중앙 정렬 */
   background-color: #f9f9f9;
-  /* 배경색 유지 */
   border-right: 1px solid #ddd;
-  /* 경계선 유지 */
-  height: calc(100vh - -60px);
-  /* 화면 높이에서 헤더 제외 */
+  
+
+  /* ⭐ 고정 스타일 추가 */
+  position: sticky;
+  /* 스크롤해도 왼쪽에 고정 */
+  top: 0;
+  height: 100dvh;
+  /* 전체 화면 높이 고정 */
+  overflow: hidden;
+  /* 내부 요소가 넘치지 않도록 설정 */
   box-sizing: border-box;
-  /* 패딩 포함 크기 계산 */
 }
+
 
 /* 이미지 스타일 */
 .left-side img {
@@ -986,30 +1020,23 @@ button:hover {
 }
 
 
+
+
 /* 오른쪽 영역 (헤더, 이벤트 섹션, 캘린더) */
 .right-side {
   flex: 5;
-  /* 왼쪽에 비해 더 넓은 영역 */
   background-color: #fff;
-  /* 배경 색상 */
   padding: 20px;
-  /* 여백 */
+  padding-bottom: 80px;
+
+  /* ⭐ 오른쪽 컨텐츠는 스크롤 가능하도록 설정 */
   overflow-y: auto;
-  /* 세로 스크롤 추가 */
-  height: calc(100vh - -67px);
-  /* 화면 높이에서 헤더 높이를 제외 */
+  height: 100dvh;
+  /* 전체 높이 설정 */
   box-sizing: border-box;
-  /* 패딩 포함 크기 계산 */
 }
 
 /* 각 컴포넌트 스타일 (헤더, 캘린더 등) */
-
-.event-section {
-  margin-bottom: 20px;
-  margin-left: 670px;
-  /* 컴포넌트 간의 간격 */
-}
-
 /* 버튼 컨테이너 중앙 정렬 */
 .button-container {
   justify-content: center;

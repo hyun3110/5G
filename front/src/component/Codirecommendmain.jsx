@@ -4,6 +4,7 @@ import { useUser } from "../context/UserContext";
 import { getClosets, getImg } from "../api/closetsService";
 import "../css/Codirecmainstyle.css";
 
+{/* 코디추천 페이지 */}
 const CodiRecommendmain = () => {
     const { events } = useEvents();
     const { user } = useUser();

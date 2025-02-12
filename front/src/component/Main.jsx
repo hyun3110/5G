@@ -4,6 +4,9 @@ import Slider from "./Slider";
 import EventSection from "./EventSection";
 import "../css/styles.css";
 import Calendar from "./Calender";
+import MainCodirecommend from "./MainCodirecommend"; // ✅ 경로 수정
+
+// 코디 추천 컴포넌트 추가
 
 const Main = () => {
   const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
@@ -22,21 +25,12 @@ const Main = () => {
           <Slider />
         </div>
       </div>
-      {/* 중앙 섹션 - AI 코디 추천 */}
-      <div className="center-section">
-        <div className="ai-recommendation">
-          {/* AI 추천 이미지 */}
-          <img src="여기에 AI 추천 관련 이미지를 삽입" alt="AI 코디 추천" className="recommendation-img" />
-          {/* 코디 추천 버튼 오버레이 */}
-          <div className="recommend-overlay">
-            <button className="recommend-text" onClick={handleRecommendClick}>코디 추천</button>
-          </div>
-        </div>
-      </div>
+
       {/* 오른쪽 섹션 - 다가올 일정 */}
       <div className="right-side">
         {/* EventSection과 Calander 컴포넌트 */}
         <div className="event-and-calendar">
+          <MainCodirecommend />
           <EventSection />
           <Calendar />
         </div>

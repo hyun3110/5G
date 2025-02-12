@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../css/header.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // ✅ useLocation 추가
 import { useUser } from "../context/UserContext";
 import { useEvents } from "../context/eventsContext";
 import { logout } from "../api/authService";
@@ -9,8 +9,9 @@ import { logout } from "../api/authService";
 const Header = () => {
   const [location, setLocation] = useState("서울"); // 기본 위치: 서울
   const navigate = useNavigate();
-  const { user, setUser } = useUser();  // user 정보 가져오기
+  const { user, setUser } = useUser(); // user 정보 가져오기
   const { setEvents } = useEvents();
+  const currentLocation = useLocation(); // ✅ 현재 위치 가져오기
   const [weatherData, setWeatherData] = useState({
     description: "", // 날씨 설명
     temp: "", // 실제 온도
@@ -96,12 +97,22 @@ const Header = () => {
     }
   };
 
+  // 내 옷장으로 이동하는 함수
+  const handleGoToWardrobe = () => {
+    if (user) {
+      navigate("/mywardrobe"); // 로그인 상태라면 마이페이지로 이동
+    } else {
+      navigate("/login", { state: { from: "/mywardrobe" } }); // ✅ 로그인 후 리디렉션 정보 추가
+    }
+    
+  };
+
   // 프로필 아이콘 클릭 시 동작
   const handleProfileClick = () => {
     if (user) {
       navigate("/mypage"); // 로그인 상태라면 마이페이지로 이동
     } else {
-      navigate("/login"); // 로그인 상태가 아니라면 로그인 페이지로 이동
+      navigate("/login", { state: { from: "/mypage" } }); // ✅ 로그인 후 리디렉션 정보 추가
     }
   };
 
@@ -116,7 +127,7 @@ const Header = () => {
         localStorage.removeItem("events"); // 로컬 스토리지에서 이벤트 정보 삭제
         setUser(null); // 유저 상태 초기화
         setEvents([]); // 이벤트 상태 초기화
-        navigate("/login", { replace: true })
+        navigate("/login", { replace: true });
       }
     } catch (error) {
       console.error("로그아웃 실패", error);
@@ -135,11 +146,6 @@ const Header = () => {
 
         {/* 내비게이션 */}
         <nav className="header-nav">
-          <a href="/">
-            <img src="/img/calendar.png" alt="Calendar" />
-            Calendars
-          </a>
-
           <span>
             <img src="/img/location.png" alt="Location" />
             {location}
@@ -162,14 +168,19 @@ const Header = () => {
           </div>
         </nav>
 
-        {/* 알림 및 프로필 */}
-        <div
-          className="header-mypage"
-          onClick={handleProfileClick} // 로그인 상태에 따라 페이지 이동
-          style={{ cursor: "pointer" }}
-        >
+
+      <div className="header-sections">
+        {/* 내 옷장 섹션 */}
+        <div className="header-mycloth" onClick={handleGoToWardrobe}>
+          내 옷장
+        </div>
+
+        {/* 마이페이지 섹션 */}
+        <div className="header-mypage" onClick={handleProfileClick}>
           마이페이지
         </div>
+      </div>
+  
         <div>
           {user ? (
             <>
@@ -177,7 +188,10 @@ const Header = () => {
                 {/* 다른 헤더 요소들 */}
                 <div className="header-user-info">
                   <span className="header-user-name">{`${user.name}님`}</span>
-                  <button className="header-logout-button" onClick={handleLogout}>
+                  <button
+                    className="header-logout-button"
+                    onClick={handleLogout}
+                  >
                     로그아웃
                   </button>
                 </div>
@@ -199,7 +213,6 @@ const Header = () => {
               </button>
             </div>
           )}
-          
         </div>
       </div>
     </header>
