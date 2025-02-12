@@ -58,7 +58,7 @@ const MyPage = () => {
       case '추천 받은 스타일':
         return <RecommendedStyles onFavorite={handleFavoriteToggle} />; // 추천 받은 스타일 컴포넌트
       case '즐겨찾기':
-        return <Favorites favorites={favorites} />; // 즐겨찾기한 스타일 리스트 컴포넌트
+        return <Favorites />; // 즐겨찾기한 스타일 리스트 컴포넌트
       default:
         return null; // 기본적으로 아무것도 표시하지 않음
     }

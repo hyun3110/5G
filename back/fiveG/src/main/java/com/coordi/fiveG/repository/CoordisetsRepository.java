@@ -10,4 +10,5 @@ import java.util.List;
 public interface CoordisetsRepository extends JpaRepository<Coordisets, Integer> {
 
     List<Coordisets> findByUserId(Long id);
+    List<Coordisets> findByUserIdAndPick(Long id, boolean pick);
 }

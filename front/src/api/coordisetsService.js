@@ -22,3 +22,14 @@ export const pickCoordi = async (updateCoordi) => {
         console.error("통신오류.", error);
     }
 }
+
+export const getPickCoordi = async (userId) => {
+    try {
+        const response = await axios.post(
+            `${API_URL}/api/coordisets/pick?userId=${userId}`, { withCredentials: true, }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('서버 오류:', error.response ? error.response.data : error.message);
+    }
+};

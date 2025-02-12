@@ -26,4 +26,8 @@ public class CoordisetsService {
         return coordisetsRepository.save(coordiset);
 
     }
+
+    public List<Coordisets> getPickCoordisets(Long userId) {
+        return coordisetsRepository.findByUserIdAndPick(userId, true);
+    }
 }

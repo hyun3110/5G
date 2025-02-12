@@ -33,4 +33,10 @@ public class CoordisetsController {
         }
     }
 
+    // 즐겨찾기 가져오기
+    @PostMapping("/pick")
+    public List<Coordisets> pickCoordiset(@RequestParam("userId") Long userId){
+        return coordisetsService.getPickCoordisets(userId);
+    }
+
 }
