@@ -26,7 +26,7 @@ const Main = () => {
       <div className="center-section">
         <div className="ai-recommendation">
           {/* AI 추천 이미지 */}
-          <img src="여기에 AI 추천 관련 이미지를 삽입" alt="AI 코디 추천" className="recommendation-img" />
+          <img src="/img/profile-icon.png" alt="AI 코디 추천" className="recommendation-img" />
           {/* 코디 추천 버튼 오버레이 */}
           <div className="recommend-overlay">
             <button className="recommend-text" onClick={handleRecommendClick}>코디 추천</button>

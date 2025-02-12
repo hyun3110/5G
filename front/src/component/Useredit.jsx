@@ -6,15 +6,15 @@ import { userEdit } from "../api/authService";
 
 const Useredit = () => {
   const navigate = useNavigate(); // 페이지 이동 함수
-  const { user, setUser } = useUser();  // user 정보 가져오기
   const location = useLocation();
+  const { user, setUser } = useUser();  // user 정보 가져오기
 
   // 사용자 정보 상태값 (초기값 null)
-  const [password, setPassword] = useState(""); // 비밀번호 입력 필드
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [preferredStyle, setPreferredStyle] = useState(user?.preferredStyle || []); // 선호 스타일 상태 추가
-  const [styles, setStyles] = useState({
+  // 기존 입력 필드 유지 (location.state에 기존 데이터가 있으면 유지)
+  const [password, setPassword] = useState(location.state?.password || ""); 
+  const [phone, setPhone] = useState(location.state?.phone || user?.phone || ""); 
+  const [email, setEmail] = useState(location.state?.email || user?.email || ""); 
+  const [preferredStyle, setPreferredStyle] = useState(location.state?.preferredStyle || user?.preferredStyle || []); const [styles, setStyles] = useState({
     casual: user?.casual || false,
     chic: user?.chic || false,
     classic: user?.classic || false,
@@ -43,15 +43,11 @@ const Useredit = () => {
     navigate("/look", {
       state: {
         from: "useredit", // 회원정보 수정 페이지에서 접근
-        userId: user.userId,
-        phone: user.phone,
-        email: user.email,
-        casual: styles.casual,
-        chic: styles.chic,
-        classic: styles.classic,
-        minimal: styles.minimal,
-        street: styles.street,
-        sporty: styles.sporty
+        password,
+        phone,
+        email,
+        preferredStyle,
+        styles,
       },
     });
   };
