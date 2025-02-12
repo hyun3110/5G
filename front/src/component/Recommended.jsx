@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCoordi, pickCoordi } from '../api/coordisetsService';
 import { useUser } from '../context/UserContext';
+import '../css/Recommendedstyle.css'
 
 const RecommendedStyles = ({ onFavorite }) => {
   // 추천 스타일 데이터 상태
@@ -40,6 +41,7 @@ const RecommendedStyles = ({ onFavorite }) => {
 
     // 변경된 즐겨찾기 상태를 DB에 저장
     try {
+      console.log(updatedStyle)
       await pickCoordi(updatedStyle);
       console.log('즐겨찾기 상태가 성공적으로 업데이트되었습니다.');
     } catch (error) {

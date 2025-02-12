@@ -16,7 +16,7 @@ export const getCoordi = async (userId) => {
 // 추천의류 즐찾
 export const pickCoordi = async (updateCoordi) => {
     try {
-        const response = await axios.put(`${API_URL}/api/coordisets/update`, { updateCoordi }, { withCredentials: true, });
+        const response = await axios.put(`${API_URL}/api/coordisets/update`, updateCoordi , { withCredentials: true, });
         return response.data;
     } catch (error) {
         console.error("통신오류.", error);
