@@ -25,6 +25,7 @@ const MyWardrobe = () => {
   });
   const [imageSrcs, setImageSrcs] = useState({}); // 각 아이템의 이미지 URL을 저장할 상태
   const fileInputRef = useRef();
+  const [scrollY, setScrollY] = useState(0); // 스크롤 Y 좌표 상태 추가
   const sectionsRef = useRef({
     전체: null,
     외투: null,
@@ -49,6 +50,17 @@ const MyWardrobe = () => {
     };
     fetchItems();
   }, [user]); // useEffect에 비동기 호출 래핑
+
+   // 🔥 스크롤 감지하여 scrollY 상태 업데이트
+   useEffect(() => {
+    const handleScroll = () => {
+      const yOffset = window.scrollY * 0.3; // 스크롤 속도를 30%만 반영하여 부드럽게 이동
+      setScrollY(Math.min(yOffset, 150)); // 최대 150px까지만 이동하도록 제한
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // 이미지 로딩
   useEffect(() => {
@@ -257,7 +269,7 @@ const MyWardrobe = () => {
 
   return (
     <div className="wardrobe-container">
-      <div className="sidebar">
+      <div className="sidebar" style={{ transform: `translateY(${scrollY}px)`, }}>
         <div className="sidebar-inner">
           <h2>내 의류</h2>
           <ul>

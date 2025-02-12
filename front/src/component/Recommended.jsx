@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCoordi, pickCoordi } from '../api/coordisetsService';
 import { useUser } from '../context/UserContext';
-import '../css/Recommendedstyle.css'
+import "../css/Recommendedstyle.css";
 
 const RecommendedStyles = ({ onFavorite }) => {
   // 추천 스타일 데이터 상태
