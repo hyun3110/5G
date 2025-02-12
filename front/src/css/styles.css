@@ -370,7 +370,12 @@ body {
 }
 
 /* 닫기 버튼 */
-.close-modal-button {
+.close-modal-button { 
+  display: flex;
+  justify-content: center; /* 버튼을 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  margin-top: 20px; /* 버튼 위쪽 여백 */
+  width: 100%; /* 부모 요소가 전체 너비를 가지도록 설정 */
   padding: 10px 20px;
   background-color: #4caf50;
   color: white;

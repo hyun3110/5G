@@ -220,8 +220,10 @@ const AddEventForm = ({
                 </div>
                 <br />
                 {error && <p className="error">{error}</p>}
+                <div className="addevent-button-container">
                 <button className="a-button" onClick={handleSaveEvent}>저장</button>
                 <button className="b-button" onClick={closeModal}>닫기</button>
+                </div>
             </div>
     
             {/* ✅ 오른쪽 컬럼: 장소 선택 & 날씨 정보 */}

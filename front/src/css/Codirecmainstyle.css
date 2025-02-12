@@ -65,8 +65,15 @@
   background-color: #fffbe6;
 }
 
+
+.addevent-button-container {
+  display: flex;
+  justify-content: center;  /* 가운데 정렬 */
+  gap: 20px;  /* 버튼 간 간격 조정 */
+  margin-top: 20px; /* 버튼 위쪽 여백 추가 */
+}
+
 button {
-  margin-top: 10px;
   background-color: #4CAF50;
   color: white;
   border: none;

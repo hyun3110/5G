@@ -49,14 +49,12 @@
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top: 20px;
+  top: 0;
   padding: 10px;
-  height: fit-content;
-  max-height: 90vh; /* 화면 높이에 따라 사이드바 제한 */
+  max-height: calc(100vh - 40px); /* 화면 높이에 따라 사이드바 제한 */
   overflow-y: auto; /* 스크롤 가능 */
   align-self: flex-start;
   margin-top: 80px; /* 추가: 사이드바를 아래로 밀기 위한 여백 */
-  transition: top 0.3s ease-in-out;
 }
 
 .sidebar-inner {
@@ -197,8 +195,8 @@
   background-color: #fff;
   overflow: hidden; /* 아이템 내부의 요소가 넘치지 않도록 설정 */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 290px; /* 부모 요소의 고정 너비 */
-  height: 270px; /* 부모 요소의 고정 높이 */
+  width: 260px; /* 부모 요소의 고정 너비 */
+  height: 250px; /* 부모 요소의 고정 높이 */
   display: flex; /* 컨텐츠를 중앙 정렬하기 위해 flexbox 사용 */
   justify-content: center;
   align-items: center;
