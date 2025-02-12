@@ -1,18 +1,21 @@
 /* 코디 추천 영역 스타일 */
 .ai-recommendation {
   position: relative;
-  width: 100%;
-  max-width: 500px;
+  width: 48%;
+  height: auto;
+  margin-left: 11px;
   text-align: center;
   border-radius: 10px;
+  border: 1px solid #ddd;
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .recommendation-img {
   width: 100%;
-  height: auto;
+  height: 100%;
   border-radius: 10px;
+  opacity: 0.7;  /* 투명도 70% */
 }
 
 .recommend-overlay {

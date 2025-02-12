@@ -9,6 +9,7 @@ import MainCodirecommend from "./MainCodirecommend"; // ✅ 경로 수정
 // 코디 추천 컴포넌트 추가
 
 const Main = () => {
+  const navigate = useNavigate();
   return (
     <div className="app-container">
       {/* 왼쪽 섹션 - Daily Look 슬라이더 */}
@@ -21,13 +22,13 @@ const Main = () => {
 
       {/* 오른쪽 섹션 - 다가올 일정과 코디 추천 포함 */}
       <div className="right-side">
-        <div className="event-and-calendar">
-          {/* 일정 섹션 */}
-          <div className="event-section-container">
-            <MainCodirecommend />
-            <EventSection />
-            <Calendar />
+        <div className="recommendation-section"></div>
+        <div className="event-section-container">
+          <div className="recommend-event-container">
+          <MainCodirecommend />
+          <EventSection />
           </div>
+          <Calendar />
         </div>
       </div>
     </div>

@@ -196,7 +196,6 @@ body {
 
 
 
-
 /* Event Section 스타일 */
 .event-section {
   display: flex;
@@ -206,10 +205,15 @@ body {
   height: 10%;
   gap: 20px;
   padding: 20px;
+  margin-left: 1%;
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: #f9f9f9;
   overflow-y: auto;
+}
+
+.recommend-event-container{
+  display:flex;
 }
 
 .event-header {
@@ -641,6 +645,7 @@ figcaption {
   font-family: Noto Sans KR;
   font-size: 14px;
   padding: 10px;
+  padding-top: 40px;
 }
 
 .fc-daygrid-day-top {
@@ -1032,11 +1037,23 @@ button:hover {
   align-items: center;
 }
 
-/* 다가올 일정 & 캘린더 영역 */
-.event-and-calendar {
+/* 다가올 일정 스타일 */
+.event-container {
   flex: 1;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+/* 달력 스타일 */
+.calendar-container {
+  margin-top: 20px;
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
 
 
