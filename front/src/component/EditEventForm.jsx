@@ -133,106 +133,133 @@ const EditEventForm = ({
     };
 
     return (
-        <div>
-            <label>제목</label>
-            <input
-                type="text"
-                value={eventDetails.title}
-                onChange={(e) =>
-                    setEventDetails({ ...eventDetails, title: e.target.value })
-                }
-            />
-            <br />
-            <label>일정 유형: </label>
-            <select
-                value={eventDetails.type}
-                onChange={(e) =>
-                    setEventDetails({ ...eventDetails, type: e.target.value })
-                }
-            >
-                <option value="">선택</option>
-                {["결혼식", "출퇴근", "데이트"].map((type) => (
-                    <option key={type} value={type}>
-                        {type}
-                    </option>
-                ))}
-            </select>
-            <br />
-            <label>시작일</label>
-            <input
-                type="date"
-                value={eventDetails.startDate.split("T")[0]}
-                onChange={(e) =>
-                    setEventDetails({ ...eventDetails, startDate: e.target.value })
-                }
-                min={today}
-            />
-            <br />
-            <label>종료일</label>
-            <input
-                type="date"
-                value={eventDetails.endDate.split("T")[0]}
-                onChange={(e) =>
-                    setEventDetails({ ...eventDetails, endDate: e.target.value })
-                }
-                min={eventDetails.startDate.split("T")[0]}
-            />
-            <br />
-            <label>설명</label>
-            <textarea
-                value={eventDetails.description}
-                onChange={(e) =>
-                    setEventDetails({ ...eventDetails, description: e.target.value })
-                }
-            />
-            <br />
-            <label>색상 선택:</label>
-            <div>
-                {["#FFB6C1", "#FFD700", "#90EE90", "#87CEFA", "#FFA07A", "#9370DB", "#FF6347"].map(
-                    (color) => (
-                        <button
-                            key={color}
-                            type="button"
-                            style={{
-                                backgroundColor: color,
-                                border: "none",
-                                margin: "0 5px",
-                                cursor: "pointer",
-                            }}
-                            onClick={() =>
-                                setEventDetails((prev) => ({ ...prev, color: color }))
-                            }
-                        >
-                            {color === eventDetails.color ? "✔" : " "}
-                        </button>
-                    )
-                )}
-            </div>
-            <br />
-            {error && <p className="error">{error}</p>}
-            <button onClick={handleSaveEvent}>수정</button>
-            <button onClick={handleDeleteEvent} className="delete-button">
-                삭제
-            </button>
-            <button onClick={closeModal}>닫기</button>
-            <h3>📍 장소 선택</h3>
-            <KakaoMap
-                onSelectLocation={handleLocationSelect}
-                initialLat={initialLat}
-                initialLon={initialLon} />
-            {/* 날씨 정보 */}
-            <div>
-                <h3>🌤 날씨 정보</h3>
-                {eventDetails.feelsLike ? (
-                    <div style={{ background: "#f5f5f5", padding: "10px", borderRadius: "8px" }}>
-                        <p><strong>체감 온도:</strong> {eventDetails.feelsLike}°C</p>
+        <div style={{ width: "95%", padding: "10px" }}>
+            {/* 제목을 별도 div로 분리하여 세로 정렬 유지 */}
+            <h3 style={{ marginBottom: "10px" }}>일정 수정</h3>
+
+            {/* 메인 컨테이너 - 왼쪽 입력폼 + 오른쪽 지도 & 날씨 */}
+            <div style={{ display: "flex", gap: "20px" }}>
+                {/* 왼쪽 컬럼: 일정 입력 폼 */}
+                <div style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "column",
+                    borderRight: "1px solid #ddd",
+                    paddingRight: "20px",
+                    gap: "8px" // 요소 간격 조정
+                }}>
+                    <label>제목</label>
+                    <input
+                        type="text"
+                        value={eventDetails.title}
+                        onChange={(e) =>
+                            setEventDetails({ ...eventDetails, title: e.target.value })
+                        }
+                        style={{ marginBottom: "5px" }}
+                    />
+
+                    <label>일정 유형: </label>
+                    <select
+                        value={eventDetails.type}
+                        onChange={(e) =>
+                            setEventDetails({ ...eventDetails, type: e.target.value })
+                        }
+                        style={{
+                            width: "150px",  // ✅ 너비 조절
+                            marginBottom: "5px"
+                        }}
+                    >
+                        <option value="">선택</option>
+                        {["결혼식", "출퇴근", "데이트"].map((type) => (
+                            <option key={type} value={type}>
+                                {type}
+                            </option>
+                        ))}
+                    </select>
+
+                    <label>시작일</label>
+                    <input
+                        type="date"
+                        value={eventDetails.startDate.split("T")[0]}
+                        onChange={(e) =>
+                            setEventDetails({ ...eventDetails, startDate: e.target.value })
+                        }
+                        min={today}
+                        style={{ marginBottom: "5px" }}
+                    />
+
+                    <label>종료일</label>
+                    <input
+                        type="date"
+                        value={eventDetails.endDate.split("T")[0]}
+                        onChange={(e) =>
+                            setEventDetails({ ...eventDetails, endDate: e.target.value })
+                        }
+                        min={eventDetails.startDate.split("T")[0]}
+                        style={{ marginBottom: "5px" }}
+                    />
+
+                    <label>설명</label>
+                    <textarea
+                        value={eventDetails.description}
+                        onChange={(e) =>
+                            setEventDetails({ ...eventDetails, description: e.target.value })
+                        }
+                        style={{ marginBottom: "5px" }}
+                    />
+
+                    <label>색상 선택:</label>
+                    <div>
+                        {["#FFB6C1", "#FFD700", "#90EE90", "#87CEFA", "#FFA07A", "#9370DB", "#FF6347"].map(
+                            (color) => (
+                                <button
+                                    key={color}
+                                    type="button"
+                                    style={{
+                                        backgroundColor: color,
+                                        border: "none",
+                                        margin: "0 5px",
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={() =>
+                                        setEventDetails((prev) => ({ ...prev, color: color }))
+                                    }
+                                >
+                                    {color === eventDetails.color ? "✔" : " "}
+                                </button>
+                            )
+                        )}
                     </div>
-                ) : (
-                    <p>날씨 정보를 불러오는 중...</p>
-                )}
+
+                    {error && <p className="error">{error}</p>}
+                    <div>
+                        <button onClick={handleSaveEvent} style={{ marginRight: "5px" }}>수정</button>
+                        <button onClick={handleDeleteEvent} className="delete-button">삭제</button>
+                        <button onClick={closeModal}>닫기</button>
+                    </div>
+                </div>
+
+                {/* 오른쪽 컬럼: 장소 선택 & 날씨 정보 */}
+                <div style={{ flex: "1", display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <h3>📍 장소 선택</h3>
+                    <KakaoMap onSelectLocation={handleLocationSelect} initialLat={initialLat} initialLon={initialLon} />
+
+                    {/* 날씨 정보 */}
+                    <div>
+                        <h3>🌤 날씨 정보</h3>
+                        {eventDetails.feelsLike ? (
+                            <div style={{ background: "#f5f5f5", padding: "10px", borderRadius: "8px" }}>
+                                <p><strong>체감 온도:</strong> {eventDetails.feelsLike}°C</p>
+                            </div>
+                        ) : (
+                            <p>날씨 정보를 불러오는 중...</p>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );
+
 };
 
 export default EditEventForm;

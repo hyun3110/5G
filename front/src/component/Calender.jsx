@@ -215,7 +215,8 @@ export default function Calendar() {
             backgroundColor: "white", // 모달 배경 색
             padding: "20px", // 내용 여백
             borderRadius: "8px", // 모달 둥근 모서리
-            width: "400px", // 모달 폭
+            width: "50%", // 모달 폭
+            height: "83%",
             margin: "auto", // 가운데 정렬
           },
         }}

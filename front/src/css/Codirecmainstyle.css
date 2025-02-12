@@ -4,6 +4,8 @@
   justify-content: center;
   gap: 20px;
   padding: 20px;
+  max-height: 80hv;
+  overflow-y: auto;
 }
 
 .codi-section {
@@ -11,8 +13,8 @@
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
-  flex-direction: column;
-  align-items: center;
+  height: 800px; /* 부모 높이에 맞게 설정 */
+  overflow-y: auto; /* 세로 스크롤 가능 */
   /* ✅ 모든 내부 요소를 중앙 정렬 */
 }
 
@@ -65,11 +67,22 @@
 
 button {
   margin-top: 10px;
-  padding: 10px;
   background-color: #4CAF50;
   color: white;
   border: none;
   cursor: pointer;
+}
+
+.a-button {
+  padding: 10px 20px;
+  flex: 1; /* 버튼 크기를 동일하게 */
+  max-width: 100px; /* 버튼 크기 제한 */
+}
+
+.b-button {
+  padding: 10px 20px;
+  flex: 1; /* 버튼 크기를 동일하게 */
+  max-width: 100px; /* 버튼 크기 제한 */
 }
 
 button:hover {

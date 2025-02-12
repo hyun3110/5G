@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getPickCoordi } from "../api/coordisetsService";
 import { useUser } from '../context/UserContext';
+import '../css/Favoritesstyle.css'
 
 const Favorites = () => {
   const { user } = useUser();
@@ -32,15 +33,15 @@ const Favorites = () => {
   return (
     <div>
       <h3>즐겨찾기</h3>
-      <div className="favorites-grid">
+      <div className="favorites-container">
         {styles.length > 0 ? (
           styles.map((style) => (
-            <div key={style.idx} className="favorite-item">
+            <div key={style.idx} className="favorites-item">
               {style.img ? (
                 <img
                   src={style.img}
                   alt={`Favorite ${style.idx}`}
-                  className="favorite-image"
+                  className="favorites-image"
                 />
               ) : (
                 <p>이미지가 없습니다.</p>
@@ -48,11 +49,11 @@ const Favorites = () => {
             </div>
           ))
         ) : (
-          <p>즐겨찾기한 스타일이 없습니다.</p> 
+          <p>즐겨찾기한 스타일이 없습니다.</p>
         )}
       </div>
     </div>
-  );
+  );  
 };
 
 export default Favorites;
