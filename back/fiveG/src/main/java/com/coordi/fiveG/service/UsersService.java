@@ -84,4 +84,17 @@ public class UsersService {
         return usersRepository.save(user);
     }
 
+    public Users findId(String name, String residentNum) {
+        return usersRepository.findByNameAndResidentNum(name, residentNum);
+    }
+
+    public Users findPw(String userId, String name, String residentNum) {
+        return usersRepository.findByUserIdAndNameAndResidentNum(userId, name, residentNum);
+    }
+
+    public Users resetPw(String userId, String pw) {
+        Users user = usersRepository.findByUserId(userId);
+        user.setPw(pw);
+        return usersRepository.save(user);
+    }
 }

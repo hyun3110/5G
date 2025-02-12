@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
 import '../css/Forgotidstyle.css';
+import { findId } from '../api/authService';
 
 // 이름, 주민번호로 아이디 찾기
 const ForgotId = () => {
@@ -32,21 +32,19 @@ const ForgotId = () => {
       setMessage({ text: "이름과 주민등록번호를 올바르게 입력하세요.", type: "error" });
       return;
     }
+    const residentNum = `${rrnFirst}-${rrnSecond}`;
 
     try {
-      const response = await axios.post("http://localhost:8081/api/auth/find-id", {
-        name,
-        residentRegNum: `${rrnFirst}-${rrnSecond}`,
-      });
+      const response = await findId(name, residentNum);
 
       if (response.data.userId) {
         setFoundId(response.data.userId);
         setMessage({ text: `회원님의 아이디는 "${response.data.userId}" 입니다.`, type: "success" });
       } else {
-        setMessage({ text: "입력한 정보와 일치하는 아이디가 없습니다", type: "error" });
+        setMessage({ text: "입력한 정보와 일치하는 아이디가 없습니다1", type: "error" });
       }
     } catch (error) {
-      setMessage({ text: "입력한 정보와 일치하는 아이디가 없습니다", type: "error" });
+      setMessage({ text: "입력한 정보와 일치하는 아이디가 없습니다2", type: "error" });
     }
   };
 

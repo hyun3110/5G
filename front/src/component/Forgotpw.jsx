@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../css/Forgotpwstyle.css';
+import { findPw } from '../api/authService';
 
 // 아이디, 이름, 주민번호 확인 후 비밀번호 재설정
 const ForgotPassword = () => {
@@ -28,14 +28,10 @@ const ForgotPassword = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8081/api/auth/verify-user', {
-        userId,
-        name,
-        residentRegNum: fullRrn,
-      });
+      const response = await findPw(userId, name, fullRrn);
 
-      if (response.data.success) {
-        navigate('/resetpassword', { state: { userId } }); // 비밀번호 재설정 페이지로 이동
+      if (response.data) {
+        navigate('/resetpw', { state: { userId } }); // 비밀번호 재설정 페이지로 이동
       } else {
         setMessage({ text: '입력한 정보와 일치하는 사용자가 없습니다.', type: 'error' });
       }

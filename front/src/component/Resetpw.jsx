@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../css/Resetpwstyle.css';
+import { resetPw } from '../api/authService';
 
 const Resetpw = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -30,12 +31,9 @@ const Resetpw = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8081/api/auth/reset-password', {
-        userId,
-        newPassword
-      });
+      const response = await resetPw(userId, newPassword);
 
-      if (response.data.success) {
+      if (response.data) {
         alert('비밀번호가 성공적으로 변경되었습니다.');
         navigate('/login');
       } else {

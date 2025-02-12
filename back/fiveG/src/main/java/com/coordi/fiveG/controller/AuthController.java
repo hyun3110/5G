@@ -81,4 +81,36 @@ public class AuthController {
         }
     }
 
+    // 아이디 찾기
+    @PostMapping("/findid")
+    public ResponseEntity<?> findId(@RequestParam("name") String name, @RequestParam("residentNum") String residentNum){
+        Users user = usersService.findId(name, residentNum);
+        if (user != null){
+            return ResponseEntity.ok(user);
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
+    // 비밀번호 찾기
+    @PostMapping("/findpw")
+    public ResponseEntity<?> findPw(@RequestParam("userId") String userId,@RequestParam("name") String name, @RequestParam("residentNum") String residentNum){
+        Users user = usersService.findPw(userId, name, residentNum);
+        if (user != null){
+            return ResponseEntity.ok(user);
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
+    // 비밀번호 재설정
+    @PostMapping("/resetpassword")
+    public ResponseEntity<?> resetPw(@RequestParam("userId") String userId,@RequestParam("pw") String pw){
+        Users user = usersService.resetPw(userId, pw);
+        if (user != null){
+            return ResponseEntity.ok(user);
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
 }

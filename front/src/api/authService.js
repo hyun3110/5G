@@ -77,25 +77,74 @@ export const userSignup = async (signupData) => {
 
 // 회원정보 변경
 export const userEdit = async (updateData) => {
-  try{
+  try {
     const response = await axios.put(`${API_URL}/api/auth/useredit`, updateData, { withCredentials: true });
-    if (response.status === 200 || response.status === 201){
+    if (response.status === 200 || response.status === 201) {
       return response.data
     }
- } catch (error) {
-  console.error("통신 오류:", error);
-}
+  } catch (error) {
+    console.error("통신 오류:", error);
+  }
 }
 
 // 비밀번호 확인
 export const pwCheck = async (userId, pw) => {
-  try{
+  try {
     const response = await axios.post(`${API_URL}/api/auth/verifypassword`, {
       userId: userId,
       pw: pw,
     }, { withCredentials: true });
     return response
-  }catch (error){
+  } catch (error) {
     console.error("통신 오류:", error);
   }
 }
+
+// 아이디 찾기
+export const findId = async (name, residentNum) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/auth/findid`, null, {
+      params: {
+        name: name,
+        residentNum: residentNum,
+      },
+      withCredentials: true
+    });
+    return response
+  } catch (error) {
+    console.error("통신 오류:", error);
+  }
+};
+
+// 비밀번호 찾기
+export const findPw = async (userId, name, residentNum) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/auth/findpw`, null, {
+      params: {
+        userId: userId,
+        name: name,
+        residentNum: residentNum,
+      },
+      withCredentials: true
+    });
+    return response
+  } catch (error) {
+    console.error("통신 오류:", error);
+  }
+};
+
+// 비밀번호 재설정
+export const resetPw = async (userId, pw) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/auth/resetpassword`, null, {
+      params: {
+        userId: userId,
+        pw: pw
+      },
+      withCredentials: true
+    });
+    return response
+  } catch (error) {
+    console.error("통신 오류:", error);
+  }
+};
