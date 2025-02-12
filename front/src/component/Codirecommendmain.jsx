@@ -123,7 +123,7 @@ const CodiRecommendmain = () => {
 
             {/* 오른쪽: 코디 이미지 출력 */}
             <div className="codi-section codi-right">
-                <h2>코디</h2>
+                <h2>추천 코디</h2>
                 {generatedCodi ? (
                     <div>
                         <img src={generatedCodi.image} alt="코디 이미지" />

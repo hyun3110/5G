@@ -57,8 +57,8 @@ const RecommendedStyles = ({ onFavorite }) => {
       <h3>추천 받은 스타일</h3>
       {loading && <div>로딩 중...</div>}
       {error && <div style={{ color: 'red' }}>{error}</div>}
-
-      <div className="style-grid">
+  
+      <div className="style-container">
         {styles.map((style) => (
           <div key={style.idx} className="style-item">
             <img src={style.img} alt={`Style ${style.idx}`} className="style-image" />
@@ -72,7 +72,7 @@ const RecommendedStyles = ({ onFavorite }) => {
         ))}
       </div>
     </div>
-  );
+  );  
 };
 
 export default RecommendedStyles;

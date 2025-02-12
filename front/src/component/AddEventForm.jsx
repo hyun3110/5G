@@ -129,96 +129,120 @@ const AddEventForm = ({
     };
 
     return (
-        <div>
-            <label>제목</label>
-            <input
-                type="text"
-                value={eventDetails.title}
-                onChange={(e) =>
-                    setEventDetails({ ...eventDetails, title: e.target.value })
-                }
-            />
-            <br />
-            <label>일정 유형: </label>
-            <select
-                value={eventDetails.type}
-                onChange={(e) =>
-                    setEventDetails({ ...eventDetails, type: e.target.value })
-                }
-            >
-                <option value="">선택</option>
-                {["결혼식", "출퇴근", "데이트"].map((type) => (
-                    <option key={type} value={type}>
-                        {type}
-                    </option>
-                ))}
-            </select>
-            <br />
-            <label>시작일</label>
-            <input
-                type="date"
-                value={eventDetails.startDate}
-                onChange={handleStartDateChange}
-                min={today}
-            />
-            <br />
-            <label>종료일</label>
-            <input
-                type="date"
-                value={eventDetails.endDate}
-                onChange={handleEndDateChange}
-                min={eventDetails.startDate}
-            />
-            <br />
-            <label>설명</label>
-            <textarea
-                value={eventDetails.description}
-                onChange={(e) =>
-                    setEventDetails({ ...eventDetails, description: e.target.value })
-                }
-            />
-            <br />
-            <label>색상 선택:</label>
-            <div>
-                {["#FFB6C1", "#FFD700", "#90EE90", "#87CEFA", "#FFA07A", "#9370DB", "#FF6347"].map(
-                    (color) => (
-                        <button
-                            key={color}
-                            type="button"
-                            style={{
-                                backgroundColor: color,
-                                border: "none",
-                                margin: "0 5px",
-                                cursor: "pointer",
-                            }}
-                            onClick={() =>
-                                setEventDetails((prev) => ({ ...prev, color: color }))
-                            }
-                        >
-                            {color === eventDetails.color ? "✔" : " "}
-                        </button>
-                    )
-                )}
+        <div style={{ display: "flex", gap: "20px", width: "100%" }}>  {/* ✅ 가로 정렬 추가 */}
+            
+            {/* 왼쪽 컬럼: 일정 입력 폼 */}
+            <div style={{
+                flex: "1",
+                display: "flex",
+                flexDirection: "column",
+                borderRight: "1px solid #ddd", // ✅ 오른쪽에 구분선 추가
+                paddingRight: "20px",
+            }}>
+                <h3>일정 추가</h3>
+                <label>제목</label>
+                <input
+                    type="text"
+                    value={eventDetails.title}
+                    onChange={(e) =>
+                        setEventDetails({ ...eventDetails, title: e.target.value })
+                    }
+                    style={{ marginBottom: "1px" }}
+                />
+                <br />
+                <label>일정 유형: </label>
+                <select
+                    value={eventDetails.type}
+                    onChange={(e) =>
+                        setEventDetails({ ...eventDetails, type: e.target.value })
+                    }
+                    style={{
+                        width: "150px",  // ✅ 너비 조절
+                        marginBottom: "1px"
+                    }}
+                >
+                    <option value="">선택</option>
+                    {["결혼식", "출퇴근", "데이트"].map((type) => (
+                        <option key={type} value={type}>
+                            {type}
+                        </option>
+                    ))}
+                </select>
+                <br />
+                <label>시작일</label>
+                <input
+                    type="date"
+                    value={eventDetails.startDate}
+                    onChange={handleStartDateChange}
+                    min={today}
+                    style={{ marginBottom: "1px" }}
+                />
+                <br />
+                <label>종료일</label>
+                <input
+                    type="date"
+                    value={eventDetails.endDate}
+                    onChange={handleEndDateChange}
+                    min={eventDetails.startDate}
+                    style={{ marginBottom: "1px" }}
+                />
+                <br />
+                <label>설명</label>
+                <textarea
+                    value={eventDetails.description}
+                    onChange={(e) =>
+                        setEventDetails({ ...eventDetails, description: e.target.value })
+                    }
+                    style={{ marginBottom: "1px" }}
+                />
+                <br />
+                <label>색상 선택:</label>
+                <div>
+                    {["#FFB6C1", "#FFD700", "#90EE90", "#87CEFA", "#FFA07A", "#9370DB", "#FF6347"].map(
+                        (color) => (
+                            <button
+                                key={color}
+                                type="button"
+                                style={{
+                                    backgroundColor: color,
+                                    border: "none",
+                                    margin: "0 5px",
+                                    cursor: "pointer",
+                                }}
+                                onClick={() =>
+                                    setEventDetails((prev) => ({ ...prev, color: color }))
+                                }
+                            >
+                                {color === eventDetails.color ? "✔" : " "}
+                            </button>
+                        )
+                    )}
+                </div>
+                <br />
+                {error && <p className="error">{error}</p>}
+                <button className="a-button" onClick={handleSaveEvent}>저장</button>
+                <button className="b-button" onClick={closeModal}>닫기</button>
             </div>
-            <br />
-            {error && <p className="error">{error}</p>}
-            <button onClick={handleSaveEvent}>저장</button>
-            <button onClick={closeModal}>닫기</button>
-            <h3>📍 장소 선택</h3>
-            <KakaoMap onSelectLocation={handleLocationSelect} />
-            {/* 날씨 정보 */}
-            <div>
-                <h3>🌤 날씨 정보</h3>
-                {eventDetails.feelsLike ? (
-                    <div style={{ background: "#f5f5f5", padding: "10px", borderRadius: "8px" }}>
-                        <p><strong>체감 온도:</strong> {eventDetails.feelsLike}°C</p>
-                    </div>
-                ) : (
-                    <p>날씨 정보를 불러오는 중...</p>
-                )}
+    
+            {/* ✅ 오른쪽 컬럼: 장소 선택 & 날씨 정보 */}
+            <div style={{ flex: "1", display: "flex", flexDirection: "column", gap: "15px" }}>
+                <h3>📍 장소 선택</h3>
+                <KakaoMap onSelectLocation={handleLocationSelect} />
+                
+                {/* 날씨 정보 */}
+                <div>
+                    <h3>🌤 날씨 정보</h3>
+                    {eventDetails.feelsLike ? (
+                        <div style={{ background: "#f5f5f5", padding: "10px", borderRadius: "8px" }}>
+                            <p><strong>체감 온도:</strong> {eventDetails.feelsLike}°C</p>
+                        </div>
+                    ) : (
+                        <p>날씨 정보를 불러오는 중...</p>
+                    )}
+                </div>
             </div>
         </div>
-    );
+    );    
 };
 
 export default AddEventForm;
