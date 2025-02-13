@@ -71,10 +71,44 @@
   justify-content: center;  /* 가운데 정렬 */
   gap: 20px;  /* 버튼 간 간격 조정 */
   margin-top: 20px; /* 버튼 위쪽 여백 추가 */
+  color: #6b21a8;
+}
+
+.editevent-button-container{
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  gap: 15px; /* 버튼 간격 조정 */
+  margin-top: 20px; /* 버튼 위 여백 */
+}
+
+.editevent-edit-button, .editevent-delete-button, .editevent-close-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.editevent-edit-button {
+  background-color: #45a049;
+  color: white;
+}
+
+.editevent-delete-button {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.editevent-close-button {
+  background-color: #555;
+  color: white;
+}
+
+.editevent-edit-button:hover, .editevent-delete-button:hover, .editevent-close-button:hover {
+  opacity: 0.8;
 }
 
 button {
-  background-color: #4CAF50;
   color: white;
   border: none;
   cursor: pointer;
@@ -84,6 +118,7 @@ button {
   padding: 10px 20px;
   flex: 1; /* 버튼 크기를 동일하게 */
   max-width: 100px; /* 버튼 크기 제한 */
+  background-color: #6b21a8;
 }
 
 .b-button {

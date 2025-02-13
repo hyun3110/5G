@@ -232,10 +232,10 @@ const EditEventForm = ({
                     </div>
 
                     {error && <p className="error">{error}</p>}
-                    <div>
-                        <button onClick={handleSaveEvent} style={{ marginRight: "5px" }}>수정</button>
-                        <button onClick={handleDeleteEvent} className="delete-button">삭제</button>
-                        <button onClick={closeModal}>닫기</button>
+                    <div className="editevent-button-container">
+                        <button className="editevent-edit-button" onClick={handleSaveEvent} style={{ marginRight: "5px" }}>수정</button>
+                        <button onClick={handleDeleteEvent} className="editevent-delete-button">삭제</button>
+                        <button className="editevent-close-button" onClick={closeModal}>닫기</button>
                     </div>
                 </div>
 
